@@ -13,9 +13,9 @@ import io.swagger.v3.oas.annotations.servers.Server;
 
 @Configuration
 @OpenAPIDefinition(
-        info = @Info(title = "Identity-Service API", version = "v1"),
+        info = @Info(title = "Course-Service API", version = "v1"),
         security = @SecurityRequirement(name = "bearerAuth"),
-        servers = @Server(url = "/identity", description = "Default Server URL"))
+        servers = @Server(url = "/course-svc", description = "Default Server URL"))
 @SecurityScheme(name = "bearerAuth", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "bearer")
 public class OpenApiConfig {
 

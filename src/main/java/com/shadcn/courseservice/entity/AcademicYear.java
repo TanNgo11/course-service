@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,8 +18,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class AcademicYear extends BaseEntity {
-
+    @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate startYear;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate endYear;
 
     @ManyToMany(fetch = FetchType.LAZY)

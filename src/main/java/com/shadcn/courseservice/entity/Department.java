@@ -19,7 +19,7 @@ import lombok.experimental.FieldDefaults;
 @Entity
 public class Department extends BaseEntity {
 
-    String name;
+    String departmentName;
 
     @ManyToMany(mappedBy = "departments")
     List<AcademicYear> academicYears;
