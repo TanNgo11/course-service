@@ -16,7 +16,10 @@ public enum ErrorCode {
     RESOURCE_EXISTED(1013, "Resource existed", HttpStatus.BAD_REQUEST),
     CLOUDINARY_DELETE_FAIL(1014, "Delete the old image fail on cloud", HttpStatus.BAD_REQUEST),
     ROLE_NOT_EXISTED(1015, "Role not existed", HttpStatus.BAD_REQUEST),
-    INVALID_PAGE_PARAMETER(1019, "Invalid page parameter", HttpStatus.BAD_REQUEST);
+    INVALID_PAGE_PARAMETER(1019, "Invalid page parameter", HttpStatus.BAD_REQUEST),
+    ACADEMIC_YEAR_EXISTED(1020, "Academic year existed", HttpStatus.BAD_REQUEST),
+    ACADEMIC_YEAR_NOT_FOUND(1021, "Academic year not found", HttpStatus.BAD_REQUEST),
+    ;
 
     private final int code;
     private final String message;
