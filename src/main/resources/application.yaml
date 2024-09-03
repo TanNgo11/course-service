@@ -1,0 +1,26 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /course-svc
+
+spring:
+  application:
+    name: course-service
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  cache:
+    type: redis
+  data:
+    redis:
+      url: rediss://:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}
+      timeout: 200000ms
