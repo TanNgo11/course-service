@@ -3,10 +3,7 @@ package com.shadcn.courseservice.entity;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,10 +23,18 @@ public class Semester extends BaseEntity {
 
     LocalDate endDate;
 
+    // Map to AcademicYear
     @ManyToOne
     @JoinColumn(name = "academic_year_id")
     AcademicYear academicYear;
 
     @ManyToMany(mappedBy = "semesters")
     List<Subject> subjects;
+
+    //    @ElementCollection
+    //    @CollectionTable(
+    //            name = "semester_subject",
+    //            joinColumns = @JoinColumn(name = "semester_id"))
+    //    @Column(name = "subject_id")
+    //    List<Long> subjectIds;
 }

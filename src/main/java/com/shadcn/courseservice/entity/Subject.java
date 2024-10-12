@@ -21,6 +21,13 @@ public class Subject extends BaseEntity {
     @ManyToMany(mappedBy = "subjects")
     List<Department> departments;
 
+    //    @ElementCollection
+    //    @CollectionTable(
+    //            name = "department_subject",
+    //            joinColumns = @JoinColumn(name = "subject_id"))
+    //    @Column(name = "department_id")
+    //    List<Long> departmentIds;
+
     @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Lesson> lessons;
 

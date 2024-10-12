@@ -10,5 +10,13 @@ public interface IAcademicYearService {
 
     void updateAcademicYear(AcademicYearUpdation academicYearUpdation);
 
+    void addDepartmentToAcademicYear(Long academicYearId, Long departmentId);
+
+    void removeDepartmentFromAcademicYear(Long academicYearId, Long departmentId);
+
+    void addSemesterToAcademicYear(Long academicYearId, Long semesterId);
+
+    void removeSemesterFromAcademicYear(Long academicYearId, Long semesterId);
+
     PageResponse<AcademicYearResponse> getAllAcademicYears(int current, int pageSize);
 }

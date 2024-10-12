@@ -19,6 +19,10 @@ public enum ErrorCode {
     INVALID_PAGE_PARAMETER(1019, "Invalid page parameter", HttpStatus.BAD_REQUEST),
     ACADEMIC_YEAR_EXISTED(1020, "Academic year existed", HttpStatus.BAD_REQUEST),
     ACADEMIC_YEAR_NOT_FOUND(1021, "Academic year not found", HttpStatus.BAD_REQUEST),
+    DEPARTMENT_EXISTED(1022, "Department already added", HttpStatus.BAD_REQUEST),
+    DEPARTMENT_NOT_FOUND(1023, "Department not found", HttpStatus.BAD_REQUEST),
+    SEMESTER_EXISTED(1024, "Semester existed", HttpStatus.BAD_REQUEST),
+    SEMESTER_NOT_FOUND(1025, "Semester not found", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
