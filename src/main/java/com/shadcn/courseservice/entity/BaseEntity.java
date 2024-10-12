@@ -32,12 +32,12 @@ public abstract class BaseEntity {
 
     @Column(name = "createddate")
     @CreatedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate createdDate;
 
     @Column(name = "modifieddate")
     @LastModifiedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate modifiedDate;
 
     @Column(name = "createdBy")

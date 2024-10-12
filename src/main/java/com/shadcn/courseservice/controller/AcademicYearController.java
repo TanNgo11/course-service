@@ -6,6 +6,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.dto.request.AcademicYearCreation;
+import com.shadcn.courseservice.dto.request.AcademicYearDepartmentRequest;
+import com.shadcn.courseservice.dto.request.AcademicYearSemesterRequest;
 import com.shadcn.courseservice.dto.request.AcademicYearUpdation;
 import com.shadcn.courseservice.dto.response.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.ApiResponse;
@@ -42,6 +44,34 @@ public class AcademicYearController {
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> updateAcademicYear(@RequestBody AcademicYearUpdation academicYearUpdation) {
         academicYearService.updateAcademicYear(academicYearUpdation);
+        return ApiResponse.empty();
+    }
+
+    @PostMapping("/department")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<Void> addDepartmentToAcademicYear(@RequestBody AcademicYearDepartmentRequest request) {
+        academicYearService.addDepartmentToAcademicYear(request.getYearId(), request.getDepartmentId());
+        return ApiResponse.empty();
+    }
+
+    @DeleteMapping("/department/{yearId}/{departmentId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<Void> removeDepartmentFromAcademicYear(@PathVariable Long yearId, @PathVariable Long departmentId) {
+        academicYearService.removeDepartmentFromAcademicYear(yearId, departmentId);
+        return ApiResponse.empty();
+    }
+
+    @PostMapping("/semester")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<Void> addSemesterToAcademicYear(@RequestBody AcademicYearSemesterRequest request) {
+        academicYearService.addSemesterToAcademicYear(request.getYearId(), request.getSemesterId());
+        return ApiResponse.empty();
+    }
+
+    @DeleteMapping("/semester/{yearId}/{semesterId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<Void> removeSemesterFromAcademicYear(@PathVariable Long yearId, @PathVariable Long semesterId) {
+        academicYearService.removeSemesterFromAcademicYear(yearId, semesterId);
         return ApiResponse.empty();
     }
 }

@@ -24,6 +24,13 @@ public class Department extends BaseEntity {
     @ManyToMany(mappedBy = "departments")
     List<AcademicYear> academicYears;
 
+    //    @ElementCollection
+    //    @CollectionTable(
+    //            name = "academic_year_department",
+    //            joinColumns = @JoinColumn(name = "department_id"))
+    //    @Column(name = "academic_year_id")
+    //    List<Long> academicYearIds;
+
     @ManyToMany
     @JoinTable(
             name = "department_subject",
