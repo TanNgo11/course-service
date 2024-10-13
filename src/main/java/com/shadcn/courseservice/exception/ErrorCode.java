@@ -23,6 +23,8 @@ public enum ErrorCode {
     DEPARTMENT_NOT_FOUND(1023, "Department not found", HttpStatus.BAD_REQUEST),
     SEMESTER_EXISTED(1024, "Semester existed", HttpStatus.BAD_REQUEST),
     SEMESTER_NOT_FOUND(1025, "Semester not found", HttpStatus.BAD_REQUEST),
+    SUBJECT_EXISTED(1026, "Subject existed", HttpStatus.BAD_REQUEST),
+    SUBJECT_NOT_FOUND(1027, "Subject not found", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
