@@ -3,9 +3,6 @@ package com.shadcn.courseservice.dto.response;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.shadcn.courseservice.entity.Department;
-import com.shadcn.courseservice.entity.Semester;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

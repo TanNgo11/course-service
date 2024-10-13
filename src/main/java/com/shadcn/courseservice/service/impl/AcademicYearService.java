@@ -27,8 +27,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -106,7 +104,7 @@ public class AcademicYearService implements IAcademicYearService {
         AcademicYear academicYear = getAcademicYear(academicYearId);
         Semester semester = getSemester(semesterId);
 
-        if(semester.getAcademicYear() == null) {
+        if (semester.getAcademicYear() == null) {
             throw new AppException(ErrorCode.SEMESTER_NOT_FOUND);
         }
 

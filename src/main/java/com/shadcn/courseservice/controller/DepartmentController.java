@@ -1,15 +1,17 @@
 package com.shadcn.courseservice.controller;
 
-import com.shadcn.courseservice.dto.request.*;
-import com.shadcn.courseservice.dto.response.ApiResponse;
-import com.shadcn.courseservice.service.IDepartmentService;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
+import com.shadcn.courseservice.dto.request.*;
+import com.shadcn.courseservice.dto.response.ApiResponse;
+import com.shadcn.courseservice.service.IDepartmentService;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @RestController
 @RequestMapping(API_V1_DEPARTMENTS)
@@ -25,7 +27,7 @@ public class DepartmentController {
         return ApiResponse.empty();
     }
 
-    @DeleteMapping("/subjects/")
+    @DeleteMapping("/subjects")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> removeSubjectsFromDepartment(@RequestBody DepartmentSubjectRequest request) {
         departmentService.removeSubjectsFromDepartment(request.getDepartmentId(), request.getSubjectIds());

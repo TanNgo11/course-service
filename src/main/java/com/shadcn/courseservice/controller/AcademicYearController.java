@@ -61,13 +61,14 @@ public class AcademicYearController {
         return ApiResponse.empty();
     }
 
+    // automatically generated when creating a new academic year
     @PostMapping("/semester")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> addSemesterToAcademicYear(@RequestBody AcademicYearSemesterRequest request) {
         academicYearService.addSemesterToAcademicYear(request.getYearId(), request.getSemesterId());
         return ApiResponse.empty();
     }
-
+    // soft delete here or can not be deleted
     @DeleteMapping("/semester/{yearId}/{semesterId}")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> removeSemesterFromAcademicYear(@PathVariable Long yearId, @PathVariable Long semesterId) {

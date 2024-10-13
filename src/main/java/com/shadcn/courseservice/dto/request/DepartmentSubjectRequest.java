@@ -1,9 +1,9 @@
 package com.shadcn.courseservice.dto.request;
 
+import java.util.List;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DepartmentSubjectRequest {
-    private Long departmentId;
-    private List<Long> subjectIds;
+    Long departmentId;
+    List<Long> subjectIds;
 }

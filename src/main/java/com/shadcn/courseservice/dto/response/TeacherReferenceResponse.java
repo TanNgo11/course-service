@@ -1,15 +1,12 @@
 package com.shadcn.courseservice.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.shadcn.courseservice.entity.Department;
-import com.shadcn.courseservice.entity.Subject;
+import java.util.List;
+
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
