@@ -1,5 +1,8 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 import com.shadcn.courseservice.entity.Department;
 import com.shadcn.courseservice.entity.Subject;
@@ -8,13 +11,11 @@ import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.repository.DepartmentRepository;
 import com.shadcn.courseservice.repository.SubjectRepository;
 import com.shadcn.courseservice.service.IDepartmentService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +48,6 @@ public class DepartmentService implements IDepartmentService {
             department.getSubjects().remove(subject);
         }
         departmentRepository.save(department);
-
     }
 
     Department getDepartment(Long departmentId) {
@@ -57,8 +57,6 @@ public class DepartmentService implements IDepartmentService {
     }
 
     Subject getSubject(Long subjectId) {
-        return subjectRepository
-                .findById(subjectId)
-                .orElseThrow(() -> new AppException(ErrorCode.SUBJECT_NOT_FOUND));
+        return subjectRepository.findById(subjectId).orElseThrow(() -> new AppException(ErrorCode.SUBJECT_NOT_FOUND));
     }
 }

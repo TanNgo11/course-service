@@ -1,4 +1,5 @@
 package com.shadcn.courseservice.service;
+
 import java.util.List;
 
 public interface IDepartmentService {

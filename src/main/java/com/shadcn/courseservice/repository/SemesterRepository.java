@@ -5,5 +5,4 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.shadcn.courseservice.entity.Semester;
 
-public interface SemesterRepository extends JpaRepository<Semester, Long>, QuerydslPredicateExecutor<Semester> {
-}
+public interface SemesterRepository extends JpaRepository<Semester, Long>, QuerydslPredicateExecutor<Semester> {}
