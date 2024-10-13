@@ -4,9 +4,9 @@ USE `course-service`;
 INSERT INTO `course-service`.academic_year (id, created_by, createddate, modifiedby, modifieddate, end_year,
                                             start_year)
 VALUES (1, 'admin', '2024-10-24', null, null, '2025-06-10', '2024-10-01'),
-       (2, 'admin', '2024-10-24', null, null, '2025-06-10', '2025-10-01'),
-       (3, 'admin', '2024-10-24', null, null, '2025-06-10', '2026-10-01'),
-       (4, 'admin', '2024-10-24', null, null, '2025-06-10', '2027-10-01');
+       (2, 'admin', '2024-10-24', null, null, '2026-06-10', '2025-10-01'),
+       (3, 'admin', '2024-10-24', null, null, '2027-06-10', '2026-10-01'),
+       (4, 'admin', '2024-10-24', null, null, '2028-06-10', '2027-10-01');
 
 INSERT INTO `course-service`.semester (id, created_by, createddate, modifiedby, modifieddate, end_date, name,
                                        start_date, academic_year_id)
