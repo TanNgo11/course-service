@@ -12,6 +12,6 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EnrollmentResponse {
     StudentReferenceResponse student;
-    SubjectResponse subject;
+    CourseResponse course;
     SemesterResponse semester;
 }

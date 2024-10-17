@@ -2,6 +2,8 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_ACADEMIC_YEARS;
 
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,14 +52,15 @@ public class AcademicYearController {
     @PostMapping("/department")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> addDepartmentToAcademicYear(@RequestBody AcademicYearDepartmentRequest request) {
-        academicYearService.addDepartmentToAcademicYear(request.getYearId(), request.getDepartmentId());
+        academicYearService.addDepartmentToAcademicYear(request.getYearId(), request.getDepartmentIds());
         return ApiResponse.empty();
     }
 
-    @DeleteMapping("/department/{yearId}/{departmentId}")
+    @DeleteMapping("/department/{yearId}")
     @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<Void> removeDepartmentFromAcademicYear(@PathVariable Long yearId, @PathVariable Long departmentId) {
-        academicYearService.removeDepartmentFromAcademicYear(yearId, departmentId);
+    ApiResponse<Void> removeDepartmentFromAcademicYear(
+            @PathVariable Long yearId, @RequestBody List<Long> departmentIds) {
+        academicYearService.removeDepartmentFromAcademicYear(yearId, departmentIds);
         return ApiResponse.empty();
     }
 
@@ -65,14 +68,15 @@ public class AcademicYearController {
     @PostMapping("/semester")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> addSemesterToAcademicYear(@RequestBody AcademicYearSemesterRequest request) {
-        academicYearService.addSemesterToAcademicYear(request.getYearId(), request.getSemesterId());
+        academicYearService.addSemesterToAcademicYear(request.getYearId(), request.getSemesterIds());
         return ApiResponse.empty();
     }
+
     // soft delete here or can not be deleted
-    @DeleteMapping("/semester/{yearId}/{semesterId}")
+    @DeleteMapping("/semester/{yearId}")
     @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<Void> removeSemesterFromAcademicYear(@PathVariable Long yearId, @PathVariable Long semesterId) {
-        academicYearService.removeSemesterFromAcademicYear(yearId, semesterId);
+    ApiResponse<Void> removeSemesterFromAcademicYear(@PathVariable Long yearId, @RequestBody List<Long> semesterIds) {
+        academicYearService.removeSemesterFromAcademicYear(yearId, semesterIds);
         return ApiResponse.empty();
     }
 }

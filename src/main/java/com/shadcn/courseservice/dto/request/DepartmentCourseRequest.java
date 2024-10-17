@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DepartmentSubjectRequest {
+public class DepartmentCourseRequest {
     Long departmentId;
-    List<Long> subjectIds;
+    List<Long> courseIds;
 }
