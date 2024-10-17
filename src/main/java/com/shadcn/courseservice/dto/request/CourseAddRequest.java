@@ -10,7 +10,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AcademicYearSemesterRequest {
-    Long yearId;
-    List<Long> semesterIds;
+public class CourseAddRequest {
+    String departmentId;
+    String courseId;
+    List<String> studentIds;
+    List<String> teacherIds;
+    List<String> semesterIds;
 }

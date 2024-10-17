@@ -33,8 +33,8 @@ public class Department extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "department_subject",
+            name = "department_course",
             joinColumns = @JoinColumn(name = "department_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id"))
-    List<Subject> subjects;
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    List<Course> courses;
 }

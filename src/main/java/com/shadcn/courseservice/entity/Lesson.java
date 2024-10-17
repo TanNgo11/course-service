@@ -19,8 +19,8 @@ public class Lesson extends BaseEntity {
     String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id")
-    Subject subject;
+    @JoinColumn(name = "course_id")
+    Course course;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

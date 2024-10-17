@@ -21,7 +21,7 @@ VALUES (1, 'admin', '2024-10-11', null, null, 'CNTT'),
        (3, 'admin', '2024-10-11', null, null, 'KINH TE'),
        (4, 'admin', '2024-10-11', null, null, 'KY THUAT');
 
-INSERT INTO `subject` (`id`, `created_by`, `createddate`, `modifiedby`, `modifieddate`, `name`)
+INSERT INTO `course` (`id`, `created_by`, `createddate`, `modifiedby`, `modifieddate`, `name`)
 VALUES (1, 'admin', '2024-10-13', NULL, NULL, 'BSC 110'),
        (2, 'admin', '2024-10-13', NULL, NULL, 'BSC 202'),
        (3, 'admin', '2024-10-13', NULL, NULL, 'CSE 101'),

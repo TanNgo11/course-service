@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.dto.request.*;
 import com.shadcn.courseservice.dto.response.ApiResponse;
+import com.shadcn.courseservice.dto.response.CourseResponse;
+import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.service.IDepartmentService;
 
 import lombok.AccessLevel;
@@ -20,17 +22,26 @@ import lombok.experimental.FieldDefaults;
 public class DepartmentController {
     IDepartmentService departmentService;
 
-    @PostMapping("/subjects")
+    @PostMapping("/courses")
     @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<Void> addSubjectsToDepartment(@RequestBody DepartmentSubjectRequest request) {
-        departmentService.addSubjectsToDepartment(request.getDepartmentId(), request.getSubjectIds());
+    ApiResponse<Void> addCoursesToDepartment(@RequestBody DepartmentCourseRequest request) {
+        departmentService.addCoursesToDepartment(request.getDepartmentId(), request.getCourseIds());
         return ApiResponse.empty();
     }
 
-    @DeleteMapping("/subjects")
+    @DeleteMapping("/courses")
     @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<Void> removeSubjectsFromDepartment(@RequestBody DepartmentSubjectRequest request) {
-        departmentService.removeSubjectsFromDepartment(request.getDepartmentId(), request.getSubjectIds());
+    ApiResponse<Void> removeCoursesFromDepartment(@RequestBody DepartmentCourseRequest request) {
+        departmentService.removeCoursesFromDepartment(request.getDepartmentId(), request.getCourseIds());
         return ApiResponse.empty();
+    }
+
+    @GetMapping("/department={departmentId}/courses")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<PageResponse<CourseResponse>> getAllCoursesInDepartment(
+            @PathVariable Long departmentId,
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        return ApiResponse.success(departmentService.getCoursesByDepartment(departmentId, current, pageSize));
     }
 }

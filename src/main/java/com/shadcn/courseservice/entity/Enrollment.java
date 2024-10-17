@@ -21,8 +21,8 @@ public class Enrollment extends BaseEntity {
     StudentReference student;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
-    Subject subject;
+    @JoinColumn(name = "course_id")
+    Course course;
 
     @ManyToOne
     @JoinColumn(name = "semester_id")
