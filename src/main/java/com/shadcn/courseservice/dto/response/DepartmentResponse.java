@@ -15,5 +15,5 @@ import lombok.experimental.SuperBuilder;
 public class DepartmentResponse {
     String departmentName;
     List<AcademicYearResponse> academicYears;
-    List<SubjectResponse> subjects;
+    List<CourseResponse> courses;
 }

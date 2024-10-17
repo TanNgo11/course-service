@@ -1,5 +1,7 @@
 package com.shadcn.courseservice.service;
 
+import java.util.List;
+
 import com.shadcn.courseservice.dto.request.AcademicYearCreation;
 import com.shadcn.courseservice.dto.request.AcademicYearUpdation;
 import com.shadcn.courseservice.dto.response.AcademicYearResponse;
@@ -10,13 +12,13 @@ public interface IAcademicYearService {
 
     void updateAcademicYear(AcademicYearUpdation academicYearUpdation);
 
-    void addDepartmentToAcademicYear(Long academicYearId, Long departmentId);
+    void addDepartmentToAcademicYear(Long academicYearId, List<Long> departmentId);
 
-    void removeDepartmentFromAcademicYear(Long academicYearId, Long departmentId);
+    void removeDepartmentFromAcademicYear(Long academicYearId, List<Long> departmentId);
 
-    void addSemesterToAcademicYear(Long academicYearId, Long semesterId);
+    void addSemesterToAcademicYear(Long academicYearId, List<Long> semesterId);
 
-    void removeSemesterFromAcademicYear(Long academicYearId, Long semesterId);
+    void removeSemesterFromAcademicYear(Long academicYearId, List<Long> semesterId);
 
     PageResponse<AcademicYearResponse> getAllAcademicYears(int current, int pageSize);
 }

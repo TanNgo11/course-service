@@ -29,7 +29,7 @@ public class Semester extends BaseEntity {
     AcademicYear academicYear;
 
     @ManyToMany(mappedBy = "semesters")
-    List<Subject> subjects;
+    List<Course> courses;
 
     //    @ElementCollection
     //    @CollectionTable(
