@@ -21,7 +21,7 @@ VALUES (1, 'admin', '2024-10-11', null, null, 'CNTT'),
        (3, 'admin', '2024-10-11', null, null, 'KINH TE'),
        (4, 'admin', '2024-10-11', null, null, 'KY THUAT');
 
-INSERT INTO `subject` (`id`, `created_by`, `createddate`, `modifiedby`, `modifieddate`, `name`)
+INSERT INTO `course` (`id`, `created_by`, `createddate`, `modifiedby`, `modifieddate`, `name`)
 VALUES (1, 'admin', '2024-10-13', NULL, NULL, 'BSC 110'),
        (2, 'admin', '2024-10-13', NULL, NULL, 'BSC 202'),
        (3, 'admin', '2024-10-13', NULL, NULL, 'CSE 101'),
@@ -30,3 +30,10 @@ VALUES (1, 'admin', '2024-10-13', NULL, NULL, 'BSC 110'),
        (6, 'admin', '2024-10-13', NULL, NULL, 'ACTG 243'),
        (7, 'admin', '2024-10-13', NULL, NULL, 'ECE 201'),
        (8, 'admin', '2024-10-13', NULL, NULL, 'ECE 203');
+
+INSERT INTO `lesson` (`id`, `created_by`, `createddate`, `modifiedby`, `modifieddate`, `description`, `title`, `course_id`) VALUES
+        (1, 'admin', '2024-10-28', 'admin', '2024-10-28', NULL, 'VI SINH VẬT', 1),
+        (2, 'admin', '2024-10-28', 'admin', '2024-10-28', NULL, 'HÓA SINH', 2),
+        (3, 'admin', '2024-10-28', 'admin', '2024-10-28', NULL, 'TIN HỌC ĐẠI CƯƠNG', 3),
+        (4, 'admin', '2024-10-28', 'admin', '2024-10-28', NULL, 'NHẬP MÔN LẬP TRÌNH', 4),
+        (5, 'admin', '2024-10-28', 'admin', '2024-10-28', NULL, 'Fundamentals of Financial Accounting', 5);

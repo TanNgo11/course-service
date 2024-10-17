@@ -2,8 +2,13 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
-public interface IDepartmentService {
-    void addSubjectsToDepartment(Long departmentId, List<Long> subjectIds);
+import com.shadcn.courseservice.dto.response.CourseResponse;
+import com.shadcn.courseservice.dto.response.PageResponse;
 
-    void removeSubjectsFromDepartment(Long departmentId, List<Long> subjectIds);
+public interface IDepartmentService {
+    void addCoursesToDepartment(Long departmentId, List<Long> courseIds);
+
+    void removeCoursesFromDepartment(Long departmentId, List<Long> courseIds);
+
+    PageResponse<CourseResponse> getCoursesByDepartment(Long departmentId, Integer current, Integer pageSize);
 }

@@ -18,5 +18,5 @@ public class SemesterResponse {
     LocalDate startDate;
     LocalDate endDate;
     AcademicYearResponse academicYear;
-    List<SubjectResponse> subjects;
+    List<CourseResponse> courses;
 }

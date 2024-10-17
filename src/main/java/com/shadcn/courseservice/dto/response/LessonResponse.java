@@ -1,9 +1,5 @@
 package com.shadcn.courseservice.dto.response;
 
-import java.util.List;
-
-import jakarta.persistence.*;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -15,7 +11,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LessonResponse {
-    String title;
-    SubjectResponse subject;
-    List<StudentReferenceResponse> students;
+     Long id;
+     String title;
+     Long courseId;
+     String description;
 }

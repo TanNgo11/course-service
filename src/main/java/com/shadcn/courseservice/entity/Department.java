@@ -7,6 +7,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,6 +25,7 @@ public class Department extends BaseEntity {
     String departmentName;
 
     @ManyToMany(mappedBy = "departments")
+    @JsonIgnore
     List<AcademicYear> academicYears;
 
     //    @ElementCollection
@@ -33,8 +37,9 @@ public class Department extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "department_subject",
+            name = "department_course",
             joinColumns = @JoinColumn(name = "department_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id"))
-    List<Subject> subjects;
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @JsonManagedReference
+    List<Course> courses;
 }

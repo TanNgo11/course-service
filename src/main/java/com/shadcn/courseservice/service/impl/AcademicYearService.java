@@ -1,5 +1,7 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -68,51 +70,66 @@ public class AcademicYearService implements IAcademicYearService {
     }
 
     @Override
-    public void addDepartmentToAcademicYear(Long academicYearId, Long departmentId) {
+    public void addDepartmentToAcademicYear(Long academicYearId, List<Long> departmentIds) {
         AcademicYear academicYear = getAcademicYear(academicYearId);
 
-        if (academicYear.getDepartments().contains(getDepartment(departmentId))) {
-            throw new AppException(ErrorCode.DEPARTMENT_EXISTED);
+        for (Long id : departmentIds) {
+            if (academicYear.getDepartments().contains(getDepartment(id))) {
+                throw new AppException(ErrorCode.DEPARTMENT_EXISTED);
+            }
+
+            academicYear.getDepartments().add(getDepartment(id));
+        }
+        academicYearRepository.save(academicYear);
+    }
+
+    @Override
+    public void removeDepartmentFromAcademicYear(Long academicYearId, List<Long> departmentIds) {
+        AcademicYear academicYear = getAcademicYear(academicYearId);
+
+        for (Long id : departmentIds) {
+            academicYear.getDepartments().remove(getDepartment(id));
         }
 
-        academicYear.getDepartments().add(getDepartment(departmentId));
         academicYearRepository.save(academicYear);
     }
 
     @Override
-    public void removeDepartmentFromAcademicYear(Long academicYearId, Long departmentId) {
+    public void addSemesterToAcademicYear(Long academicYearId, List<Long> semesterIds) {
         AcademicYear academicYear = getAcademicYear(academicYearId);
 
-        academicYear.getDepartments().remove(getDepartment(departmentId));
-        academicYearRepository.save(academicYear);
-    }
+        for (Long id : semesterIds) {
+            Semester semester = getSemester(id);
 
-    @Override
-    public void addSemesterToAcademicYear(Long academicYearId, Long semesterId) {
-        AcademicYear academicYear = getAcademicYear(academicYearId);
-        Semester semester = getSemester(semesterId);
+            if (semester.getAcademicYear() != null) {
+                throw new AppException(ErrorCode.SEMESTER_EXISTED);
+            }
 
-        academicYear.getSemesters().add(getSemester(semesterId));
-        semester.setAcademicYear(academicYear);
-
-        academicYearRepository.save(academicYear);
-        semesterRepository.save(semester);
-    }
-
-    @Override
-    public void removeSemesterFromAcademicYear(Long academicYearId, Long semesterId) {
-        AcademicYear academicYear = getAcademicYear(academicYearId);
-        Semester semester = getSemester(semesterId);
-
-        if (semester.getAcademicYear() == null) {
-            throw new AppException(ErrorCode.SEMESTER_NOT_FOUND);
+            academicYear.getSemesters().add(semester);
+            semester.setAcademicYear(academicYear);
         }
 
-        academicYear.getSemesters().remove(getSemester(semesterId));
-        semester.setAcademicYear(null);
+        academicYearRepository.save(academicYear);
+        semesterRepository.saveAll(academicYear.getSemesters());
+    }
+
+    @Override
+    public void removeSemesterFromAcademicYear(Long academicYearId, List<Long> semesterIds) {
+        AcademicYear academicYear = getAcademicYear(academicYearId);
+
+        for (Long semesterId : semesterIds) {
+            Semester semester = getSemester(semesterId);
+
+            if (semester.getAcademicYear() == null) {
+                throw new AppException(ErrorCode.SEMESTER_NOT_FOUND);
+            }
+
+            academicYear.getSemesters().remove(semester);
+            semester.setAcademicYear(null);
+        }
 
         academicYearRepository.save(academicYear);
-        semesterRepository.save(semester);
+        semesterRepository.saveAll(academicYear.getSemesters());
     }
 
     @Override

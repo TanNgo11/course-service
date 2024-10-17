@@ -24,3 +24,13 @@ spring:
     redis:
       url: rediss://:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}
       timeout: 200000ms
+
+app:
+  services:
+    file: http://localhost:8085/file-svc
+    profile: http://localhost:8081/profile
+
+servlet:
+  multipart:
+    max-file-size: 200MB
+    max-request-size: 200MB

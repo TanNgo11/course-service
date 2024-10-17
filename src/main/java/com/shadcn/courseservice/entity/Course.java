@@ -4,6 +4,8 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,11 +16,26 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Subject extends BaseEntity {
+public class Course extends BaseEntity {
 
     String name;
 
-    @ManyToMany(mappedBy = "subjects")
+    String imageUri;
+
+    @ElementCollection
+    List<String> studentIds;
+
+    @ElementCollection
+    List<String> studentUsernames;
+
+    @ElementCollection
+    List<String> teacherIds;
+
+    @ElementCollection
+    List<String> teacherUsernames;
+
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    @JsonBackReference
     List<Department> departments;
 
     //    @ElementCollection
@@ -28,19 +45,21 @@ public class Subject extends BaseEntity {
     //    @Column(name = "department_id")
     //    List<Long> departmentIds;
 
-    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Lesson> lessons;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "subject_semester",
-            joinColumns = @JoinColumn(name = "subject_id"),
+            name = "course_semester",
+            joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "semester_id"))
     List<Semester> semesters;
 
-    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     List<Enrollment> enrollments;
 
-    @ManyToMany(mappedBy = "subjects", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     List<TeacherReference> teacherReferences;
+
+    Long credit;
 }
