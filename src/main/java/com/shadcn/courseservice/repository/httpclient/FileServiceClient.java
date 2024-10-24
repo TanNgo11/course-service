@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 @FeignClient(
         name = "file-service",
         url = "${app.services.file}",
-        configuration = {AuthenticationRequestInterceptor.class, RetreiveMessageErrorDecoder.class})
+        configuration = {AuthenticationRequestInterceptor.class})
 public interface FileServiceClient {
     @PostMapping(value = "/upload", headers = "Content-Type: multipart/form-data", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ApiResponse<ImageUploadResponse> uploadFile(@RequestPart(value="image") MultipartFile file);
+    ApiResponse<ImageUploadResponse> uploadFile(@RequestPart(value="file") MultipartFile file);
 }

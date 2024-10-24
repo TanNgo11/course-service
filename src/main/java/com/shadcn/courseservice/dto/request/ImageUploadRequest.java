@@ -10,5 +10,5 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ImageUploadRequest {
-    MultipartFile image;
+    MultipartFile file;
 }

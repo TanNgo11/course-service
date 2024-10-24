@@ -61,14 +61,14 @@ public class DepartmentService implements IDepartmentService {
 
     @Override
     public PageResponse<CourseResponse> getCoursesByDepartment(Long departmentId, Integer current, Integer pageSize) {
-        Department department = getDepartment(departmentId);
+            Pageable pageable = PageRequest.of(current - 1, pageSize);
 
-        Pageable pageable = PageRequest.of(current - 1, pageSize);
+            // Get all courses in department
+            Department department = getDepartment(Long.valueOf(departmentId));
 
-        Page<Course> coursePage = new PageImpl<>(
-                department.getCourses(), pageable, department.getCourses().size());
+            Page<Course> courses = courseRepository.findByDepartmentId(department.getId(), pageable);
 
-        return ConverToPaginationResponse.toPageResponse(coursePage, courseMapper::toCourseResponse, current);
+            return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
     }
 
     Department getDepartment(Long departmentId) {

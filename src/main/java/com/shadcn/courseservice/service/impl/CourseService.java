@@ -200,6 +200,8 @@ public class CourseService implements ICourseService {
     public void uploadCourseImage(String departmentId, String courseId, MultipartFile image) {
         Course course = getCourse(getDepartment(Long.valueOf(departmentId)), courseId);
 
+        log.info("thisisimage" + image.getOriginalFilename());
+
         String imageUri = imageValidator.uploadImageIfPresent(image);
 
         if (imageUri != null) {
