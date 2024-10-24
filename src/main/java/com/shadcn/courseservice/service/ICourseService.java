@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ICourseService {
     void addStudentIntoCourse(String departmentId, String courseId, List<String> studentIds);
@@ -26,5 +27,11 @@ public interface ICourseService {
 
     void removeStudentReferenceFromCourse(String departmentId, String courseId, List<String> studentIds);
 
-    PageResponse<CourseResponse> getAllCourses(Integer current, Integer pageSize);
+    PageResponse<String> getAllStudentIdsInCourse(String departmentId, String courseId, int current, int pageSize);
+
+    PageResponse<String> getAllTeacherIdsInCourse(String departmentId, String courseId, int current, int pageSize);
+
+    PageResponse<CourseResponse> getAllCourses(int departmentId, Integer current, Integer pageSize);
+
+    void uploadCourseImage(String departmentId, String courseId, MultipartFile image);
 }

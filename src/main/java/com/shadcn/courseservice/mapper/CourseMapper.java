@@ -7,8 +7,6 @@ import com.shadcn.courseservice.entity.Course;
 
 @Mapper(componentModel = "spring")
 public interface CourseMapper {
-
     // Course toCourse(CourseRequest request);
-
     CourseResponse toCourseResponse(Course course);
 }
