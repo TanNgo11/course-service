@@ -16,13 +16,16 @@ public class ImageValidator {
     FileServiceClient fileServiceClient;
 
     public String uploadImageIfPresent(MultipartFile imageFile) {
-        if (imageFile != null && !imageFile.isEmpty()) {
-            ApiResponse<ImageUploadResponse> response = fileServiceClient.uploadFile(imageFile);
-            ImageUploadResponse imageResponse = response.getResult();
+        if (imageFile != null) {
+//            ApiResponse<ImageUploadResponse> response = fileServiceClient.uploadFile(imageFile);
+//            ImageUploadResponse imageResponse = response.getResult();
+//
+//            if (imageResponse != null) {
+//                return imageResponse.getDownloadUri(); // Return the image URL to be saved in the Course entity
+//            }
+            ImageUploadResponse imageResponse = fileServiceClient.uploadFile(imageFile).getResult();
 
-            if (imageResponse != null) {
-                return imageResponse.getDownloadUri(); // Return the image URL to be saved in the Course entity
-            }
+            return imageResponse.getDownloadUri();
         }
         return null;
     }

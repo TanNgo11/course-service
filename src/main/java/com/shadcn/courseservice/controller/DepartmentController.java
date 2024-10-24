@@ -36,7 +36,7 @@ public class DepartmentController {
         return ApiResponse.empty();
     }
 
-    @GetMapping("/department={departmentId}/courses")
+    @GetMapping("/{departmentId}/courses")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<PageResponse<CourseResponse>> getAllCoursesInDepartment(
             @PathVariable Long departmentId,
