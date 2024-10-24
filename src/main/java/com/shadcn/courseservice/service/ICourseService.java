@@ -2,9 +2,10 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface ICourseService {
     void addStudentIntoCourse(String departmentId, String courseId, List<String> studentIds);
