@@ -2,15 +2,15 @@ package com.shadcn.courseservice.service.impl;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import com.shadcn.courseservice.validator.ImageValidator;
 import jakarta.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
@@ -24,13 +24,13 @@ import com.shadcn.courseservice.repository.CourseRepository;
 import com.shadcn.courseservice.repository.DepartmentRepository;
 import com.shadcn.courseservice.repository.SemesterRepository;
 import com.shadcn.courseservice.service.ICourseService;
+import com.shadcn.courseservice.service.IFileUploadService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +41,7 @@ public class CourseService implements ICourseService {
     CourseRepository courseRepository;
     SemesterRepository semesterRepository;
     CourseMapper courseMapper;
-    ImageValidator imageValidator;
+    IFileUploadService imageValidator;
 
     @Override
     public void addStudentIntoCourse(String departmentId, String courseId, List<String> studentIds) {
@@ -159,25 +159,29 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public PageResponse<String> getAllStudentIdsInCourse(String departmentId, String courseId, int current, int pageSize) {
+    public PageResponse<String> getAllStudentIdsInCourse(
+            String departmentId, String courseId, int current, int pageSize) {
         Department department = getDepartment(Long.valueOf(departmentId));
         Course course = getCourse(department, courseId);
 
         Pageable pageable = PageRequest.of(current - 1, pageSize);
 
-        Page<String> studentIds = new PageImpl<>(course.getStudentIds(), pageable, course.getStudentIds().size());
+        Page<String> studentIds = new PageImpl<>(
+                course.getStudentIds(), pageable, course.getStudentIds().size());
 
         return ConverToPaginationResponse.toPageResponse(studentIds, Function.identity(), current);
     }
 
     @Override
-    public PageResponse<String> getAllTeacherIdsInCourse(String departmentId, String courseId, int current, int pageSize) {
+    public PageResponse<String> getAllTeacherIdsInCourse(
+            String departmentId, String courseId, int current, int pageSize) {
         Department department = getDepartment(Long.valueOf(departmentId));
         Course course = getCourse(department, courseId);
 
         Pageable pageable = PageRequest.of(current - 1, pageSize);
 
-        Page<String> teacherIds = new PageImpl<>(course.getTeacherIds(), pageable, course.getTeacherIds().size());
+        Page<String> teacherIds = new PageImpl<>(
+                course.getTeacherIds(), pageable, course.getTeacherIds().size());
 
         return ConverToPaginationResponse.toPageResponse(teacherIds, Function.identity(), current);
     }
@@ -190,7 +194,6 @@ public class CourseService implements ICourseService {
         Department department = getDepartment(Long.valueOf(departmentId));
 
         Page<Course> courses = courseRepository.findByDepartmentId(department.getId(), pageable);
-
 
         return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
     }

@@ -3,7 +3,6 @@ package com.shadcn.courseservice.service.impl;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -61,14 +60,14 @@ public class DepartmentService implements IDepartmentService {
 
     @Override
     public PageResponse<CourseResponse> getCoursesByDepartment(Long departmentId, Integer current, Integer pageSize) {
-            Pageable pageable = PageRequest.of(current - 1, pageSize);
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
 
-            // Get all courses in department
-            Department department = getDepartment(Long.valueOf(departmentId));
+        // Get all courses in department
+        Department department = getDepartment(Long.valueOf(departmentId));
 
-            Page<Course> courses = courseRepository.findByDepartmentId(department.getId(), pageable);
+        Page<Course> courses = courseRepository.findByDepartmentId(department.getId(), pageable);
 
-            return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
+        return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
     }
 
     Department getDepartment(Long departmentId) {

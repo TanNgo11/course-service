@@ -1,7 +1,5 @@
 package com.shadcn.courseservice.dto.response;
 
-import java.util.List;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -14,6 +12,6 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DepartmentResponse {
     String departmentName;
-    List<AcademicYearResponse> academicYears;
-    List<CourseResponse> courses;
+    //    List<AcademicYearResponse> academicYears;
+    //    List<CourseResponse> courses;
 }

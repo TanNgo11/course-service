@@ -14,9 +14,12 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CourseResponse {
     String name;
+    String imageUri;
+    List<String> teacherIds;
+    List<String> studentIds;
     List<DepartmentResponse> departments;
-    List<LessonResponse> lessons;
-    List<SemesterResponse> semesters;
-    List<EnrollmentResponse> enrollments;
-    List<TeacherReferenceResponse> teacherReferences;
+    //    List<LessonResponse> lessons;
+    //    List<SemesterResponse> semesters;
+    //    List<EnrollmentResponse> enrollments;
+    //    List<TeacherReferenceResponse> teacherReferences;
 }
