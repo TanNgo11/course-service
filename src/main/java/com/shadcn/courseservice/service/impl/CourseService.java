@@ -1,8 +1,13 @@
 package com.shadcn.courseservice.service.impl;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import com.shadcn.courseservice.validator.ImageValidator;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +30,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +40,8 @@ public class CourseService implements ICourseService {
     DepartmentRepository departmentRepository;
     CourseRepository courseRepository;
     SemesterRepository semesterRepository;
-    private final CourseMapper courseMapper;
+    CourseMapper courseMapper;
+    ImageValidator imageValidator;
 
     @Override
     public void addStudentIntoCourse(String departmentId, String courseId, List<String> studentIds) {
@@ -152,11 +159,57 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public PageResponse<CourseResponse> getAllCourses(Integer current, Integer pageSize) {
-        Pageable pageable = PageRequest.of(current - 1, pageSize);
-        Page<Course> academicYears = courseRepository.findAll(pageable);
+    public PageResponse<String> getAllStudentIdsInCourse(String departmentId, String courseId, int current, int pageSize) {
+        Department department = getDepartment(Long.valueOf(departmentId));
+        Course course = getCourse(department, courseId);
 
-        return ConverToPaginationResponse.toPageResponse(academicYears, courseMapper::toCourseResponse, current);
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+
+        Page<String> studentIds = new PageImpl<>(course.getStudentIds(), pageable, course.getStudentIds().size());
+
+        return ConverToPaginationResponse.toPageResponse(studentIds, Function.identity(), current);
+    }
+
+    @Override
+    public PageResponse<String> getAllTeacherIdsInCourse(String departmentId, String courseId, int current, int pageSize) {
+        Department department = getDepartment(Long.valueOf(departmentId));
+        Course course = getCourse(department, courseId);
+
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+
+        Page<String> teacherIds = new PageImpl<>(course.getTeacherIds(), pageable, course.getTeacherIds().size());
+
+        return ConverToPaginationResponse.toPageResponse(teacherIds, Function.identity(), current);
+    }
+
+    @Override
+    public PageResponse<CourseResponse> getAllCourses(int departmentId, Integer current, Integer pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+
+        // Get all courses in department
+        Department department = getDepartment(Long.valueOf(departmentId));
+
+        Page<Course> courses = courseRepository.findByDepartmentId(department.getId(), pageable);
+
+
+        return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
+    }
+
+    @Override
+    @Transactional
+    public void uploadCourseImage(String departmentId, String courseId, MultipartFile image) {
+        Course course = getCourse(getDepartment(Long.valueOf(departmentId)), courseId);
+
+        String imageUri = imageValidator.uploadImageIfPresent(image);
+
+        if (imageUri != null) {
+            course.setImageUri(imageUri);
+            courseRepository.save(course);
+        } else {
+            throw new AppException(ErrorCode.IMAGE_UPLOAD_FAILED);
+        }
+
+        courseRepository.save(course);
     }
 
     public Department getDepartment(Long departmentId) {

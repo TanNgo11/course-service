@@ -18,6 +18,8 @@ public class Course extends BaseEntity {
 
     String name;
 
+    String imageUri;
+
     @ElementCollection
     List<String> studentIds;
 
