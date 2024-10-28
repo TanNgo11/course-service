@@ -1,8 +1,11 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
@@ -14,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.StudentProfileResponse;
+import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
 import com.shadcn.courseservice.entity.Course;
 import com.shadcn.courseservice.entity.Department;
 import com.shadcn.courseservice.entity.Semester;
@@ -25,6 +30,7 @@ import com.shadcn.courseservice.repository.DepartmentRepository;
 import com.shadcn.courseservice.repository.SemesterRepository;
 import com.shadcn.courseservice.service.ICourseService;
 import com.shadcn.courseservice.service.IFileUploadService;
+import com.shadcn.courseservice.service.IProfileService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
 
 import lombok.AccessLevel;
@@ -41,18 +47,21 @@ public class CourseService implements ICourseService {
     CourseRepository courseRepository;
     SemesterRepository semesterRepository;
     CourseMapper courseMapper;
-    IFileUploadService imageValidator;
+    IFileUploadService fileUploadService;
+    IProfileService profileService;
 
     @Override
-    public void addStudentIntoCourse(String departmentId, String courseId, List<String> studentIds) {
+    public void addStudentIntoCourse(
+            String departmentId,
+            String courseId,
+            List<String> studentIds) {
         Department department = getDepartment(Long.valueOf(departmentId));
         Course course = getCourse(department, courseId);
 
         for (String id : studentIds) {
-            if (course.getStudentIds().contains(id)) {
-                continue;
+            if (!course.getStudentIds().contains(id)) {
+                course.getStudentIds().add(id);
             }
-            course.getStudentIds().add(id);
         }
 
         departmentRepository.save(department);
@@ -75,15 +84,17 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public void addTeacherIntoCourse(String departmentId, String courseId, List<String> teacherIds) {
+    public void addTeacherIntoCourse(
+            String departmentId,
+            String courseId,
+            List<String> teacherIds) {
         Department department = getDepartment(Long.valueOf(departmentId));
         Course course = getCourse(department, courseId);
 
         for (String id : teacherIds) {
-            if (course.getTeacherIds().contains(id)) {
-                continue;
+            if (!course.getTeacherIds().contains(id)) {
+                course.getTeacherIds().add(id);
             }
-            course.getTeacherIds().add(id);
         }
 
         departmentRepository.save(department);
@@ -138,64 +149,31 @@ public class CourseService implements ICourseService {
         courseRepository.save(course);
     }
 
-    @Override
-    public void addTeacherReferenceIntoCourse(String departmentId, String courseId, List<String> teacherIds) {
-        // TODO
-    }
 
     @Override
-    public void removeTeacherReferenceFromCourse(String departmentId, String courseId, List<String> teacherIds) {
-        // TODO
-    }
-
-    @Override
-    public void addStudentReferenceIntoCourse(String departmentId, String courseId, List<String> studentIds) {
-        // TODO
-    }
-
-    @Override
-    public void removeStudentReferenceFromCourse(String departmentId, String courseId, List<String> studentIds) {
-        // TODO
-    }
-
-    @Override
-    public PageResponse<String> getAllStudentIdsInCourse(
-            String departmentId, String courseId, int current, int pageSize) {
+    public PageResponse<StudentProfileResponse> getAllStudentsInCourseByIds(String departmentId, String courseId, int current, int pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
         Department department = getDepartment(Long.valueOf(departmentId));
         Course course = getCourse(department, courseId);
 
-        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        long[] studentIdsArray = course.getStudentIds().stream().mapToLong(Long::valueOf).toArray();
+        List<StudentProfileResponse> studentProfiles = profileService.getPublicStudentProfiles(studentIdsArray);
+        Page<StudentProfileResponse> responses = new PageImpl<>(studentProfiles, pageable, studentProfiles.size());
 
-        Page<String> studentIds = new PageImpl<>(
-                course.getStudentIds(), pageable, course.getStudentIds().size());
-
-        return ConverToPaginationResponse.toPageResponse(studentIds, Function.identity(), current);
+        return ConverToPaginationResponse.toPageResponse(responses, Function.identity(), current);
     }
 
     @Override
-    public PageResponse<String> getAllTeacherIdsInCourse(
-            String departmentId, String courseId, int current, int pageSize) {
+    public PageResponse<TeacherProfileResponse> getAllTeachersInCourseByIds(String departmentId, String courseId, int current, int pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
         Department department = getDepartment(Long.valueOf(departmentId));
         Course course = getCourse(department, courseId);
 
-        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        long[] teacherIdsArray = course.getTeacherIds().stream().mapToLong(Long::valueOf).toArray();
+        List<TeacherProfileResponse> teacherProfiles = profileService.getPublicTeacherProfiles(teacherIdsArray);
+        Page<TeacherProfileResponse> responses = new PageImpl<>(teacherProfiles, pageable, teacherProfiles.size());
 
-        Page<String> teacherIds = new PageImpl<>(
-                course.getTeacherIds(), pageable, course.getTeacherIds().size());
-
-        return ConverToPaginationResponse.toPageResponse(teacherIds, Function.identity(), current);
-    }
-
-    @Override
-    public PageResponse<CourseResponse> getAllCourses(int departmentId, Integer current, Integer pageSize) {
-        Pageable pageable = PageRequest.of(current - 1, pageSize);
-
-        // Get all courses in department
-        Department department = getDepartment(Long.valueOf(departmentId));
-
-        Page<Course> courses = courseRepository.findByDepartmentId(department.getId(), pageable);
-
-        return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
+        return ConverToPaginationResponse.toPageResponse(responses, Function.identity(), current);
     }
 
     @Override
@@ -203,9 +181,9 @@ public class CourseService implements ICourseService {
     public void uploadCourseImage(String departmentId, String courseId, MultipartFile image) {
         Course course = getCourse(getDepartment(Long.valueOf(departmentId)), courseId);
 
-        log.info("thisisimage" + image.getOriginalFilename());
+        // log.info("thisisimage" + image.getOriginalFilename());
 
-        String imageUri = imageValidator.uploadImageIfPresent(image);
+        String imageUri = fileUploadService.uploadImageIfPresent(image);
 
         if (imageUri != null) {
             course.setImageUri(imageUri);

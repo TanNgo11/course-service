@@ -26,7 +26,13 @@ public class Course extends BaseEntity {
     List<String> studentIds;
 
     @ElementCollection
+    List<String> studentUsernames;
+
+    @ElementCollection
     List<String> teacherIds;
+
+    @ElementCollection
+    List<String> teacherUsernames;
 
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     @JsonBackReference
@@ -54,4 +60,6 @@ public class Course extends BaseEntity {
 
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     List<TeacherReference> teacherReferences;
+
+    Long credit;
 }
