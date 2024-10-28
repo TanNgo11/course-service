@@ -1,9 +1,9 @@
 package com.shadcn.courseservice.dto.request;
 
+import java.util.List;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -11,5 +11,5 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LessonsDeleteRequest {
-    private List<Long> lessonIds;
+    List<Long> lessonIds;
 }

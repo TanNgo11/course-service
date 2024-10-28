@@ -8,7 +8,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LessonAddRequest {
-    Long courseId;
-    String title;
+public class StudentReferenceCreateRequest {
+    Long studentId;
+    Long academicYearId;
+    Long departmentId;
+    String name;
 }
