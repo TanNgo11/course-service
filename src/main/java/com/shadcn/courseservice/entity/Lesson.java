@@ -18,6 +18,8 @@ public class Lesson extends BaseEntity {
 
     String title;
 
+    String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     Course course;

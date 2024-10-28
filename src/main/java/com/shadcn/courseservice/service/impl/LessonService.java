@@ -1,30 +1,29 @@
 package com.shadcn.courseservice.service.impl;
 
-import com.shadcn.courseservice.dto.response.CourseResponse;
-import com.shadcn.courseservice.dto.response.LessonResponse;
-import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.entity.*;
-import com.shadcn.courseservice.exception.AppException;
-import com.shadcn.courseservice.exception.ErrorCode;
-import com.shadcn.courseservice.mapper.CourseMapper;
-import com.shadcn.courseservice.repository.CourseRepository;
-import com.shadcn.courseservice.repository.DepartmentRepository;
-import com.shadcn.courseservice.repository.LessonRepository;
-import com.shadcn.courseservice.repository.SemesterRepository;
-import com.shadcn.courseservice.service.ICourseService;
-import com.shadcn.courseservice.service.ILessonService;
-import com.shadcn.courseservice.util.ConverToPaginationResponse;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.shadcn.courseservice.dto.response.LessonResponse;
+import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.entity.*;
+import com.shadcn.courseservice.exception.AppException;
+import com.shadcn.courseservice.exception.ErrorCode;
+import com.shadcn.courseservice.mapper.LessonMapper;
+import com.shadcn.courseservice.repository.CourseRepository;
+import com.shadcn.courseservice.repository.LessonRepository;
+import com.shadcn.courseservice.service.ILessonService;
+import com.shadcn.courseservice.util.ConverToPaginationResponse;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +32,7 @@ import java.util.List;
 public class LessonService implements ILessonService {
     LessonRepository lessonRepository;
     CourseRepository courseRepository;
+    LessonMapper lessonMapper;
 
     @Override
     @Transactional
@@ -53,9 +53,11 @@ public class LessonService implements ILessonService {
 
     @Override
     public PageResponse<LessonResponse> getAllLessons(Integer current, Integer pageSize) {
-        return null;
+        List<Lesson> allLessons = lessonRepository.findAll();
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        Page<Lesson> lessonPage = new PageImpl<>(allLessons, pageable, allLessons.size());
+        return ConverToPaginationResponse.toPageResponse(lessonPage, lessonMapper::toLessonResponse, current);
     }
-
 
     Course getCourse(Long courseId) {
         return courseRepository.findById(courseId).orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));

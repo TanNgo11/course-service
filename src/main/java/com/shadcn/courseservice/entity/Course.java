@@ -54,4 +54,6 @@ public class Course extends BaseEntity {
 
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     List<TeacherReference> teacherReferences;
+
+    Long credit;
 }
