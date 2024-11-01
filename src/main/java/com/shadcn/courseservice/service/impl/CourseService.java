@@ -150,44 +150,14 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public void addTeacherReferenceIntoCourse(String departmentId, String courseId, List<String> teacherIds) {
-        // TODO
-    }
-
-    @Override
-    public void removeTeacherReferenceFromCourse(String departmentId, String courseId, List<String> teacherIds) {
-        // TODO
-    }
-
-    @Override
-    public void addStudentReferenceIntoCourse(String departmentId, String courseId, List<String> studentIds) {
-        // TODO
-    }
-
-    @Override
-    public void removeStudentReferenceFromCourse(String departmentId, String courseId, List<String> studentIds) {
-        // TODO
-    }
-
-    @Override
     public PageResponse<StudentProfileResponse> getAllStudentsInCourseByIds(String departmentId, String courseId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
-
-        Page<String> studentIds = new PageImpl<>(
-                course.getStudentIds(), pageable, course.getStudentIds().size());
-
-        return ConverToPaginationResponse.toPageResponse(studentIds, Function.identity(), current);
-    }
-
-    @Override
-    public PageResponse<String> getAllTeacherIdsInCourse(
-            String departmentId, String courseId, int current, int pageSize) {
         Department department = getDepartment(Long.valueOf(departmentId));
         Course course = getCourse(department, courseId);
 
         long[] studentIdsArray = course.getStudentIds().stream().mapToLong(Long::valueOf).toArray();
-        List<StudentProfileResponse> studentProfiles = profileService.getPublicStudentProfiles(studentIdsArray);
-        Page<StudentProfileResponse> responses = new PageImpl<>(studentProfiles, pageable, studentProfiles.size());
+        List<StudentProfileResponse> teacherProfiles = profileService.getPublicStudentProfiles(studentIdsArray);
+        Page<StudentProfileResponse> responses = new PageImpl<>(teacherProfiles, pageable, teacherProfiles.size());
 
         return ConverToPaginationResponse.toPageResponse(responses, Function.identity(), current);
     }
@@ -209,8 +179,6 @@ public class CourseService implements ICourseService {
     @Transactional
     public void uploadCourseImage(String departmentId, String courseId, MultipartFile image) {
         Course course = getCourse(getDepartment(Long.valueOf(departmentId)), courseId);
-
-        // log.info("thisisimage" + image.getOriginalFilename());
 
         String imageUri = fileUploadService.uploadImageIfPresent(image);
 
