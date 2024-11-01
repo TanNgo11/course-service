@@ -10,6 +10,8 @@ import com.shadcn.courseservice.dto.request.CourseRemoveRequest;
 import com.shadcn.courseservice.dto.request.ImageUploadRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.StudentProfileResponse;
+import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
 import com.shadcn.courseservice.service.ICourseService;
 
 import lombok.AccessLevel;
@@ -28,7 +30,10 @@ public class CourseController {
     @PostMapping("/course/add-students")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> addStudentIntoCourse(@RequestBody CourseAddRequest request) {
-        courseService.addStudentIntoCourse(request.getDepartmentId(), request.getCourseId(), request.getStudentIds());
+        courseService.addStudentIntoCourse(
+                request.getDepartmentId(),
+                request.getCourseId(),
+                request.getStudentIds());
         return ApiResponse.success(null);
     }
 
@@ -43,7 +48,10 @@ public class CourseController {
     @PostMapping("/course/add-teachers")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> addTeachersIntoCourse(@RequestBody CourseAddRequest request) {
-        courseService.addTeacherIntoCourse(request.getDepartmentId(), request.getCourseId(), request.getTeacherIds());
+        courseService.addTeacherIntoCourse(
+                request.getDepartmentId(),
+                request.getCourseId(),
+                request.getTeacherIds());
         return ApiResponse.success(null);
     }
 
@@ -70,34 +78,29 @@ public class CourseController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/{departmentId}/course/{courseId}/all-students")
+    @GetMapping("/{departmentId}/course/{courseId}/students")
     @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<PageResponse<String>> getAllStudentIdsInCourse(
+    ApiResponse<PageResponse<StudentProfileResponse>> getAllStudentsByIds(
             @PathVariable String departmentId,
             @PathVariable String courseId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
-        return ApiResponse.success(courseService.getAllStudentIdsInCourse(departmentId, courseId, current, pageSize));
+        return ApiResponse.success(
+                courseService.getAllStudentsInCourseByIds(departmentId, courseId, current, pageSize));
     }
 
-    @PostMapping("/{departmentId}/course/{courseId}/all-teachers")
+
+    @GetMapping("/{departmentId}/course/{courseId}/teachers")
     @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<PageResponse<String>> getAllTeacherIdsInCourse(
+    ApiResponse<PageResponse<TeacherProfileResponse>> getAllTeachersByIds(
             @PathVariable String departmentId,
             @PathVariable String courseId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
-        return ApiResponse.success(courseService.getAllTeacherIdsInCourse(departmentId, courseId, current, pageSize));
+        return ApiResponse.success(
+                courseService.getAllTeachersInCourseByIds(departmentId, courseId, current, pageSize));
     }
 
-    //    @GetMapping("department={departmentId}/course/all-courses")
-    //    @PreAuthorize("hasRole('ADMIN')")
-    //    ApiResponse<PageResponse<CourseResponse>> getCourses(
-    //            @RequestParam(defaultValue = "1", required = false) Integer current,
-    //            @RequestParam(defaultValue = "10", required = false) Integer pageSize,
-    //            @PathVariable String departmentId) {
-    //        return ApiResponse.success(courseService.getAllCourses(Integer.valueOf(departmentId), current, pageSize));
-    //    }
 
     @PostMapping(value = "/{departmentId}/course={courseId}/upload-image")
     @PreAuthorize("hasRole('ADMIN')")
