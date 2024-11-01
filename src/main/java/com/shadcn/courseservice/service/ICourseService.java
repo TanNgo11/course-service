@@ -30,6 +30,9 @@ public interface ICourseService {
 
     void removeSemesterFromCourse(String departmentId, String courseId, List<String> semesterIds);
 
+    void addTeacherReferenceIntoCourse(String departmentId, String courseId, List<String> teacherIds);
+
+    void removeTeacherReferenceFromCourse(String departmentId, String courseId, List<String> teacherIds);
 
     PageResponse<StudentProfileResponse> getAllStudentsInCourseByIds(
             String departmentId, String courseId, int current, int pageSize);
@@ -37,6 +40,11 @@ public interface ICourseService {
     PageResponse<TeacherProfileResponse> getAllTeachersInCourseByIds(
             String departmentId, String courseId, int current, int pageSize);
 
+    PageResponse<String> getAllStudentIdsInCourse(String departmentId, String courseId, int current, int pageSize);
+
+    PageResponse<String> getAllTeacherIdsInCourse(String departmentId, String courseId, int current, int pageSize);
+
+    PageResponse<CourseResponse> getAllCourses(int departmentId, Integer current, Integer pageSize);
 
     void uploadCourseImage(String departmentId, String courseId, MultipartFile image);
 }

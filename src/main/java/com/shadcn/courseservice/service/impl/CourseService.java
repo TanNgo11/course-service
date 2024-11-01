@@ -149,10 +149,39 @@ public class CourseService implements ICourseService {
         courseRepository.save(course);
     }
 
+    @Override
+    public void addTeacherReferenceIntoCourse(String departmentId, String courseId, List<String> teacherIds) {
+        // TODO
+    }
+
+    @Override
+    public void removeTeacherReferenceFromCourse(String departmentId, String courseId, List<String> teacherIds) {
+        // TODO
+    }
+
+    @Override
+    public void addStudentReferenceIntoCourse(String departmentId, String courseId, List<String> studentIds) {
+        // TODO
+    }
+
+    @Override
+    public void removeStudentReferenceFromCourse(String departmentId, String courseId, List<String> studentIds) {
+        // TODO
+    }
 
     @Override
     public PageResponse<StudentProfileResponse> getAllStudentsInCourseByIds(String departmentId, String courseId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
+
+        Page<String> studentIds = new PageImpl<>(
+                course.getStudentIds(), pageable, course.getStudentIds().size());
+
+        return ConverToPaginationResponse.toPageResponse(studentIds, Function.identity(), current);
+    }
+
+    @Override
+    public PageResponse<String> getAllTeacherIdsInCourse(
+            String departmentId, String courseId, int current, int pageSize) {
         Department department = getDepartment(Long.valueOf(departmentId));
         Course course = getCourse(department, courseId);
 
