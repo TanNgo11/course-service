@@ -62,4 +62,7 @@ public class Course extends BaseEntity {
     List<TeacherReference> teacherReferences;
 
     Long credit;
+
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    List<CourseFile> files;
 }

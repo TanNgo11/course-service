@@ -1,11 +1,10 @@
 package com.shadcn.courseservice.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import jakarta.annotation.Nullable;
+import com.shadcn.courseservice.dto.request.FileUploadRequest;
+import com.shadcn.courseservice.entity.CourseFile;
 import jakarta.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.StudentProfileResponse;
 import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
@@ -180,13 +178,35 @@ public class CourseService implements ICourseService {
     public void uploadCourseImage(String departmentId, String courseId, MultipartFile image) {
         Course course = getCourse(getDepartment(Long.valueOf(departmentId)), courseId);
 
-        String imageUri = fileUploadService.uploadImageIfPresent(image);
+        String imageUri = fileUploadService.uploadFileIfPresent(image);
 
         if (imageUri != null) {
             course.setImageUri(imageUri);
             courseRepository.save(course);
         } else {
             throw new AppException(ErrorCode.IMAGE_UPLOAD_FAILED);
+        }
+
+        courseRepository.save(course);
+    }
+
+    @Override
+    public void uploadCourseFile(String departmentId, String courseId, List<MultipartFile> files) {
+        Course course = getCourse(getDepartment(Long.valueOf(departmentId)), courseId);
+        log.info(files.size() + " files");
+
+        for (MultipartFile file : files) {
+            String fileUri = fileUploadService.uploadFileIfPresent(file);
+            if (fileUri == null) {
+                throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
+            }
+            CourseFile courseFile = CourseFile.builder()
+                    .course(course)
+                    .name(file.getOriginalFilename())
+                    .type(file.getContentType())
+                    .url(fileUri)
+                    .build();
+            course.getFiles().add(courseFile);
         }
 
         courseRepository.save(course);
