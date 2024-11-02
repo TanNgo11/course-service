@@ -2,12 +2,13 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
+import com.shadcn.courseservice.dto.request.ListFileUploadRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.dto.request.CourseAddRequest;
 import com.shadcn.courseservice.dto.request.CourseRemoveRequest;
-import com.shadcn.courseservice.dto.request.ImageUploadRequest;
+import com.shadcn.courseservice.dto.request.FileUploadRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.StudentProfileResponse;
@@ -18,6 +19,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(API_V1_DEPARTMENTS)
@@ -102,14 +106,25 @@ public class CourseController {
     }
 
 
-    @PostMapping(value = "/{departmentId}/course={courseId}/upload-image")
+    @PostMapping(value = "/{departmentId}/course/{courseId}/upload-image")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> uploadCourseImage(
             @PathVariable String departmentId,
             @PathVariable String courseId,
-            @ModelAttribute ImageUploadRequest imageUploadRequest) {
+            @ModelAttribute FileUploadRequest fileUploadRequest) {
         log.info("upload image");
-        courseService.uploadCourseImage(departmentId, courseId, imageUploadRequest.getFile());
+        courseService.uploadCourseImage(departmentId, courseId, fileUploadRequest.getFile());
+        return ApiResponse.success(null);
+    }
+
+    @PostMapping(value = "/{departmentId}/course/{courseId}/upload-file")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<Void> uploadCourseFile(
+            @PathVariable String departmentId,
+            @PathVariable String courseId,
+            @ModelAttribute ListFileUploadRequest listFileUploadRequest) {
+        log.info("upload file");
+        courseService.uploadCourseFile(departmentId, courseId, listFileUploadRequest.getFiles());
         return ApiResponse.success(null);
     }
 }

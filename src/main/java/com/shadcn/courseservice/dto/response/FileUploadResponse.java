@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ImageUploadResponse implements Serializable {
+public class FileUploadResponse implements Serializable {
     String fileName;
     String downloadUri;
     long size;

@@ -2,6 +2,7 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.request.FileUploadRequest;
 import jakarta.annotation.Nullable;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -37,4 +38,6 @@ public interface ICourseService {
             String departmentId, String courseId, int current, int pageSize);
 
     void uploadCourseImage(String departmentId, String courseId, MultipartFile image);
+
+    void uploadCourseFile(String departmentId, String courseId, List<MultipartFile> files);
 }
