@@ -156,8 +156,8 @@ public class CourseService implements ICourseService {
         Course course = getCourse(department, courseId);
 
         long[] studentIdsArray = course.getStudentIds().stream().mapToLong(Long::valueOf).toArray();
-        List<StudentProfileResponse> teacherProfiles = profileService.getPublicStudentProfiles(studentIdsArray);
-        Page<StudentProfileResponse> responses = new PageImpl<>(teacherProfiles, pageable, teacherProfiles.size());
+        List<StudentProfileResponse> studentProfiles = profileService.getPublicStudentProfiles(studentIdsArray);
+        Page<StudentProfileResponse> responses = new PageImpl<>(studentProfiles, pageable, studentProfiles.size());
 
         return ConverToPaginationResponse.toPageResponse(responses, Function.identity(), current);
     }
