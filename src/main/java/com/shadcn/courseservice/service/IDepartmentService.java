@@ -3,6 +3,7 @@ package com.shadcn.courseservice.service;
 import java.util.List;
 
 import com.shadcn.courseservice.dto.response.CourseResponse;
+import com.shadcn.courseservice.dto.response.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 
 public interface IDepartmentService {
@@ -11,4 +12,6 @@ public interface IDepartmentService {
     void removeCoursesFromDepartment(Long departmentId, List<Long> courseIds);
 
     PageResponse<CourseResponse> getCoursesByDepartment(Long departmentId, Integer current, Integer pageSize);
+
+    List<DepartmentResponse> getAllDepartments();
 }

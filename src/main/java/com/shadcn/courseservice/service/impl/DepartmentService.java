@@ -8,12 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.shadcn.courseservice.dto.response.CourseResponse;
+import com.shadcn.courseservice.dto.response.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.entity.Course;
 import com.shadcn.courseservice.entity.Department;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.CourseMapper;
+import com.shadcn.courseservice.mapper.DepartmentMapper;
 import com.shadcn.courseservice.repository.CourseRepository;
 import com.shadcn.courseservice.repository.DepartmentRepository;
 import com.shadcn.courseservice.service.IDepartmentService;
@@ -32,6 +34,7 @@ public class DepartmentService implements IDepartmentService {
     DepartmentRepository departmentRepository;
     CourseRepository courseRepository;
     CourseMapper courseMapper;
+    DepartmentMapper departmentMapper;
 
     @Override
     public void addCoursesToDepartment(Long departmentId, List<Long> courseIds) {
@@ -68,6 +71,12 @@ public class DepartmentService implements IDepartmentService {
         Page<Course> courses = courseRepository.findByDepartmentId(department.getId(), pageable);
 
         return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
+    }
+
+    @Override
+    public List<DepartmentResponse> getAllDepartments() {
+        List<Department> departments = departmentRepository.findAll();
+        return departmentMapper.toListDepartmentResponse(departments);
     }
 
     Department getDepartment(Long departmentId) {

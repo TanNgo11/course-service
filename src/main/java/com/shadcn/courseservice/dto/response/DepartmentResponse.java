@@ -12,6 +12,5 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DepartmentResponse {
     String departmentName;
-    //    List<AcademicYearResponse> academicYears;
-    //    List<CourseResponse> courses;
+    String departmentCode;
 }

@@ -2,12 +2,15 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.dto.request.*;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.CourseResponse;
+import com.shadcn.courseservice.dto.response.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.service.IDepartmentService;
 
@@ -43,5 +46,11 @@ public class DepartmentController {
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(departmentService.getCoursesByDepartment(departmentId, current, pageSize));
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<List<DepartmentResponse>> getAllDepartments() {
+        return ApiResponse.success(departmentService.getAllDepartments());
     }
 }
