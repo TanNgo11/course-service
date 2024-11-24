@@ -24,6 +24,8 @@ public class Department extends BaseEntity {
 
     String departmentName;
 
+    String departmentCode;
+
     @ManyToMany(mappedBy = "departments")
     @JsonIgnore
     List<AcademicYear> academicYears;

@@ -33,10 +33,11 @@ public class ReferenceService implements IReferenceService {
         Course course = getCourse(courseId);
         Department department = getDepartment(departmentId);
 
-        TeacherReference teacherReference = new TeacherReference();
-        teacherReference.setTeacherId(teacherId);
-        teacherReference.setCourse(course);
-        teacherReference.setDepartment(department);
+        TeacherReference teacherReference = TeacherReference.builder()
+                .teacherId(teacherId)
+                .course(course)
+                .department(department)
+                .build();
 
         teacherReferenceRepository.save(teacherReference);
     }

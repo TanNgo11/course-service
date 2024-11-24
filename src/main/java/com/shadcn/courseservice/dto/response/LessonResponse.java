@@ -11,8 +11,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LessonResponse {
-     Long id;
-     String title;
-     Long courseId;
-     String description;
+    Long id;
+    String title;
+    Long courseId;
+    String description;
 }

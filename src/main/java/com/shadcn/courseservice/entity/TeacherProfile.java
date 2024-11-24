@@ -47,7 +47,7 @@ public class TeacherProfile extends BaseEntity implements Serializable {
 
     LocalDate dateOfBirth;
 
-    //@Column(unique = true)
+    // @Column(unique = true)
     String phoneNumber;
 
     @Enumerated(EnumType.STRING)

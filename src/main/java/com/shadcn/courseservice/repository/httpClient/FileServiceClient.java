@@ -1,6 +1,5 @@
 package com.shadcn.courseservice.repository.httpClient;
 
-import com.shadcn.courseservice.exception.RetreiveMessageErrorDecoder;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,11 +9,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.shadcn.courseservice.config.AuthenticationRequestInterceptor;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.FileUploadResponse;
+import com.shadcn.courseservice.exception.RetreiveMessageErrorDecoder;
 
 @FeignClient(
         name = "file-service",
         url = "${app.services.file}",
-        configuration = {AuthenticationRequestInterceptor.class , RetreiveMessageErrorDecoder.class})
+        configuration = {AuthenticationRequestInterceptor.class, RetreiveMessageErrorDecoder.class})
 public interface FileServiceClient {
     @PostMapping(
             value = "/upload",

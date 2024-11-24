@@ -1,10 +1,11 @@
 package com.shadcn.courseservice.dto.request;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor

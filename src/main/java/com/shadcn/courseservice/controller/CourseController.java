@@ -2,13 +2,13 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
-import com.shadcn.courseservice.dto.request.ListFileUploadRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.dto.request.CourseAddRequest;
 import com.shadcn.courseservice.dto.request.CourseRemoveRequest;
 import com.shadcn.courseservice.dto.request.FileUploadRequest;
+import com.shadcn.courseservice.dto.request.ListFileUploadRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.StudentProfileResponse;
@@ -19,9 +19,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(API_V1_DEPARTMENTS)
@@ -34,10 +31,7 @@ public class CourseController {
     @PostMapping("/course/add-students")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> addStudentIntoCourse(@RequestBody CourseAddRequest request) {
-        courseService.addStudentIntoCourse(
-                request.getDepartmentId(),
-                request.getCourseId(),
-                request.getStudentIds());
+        courseService.addStudentIntoCourse(request.getDepartmentId(), request.getCourseId(), request.getStudentIds());
         return ApiResponse.success(null);
     }
 
@@ -52,10 +46,7 @@ public class CourseController {
     @PostMapping("/course/add-teachers")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> addTeachersIntoCourse(@RequestBody CourseAddRequest request) {
-        courseService.addTeacherIntoCourse(
-                request.getDepartmentId(),
-                request.getCourseId(),
-                request.getTeacherIds());
+        courseService.addTeacherIntoCourse(request.getDepartmentId(), request.getCourseId(), request.getTeacherIds());
         return ApiResponse.success(null);
     }
 
@@ -93,7 +84,6 @@ public class CourseController {
                 courseService.getAllStudentsInCourseByIds(departmentId, courseId, current, pageSize));
     }
 
-
     @GetMapping("/{departmentId}/course/{courseId}/teachers")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<PageResponse<TeacherProfileResponse>> getAllTeachersByIds(
@@ -104,7 +94,6 @@ public class CourseController {
         return ApiResponse.success(
                 courseService.getAllTeachersInCourseByIds(departmentId, courseId, current, pageSize));
     }
-
 
     @PostMapping(value = "/{departmentId}/course/{courseId}/upload-image")
     @PreAuthorize("hasRole('ADMIN')")
