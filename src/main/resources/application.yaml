@@ -30,6 +30,7 @@ app:
     file: http://localhost:8085/file-svc
     profile: http://localhost:8081/profile
 
+
 servlet:
   multipart:
     max-file-size: 200MB

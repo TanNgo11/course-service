@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DepartmentResponse {
+    Long id;
     String departmentName;
     String departmentCode;
 }

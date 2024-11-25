@@ -34,12 +34,18 @@ public class AcademicYearController {
         return ApiResponse.empty();
     }
 
-    @GetMapping
+    @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<PageResponse<AcademicYearResponse>> getAcademicYears(
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
-        return ApiResponse.success(academicYearService.getAllAcademicYears(current, pageSize));
+        return ApiResponse.success(academicYearService.getAcademicYearsWithPagination(current, pageSize));
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<List<AcademicYearResponse>> getAllAcademicYears( ) {
+        return ApiResponse.success(academicYearService.getAllAcademicYears());
     }
 
     @PutMapping

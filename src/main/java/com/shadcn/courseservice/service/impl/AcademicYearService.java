@@ -133,12 +133,19 @@ public class AcademicYearService implements IAcademicYearService {
     }
 
     @Override
-    public PageResponse<AcademicYearResponse> getAllAcademicYears(int current, int pageSize) {
+    public PageResponse<AcademicYearResponse> getAcademicYearsWithPagination(int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Page<AcademicYear> academicYears = academicYearRepository.findAll(pageable);
 
         return ConverToPaginationResponse.toPageResponse(
                 academicYears, academicYearMapper::toAcademicYearResponse, current);
+    }
+
+    @Override
+    public List<AcademicYearResponse> getAllAcademicYears() {
+        List<AcademicYear> academicYears = academicYearRepository.findAll();
+
+        return academicYearMapper.toListAcademicYearResponse(academicYears);
     }
 
     AcademicYear getAcademicYear(Long academicYearId) {
