@@ -14,6 +14,5 @@ import lombok.experimental.FieldDefaults;
 public class AcademicYearResponse {
     LocalDate startYear;
     LocalDate endYear;
-    List<DepartmentResponse> departments;
-    List<SemesterResponse> semesters;
+    
 }
