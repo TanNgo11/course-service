@@ -2,8 +2,6 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
-import java.util.List;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 @RequestMapping(API_V1_DEPARTMENTS)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin(origins = "http://localhost:5173")
 public class DepartmentController {
     IDepartmentService departmentService;
 
@@ -50,7 +49,9 @@ public class DepartmentController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<List<DepartmentResponse>> getAllDepartments() {
-        return ApiResponse.success(departmentService.getAllDepartments());
+    ApiResponse<PageResponse<DepartmentResponse>> getAllDepartments(
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        return ApiResponse.success(departmentService.getAllDepartments(current, pageSize));
     }
 }
