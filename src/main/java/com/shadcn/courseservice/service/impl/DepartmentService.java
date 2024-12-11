@@ -74,9 +74,10 @@ public class DepartmentService implements IDepartmentService {
     }
 
     @Override
-    public List<DepartmentResponse> getAllDepartments() {
-        List<Department> departments = departmentRepository.findAll();
-        return departmentMapper.toListDepartmentResponse(departments);
+    public PageResponse<DepartmentResponse> getAllDepartments(Integer current, Integer pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        Page<Department> departments = departmentRepository.findAll(pageable);
+        return ConverToPaginationResponse.toPageResponse(departments, departmentMapper::toDepartmentResponse, 1);
     }
 
     Department getDepartment(Long departmentId) {

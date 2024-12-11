@@ -13,5 +13,5 @@ public interface IDepartmentService {
 
     PageResponse<CourseResponse> getCoursesByDepartment(Long departmentId, Integer current, Integer pageSize);
 
-    List<DepartmentResponse> getAllDepartments();
+    PageResponse<DepartmentResponse> getAllDepartments(Integer current, Integer pageSize);
 }

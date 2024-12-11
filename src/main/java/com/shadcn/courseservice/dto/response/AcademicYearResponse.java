@@ -1,7 +1,6 @@
 package com.shadcn.courseservice.dto.response;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AcademicYearResponse {
+    Long id;
     LocalDate startYear;
     LocalDate endYear;
-    
 }

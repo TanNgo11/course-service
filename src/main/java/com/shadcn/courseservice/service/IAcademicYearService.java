@@ -21,6 +21,6 @@ public interface IAcademicYearService {
     void removeSemesterFromAcademicYear(Long academicYearId, List<Long> semesterId);
 
     PageResponse<AcademicYearResponse> getAcademicYearsWithPagination(int current, int pageSize);
-    
+
     List<AcademicYearResponse> getAllAcademicYears();
 }

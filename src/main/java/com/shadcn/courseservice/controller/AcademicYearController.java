@@ -24,6 +24,7 @@ import lombok.experimental.FieldDefaults;
 @RequestMapping(API_V1_ACADEMIC_YEARS)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin(origins = "http://localhost:5173")
 public class AcademicYearController {
     IAcademicYearService academicYearService;
 
@@ -44,7 +45,7 @@ public class AcademicYearController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<List<AcademicYearResponse>> getAllAcademicYears( ) {
+    ApiResponse<List<AcademicYearResponse>> getAllAcademicYears() {
         return ApiResponse.success(academicYearService.getAllAcademicYears());
     }
 
