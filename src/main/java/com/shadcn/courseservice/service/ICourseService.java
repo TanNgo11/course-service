@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.StudentProfileResponse;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
+import com.shadcn.courseservice.dto.request.BaseCourseCreationRequest;
+import com.shadcn.courseservice.dto.request.CourseCreationRequest;
+import com.shadcn.courseservice.dto.response.*;
 
 public interface ICourseService {
     void addStudentIntoCourse(String departmentId, String courseId, List<String> studentIds);
@@ -30,4 +30,12 @@ public interface ICourseService {
     void uploadCourseImage(String departmentId, String courseId, MultipartFile image);
 
     void uploadCourseFile(String departmentId, String courseId, List<MultipartFile> files);
+
+    PageResponse<BaseCourseResponse> getAllCourses(Integer current, Integer pageSize);
+
+    void createBaseCourse(BaseCourseCreationRequest request);
+
+    void createNewCourseFromBaseCourseInSemester(CourseCreationRequest request);
+
+    void removeCourseInstanceFromSemester(String courseId, String semesterId);
 }

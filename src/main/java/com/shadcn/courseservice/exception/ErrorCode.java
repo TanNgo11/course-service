@@ -29,6 +29,8 @@ public enum ErrorCode {
     TEACHER_NOT_FOUND(1029, "Teacher not found", HttpStatus.BAD_REQUEST),
     IMAGE_UPLOAD_FAILED(1030, "Image upload failed", HttpStatus.BAD_REQUEST),
     FILE_UPLOAD_FAILED(1031, "File upload failed", HttpStatus.BAD_REQUEST),
+    BASE_COURSE_EXISTED(1032, "Base course existed", HttpStatus.BAD_REQUEST),
+    COURSE_EXISTED_IN_SEMESTER(1033, "Course instance existed in this semester", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;

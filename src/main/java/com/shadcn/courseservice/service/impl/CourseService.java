@@ -12,16 +12,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.StudentProfileResponse;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
-import com.shadcn.courseservice.entity.Course;
-import com.shadcn.courseservice.entity.CourseFile;
-import com.shadcn.courseservice.entity.Department;
-import com.shadcn.courseservice.entity.Semester;
+import com.shadcn.courseservice.dto.request.BaseCourseCreationRequest;
+import com.shadcn.courseservice.dto.request.CourseCreationRequest;
+import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.entity.*;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.CourseMapper;
+import com.shadcn.courseservice.repository.BaseCourseRepository;
 import com.shadcn.courseservice.repository.CourseRepository;
 import com.shadcn.courseservice.repository.DepartmentRepository;
 import com.shadcn.courseservice.repository.SemesterRepository;
@@ -46,6 +44,7 @@ public class CourseService implements ICourseService {
     CourseMapper courseMapper;
     IFileUploadService fileUploadService;
     IProfileService profileService;
+    BaseCourseRepository baseCourseRepository;
 
     @Override
     public void addStudentIntoCourse(String departmentId, String courseId, List<String> studentIds) {
@@ -109,20 +108,20 @@ public class CourseService implements ICourseService {
 
     @Override
     public void addSemesterIntoCourse(String departmentId, String courseId, List<String> semesterIds) {
-        Department department = getDepartment(Long.valueOf(departmentId));
-        Course course = getCourse(department, courseId);
-        Semester semester;
-
-        for (String id : semesterIds) {
-            semester = getSemester(Long.valueOf(id));
-            if (course.getSemesters().contains(semester)) {
-                continue;
-            }
-            course.getSemesters().add(semester);
-        }
-
-        departmentRepository.save(department);
-        courseRepository.save(course);
+        //        Department department = getDepartment(Long.valueOf(departmentId));
+        //        Course course = getCourse(department, courseId);
+        //        Semester semester;
+        //
+        //        for (String id : semesterIds) {
+        //            semester = getSemester(Long.valueOf(id));
+        //            if (course.getSemesters().contains(semester)) {
+        //                continue;
+        //            }
+        //            course.getSemesters().add(semester);
+        //        }
+        //
+        //        departmentRepository.save(department);
+        //        courseRepository.save(course);
     }
 
     @Override
@@ -133,7 +132,7 @@ public class CourseService implements ICourseService {
 
         for (String id : semesterIds) {
             semester = getSemester(Long.valueOf(id));
-            course.getSemesters().remove(semester);
+            // course.getSemesters().remove(semester);
         }
 
         departmentRepository.save(department);
@@ -190,7 +189,6 @@ public class CourseService implements ICourseService {
     @Override
     public void uploadCourseFile(String departmentId, String courseId, List<MultipartFile> files) {
         Course course = getCourse(getDepartment(Long.valueOf(departmentId)), courseId);
-        log.info(files.size() + " files");
 
         for (MultipartFile file : files) {
             String fileUri = fileUploadService.uploadFileIfPresent(file);
@@ -206,6 +204,51 @@ public class CourseService implements ICourseService {
             course.getFiles().add(courseFile);
         }
 
+        courseRepository.save(course);
+    }
+
+    @Override
+    public PageResponse<BaseCourseResponse> getAllCourses(Integer current, Integer pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        Page<BaseCourse> baseCourses = baseCourseRepository.findAll(pageable);
+        return ConverToPaginationResponse.toPageResponse(baseCourses, courseMapper::toBaseCourseResponse, current);
+    }
+
+    @Override
+    public void createBaseCourse(BaseCourseCreationRequest request) {
+        if (baseCourseRepository.existsByCode(request.getCode())) {
+            throw new AppException(ErrorCode.BASE_COURSE_EXISTED);
+        }
+
+        BaseCourse baseCourse = courseMapper.toBaseCourse(request);
+        baseCourseRepository.save(baseCourse);
+    }
+
+    @Override
+    public void createNewCourseFromBaseCourseInSemester(CourseCreationRequest request) {
+        if (semesterRepository.existsCourseInSemester(request.getBaseCourseId(), request.getSemesterId())) {
+            throw new AppException(ErrorCode.COURSE_EXISTED_IN_SEMESTER);
+        }
+
+        BaseCourse baseCourse = baseCourseRepository
+                .findById(request.getBaseCourseId())
+                .orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_FOUND));
+
+        Course course = courseMapper.toCourse(request, baseCourse);
+        courseRepository.save(course);
+    }
+
+    @Override
+    public void removeCourseInstanceFromSemester(String courseId, String semesterId) {
+        Course course = courseRepository
+                .findById(Long.valueOf(courseId))
+                .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+
+        Semester semester = semesterRepository
+                .findById(Long.valueOf(semesterId))
+                .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
+
+        semester.getCourses().remove(course);
         courseRepository.save(course);
     }
 

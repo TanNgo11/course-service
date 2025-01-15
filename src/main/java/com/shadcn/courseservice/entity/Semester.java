@@ -16,25 +16,16 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Semester extends BaseEntity {
-
     String name;
 
     LocalDate startDate;
 
     LocalDate endDate;
 
-    // Map to AcademicYear
     @ManyToOne
     @JoinColumn(name = "academic_year_id")
     AcademicYear academicYear;
 
-    @ManyToMany(mappedBy = "semesters")
+    @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Course> courses;
-
-    //    @ElementCollection
-    //    @CollectionTable(
-    //            name = "semester_subject",
-    //            joinColumns = @JoinColumn(name = "semester_id"))
-    //    @Column(name = "subject_id")
-    //    List<Long> subjectIds;
 }
