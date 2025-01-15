@@ -5,14 +5,8 @@ import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.shadcn.courseservice.dto.request.CourseAddRequest;
-import com.shadcn.courseservice.dto.request.CourseRemoveRequest;
-import com.shadcn.courseservice.dto.request.FileUploadRequest;
-import com.shadcn.courseservice.dto.request.ListFileUploadRequest;
-import com.shadcn.courseservice.dto.response.ApiResponse;
-import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.StudentProfileResponse;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
+import com.shadcn.courseservice.dto.request.*;
+import com.shadcn.courseservice.dto.response.*;
 import com.shadcn.courseservice.service.ICourseService;
 
 import lombok.AccessLevel;
@@ -114,6 +108,22 @@ public class CourseController {
             @ModelAttribute ListFileUploadRequest listFileUploadRequest) {
         log.info("upload file");
         courseService.uploadCourseFile(departmentId, courseId, listFileUploadRequest.getFiles());
+        return ApiResponse.success(null);
+    }
+
+    @GetMapping(value = "/courses")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<PageResponse<BaseCourseResponse>> getAllCourses(
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        return ApiResponse.success(courseService.getAllCourses(current, pageSize));
+    }
+
+    // Create base course
+    @PostMapping(value = "/base-course")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<Void> createBaseCourse(@RequestBody BaseCourseCreationRequest request) {
+        courseService.createBaseCourse(request);
         return ApiResponse.success(null);
     }
 }

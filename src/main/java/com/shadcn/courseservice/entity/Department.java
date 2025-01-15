@@ -2,12 +2,8 @@ package com.shadcn.courseservice.entity;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.*;
@@ -26,9 +22,10 @@ public class Department extends BaseEntity {
 
     String departmentCode;
 
-    @ManyToMany(mappedBy = "departments")
-    @JsonIgnore
-    List<AcademicYear> academicYears;
+    @ElementCollection
+    @CollectionTable(name = "academic_year_department", joinColumns = @JoinColumn(name = "department_id"))
+    @Column(name = "academic_year_id")
+    List<Long> academicYearIds;
 
     //    @ElementCollection
     //    @CollectionTable(
@@ -44,4 +41,7 @@ public class Department extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "course_id"))
     @JsonManagedReference
     List<Course> courses;
+
+    @ManyToMany(mappedBy = "departments")
+    private List<BaseCourse> baseCourses;
 }
