@@ -9,4 +9,8 @@ public interface IProfileService {
     List<StudentProfileResponse> getPublicStudentProfiles(long[] studentIds);
 
     List<TeacherProfileResponse> getPublicTeacherProfiles(long[] teacherIds);
+
+    boolean isStudentExist(long studentId);
+
+    boolean isTeacherExist(long teacherId);
 }

@@ -38,4 +38,8 @@ public interface ICourseService {
     void createNewCourseFromBaseCourseInSemester(CourseCreationRequest request);
 
     void removeCourseInstanceFromSemester(String courseId, String semesterId);
+
+    //    void addRegistrationToCourseInSemester(Registration registration d);
+    //
+    //    void registerCourseForStudent(String studentId, list<String> courseId);
 }

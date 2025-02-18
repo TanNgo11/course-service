@@ -15,6 +15,8 @@ import lombok.experimental.SuperBuilder;
 public class CourseResponse {
     String name;
     String imageUri;
+    String code;
+    String credit;
     List<String> teacherIds;
     List<String> studentIds;
     List<DepartmentResponse> departments;

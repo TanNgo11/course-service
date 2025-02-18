@@ -270,4 +270,17 @@ public class CourseService implements ICourseService {
                 .findById(semesterId)
                 .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
     }
+
+    //    void registerCourseForStudent(String studenId, List<CourseId> courseIds) {
+    //        SubjectRegistration registration;
+    //
+    //
+    //        for(CourseId courseId : courseIds) {
+    //            Course course = courseRepository.findById(courseId.getId()).orElseThrow(() -> new
+    // AppException(ErrorCode.COURSE_NOT_FOUND));
+    //            registration = new Registration();
+    //            registration.setCourse(course);
+    //            registration.addStudent(studenId);
+    //        }
+    //    }
 }

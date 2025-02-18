@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class CustomAcademicYearRepositoryImpl implements CustomAcademicYearRepository {
+
     private final JPAQueryFactory queryFactory;
 
     @Override

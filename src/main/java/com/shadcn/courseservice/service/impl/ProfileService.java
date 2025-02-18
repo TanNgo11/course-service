@@ -28,4 +28,28 @@ public class ProfileService implements IProfileService {
     public List<TeacherProfileResponse> getPublicTeacherProfiles(long[] teacherIds) {
         return profileClient.getPublicTeacherProfile(teacherIds).getResult();
     }
+
+    @Override
+    public boolean isStudentExist(long studentId) {
+        StudentProfileResponse studentProfile = profileClient
+                .getPublicStudentProfile(new long[] {studentId})
+                .getResult()
+                .get(0);
+        if (studentProfile == null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isTeacherExist(long teacherId) {
+        TeacherProfileResponse teacherProfile = profileClient
+                .getPublicTeacherProfile(new long[] {teacherId})
+                .getResult()
+                .get(0);
+        if (teacherProfile == null) {
+            return false;
+        }
+        return true;
+    }
 }

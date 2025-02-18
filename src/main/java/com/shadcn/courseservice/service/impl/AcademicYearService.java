@@ -12,6 +12,7 @@ import com.shadcn.courseservice.dto.request.AcademicYearCreation;
 import com.shadcn.courseservice.dto.request.AcademicYearUpdation;
 import com.shadcn.courseservice.dto.response.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.SemesterResponse;
 import com.shadcn.courseservice.entity.AcademicYear;
 import com.shadcn.courseservice.entity.Department;
 import com.shadcn.courseservice.entity.Semester;
@@ -146,6 +147,13 @@ public class AcademicYearService implements IAcademicYearService {
         List<AcademicYear> academicYears = academicYearRepository.findAll();
 
         return academicYearMapper.toListAcademicYearResponse(academicYears);
+    }
+
+    @Override
+    public List<SemesterResponse> getSemestersByAcademicYearId(Long academicYearId) {
+        AcademicYear academicYear = getAcademicYear(academicYearId);
+
+        return academicYearMapper.toListSemesterResponse(academicYear.getSemesters());
     }
 
     AcademicYear getAcademicYear(Long academicYearId) {

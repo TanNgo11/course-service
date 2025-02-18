@@ -31,12 +31,12 @@ public class BaseCourse extends BaseEntity {
     @Enumerated(EnumType.STRING)
     BaseCourseStatus status;
 
-    @ManyToMany
-    @JoinTable(
-            name = "department_basecourse",
-            joinColumns = @JoinColumn(name = "base_course_id"),
-            inverseJoinColumns = @JoinColumn(name = "department_id"))
-    private List<Department> departments;
+    //    @ManyToMany
+    //    @JoinTable(
+    //            name = "department_basecourse",
+    //            joinColumns = @JoinColumn(name = "base_course_id"),
+    //            inverseJoinColumns = @JoinColumn(name = "department_id"))
+    //    private List<Department> departments;
 
     @OneToMany(mappedBy = "baseCourse", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Course> courses;

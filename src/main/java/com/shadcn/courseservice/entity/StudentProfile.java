@@ -2,6 +2,7 @@ package com.shadcn.courseservice.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
@@ -74,4 +75,7 @@ public class StudentProfile extends BaseEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     Present present;
+
+    @OneToMany(mappedBy = "studentProfile")
+    private List<Registration> registrations;
 }

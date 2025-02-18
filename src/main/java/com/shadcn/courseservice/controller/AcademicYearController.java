@@ -14,6 +14,7 @@ import com.shadcn.courseservice.dto.request.AcademicYearUpdation;
 import com.shadcn.courseservice.dto.response.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.SemesterResponse;
 import com.shadcn.courseservice.service.IAcademicYearService;
 
 import lombok.AccessLevel;
@@ -85,5 +86,11 @@ public class AcademicYearController {
     ApiResponse<Void> removeSemesterFromAcademicYear(@PathVariable Long yearId, @RequestBody List<Long> semesterIds) {
         academicYearService.removeSemesterFromAcademicYear(yearId, semesterIds);
         return ApiResponse.empty();
+    }
+
+    @GetMapping("/semester/{yearId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<List<SemesterResponse>> getSemestersByAcademicYear(@PathVariable Long yearId) {
+        return ApiResponse.success(academicYearService.getSemestersByAcademicYearId(yearId));
     }
 }

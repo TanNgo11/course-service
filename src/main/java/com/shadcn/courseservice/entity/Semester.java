@@ -28,4 +28,13 @@ public class Semester extends BaseEntity {
 
     @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Course> courses;
+
+    @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Registration> registrations;
+
+    LocalDate registrationStartDate;
+
+    LocalDate registrationEndDate;
+
+    boolean registrationOpen;
 }

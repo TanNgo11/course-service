@@ -16,4 +16,8 @@ public interface ProfileMapper {
     TeacherProfileResponse toTeacherProfileResponse(TeacherProfile teacherProfile);
 
     AdminProfileResponse toAdminProfileResponse(AdminProfile adminProfile);
+
+    StudentProfile toStudentProfile(StudentProfileResponse studentProfileResponse);
+
+    TeacherProfile toTeacherProfile(TeacherProfileResponse teacherProfileResponse);
 }
