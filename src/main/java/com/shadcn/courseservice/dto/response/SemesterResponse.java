@@ -19,4 +19,5 @@ public class SemesterResponse {
     LocalDate endDate;
     AcademicYearResponse academicYear;
     List<CourseResponse> courses;
+    boolean registrationOpen;
 }

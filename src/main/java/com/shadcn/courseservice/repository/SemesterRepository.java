@@ -12,4 +12,6 @@ public interface SemesterRepository extends JpaRepository<Semester, Long>, Query
     @Query(
             "SELECT CASE WHEN COUNT(c) > 0 THEN TRUE ELSE FALSE END FROM Semester s JOIN s.courses c WHERE s.id = :semesterId AND c.id = :courseId")
     boolean existsCourseInSemester(@Param("semesterId") Long semesterId, @Param("courseId") Long courseId);
+
+    Semester findByRegistrationOpen(boolean registrationOpen);
 }

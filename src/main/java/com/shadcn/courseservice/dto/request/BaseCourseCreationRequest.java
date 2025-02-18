@@ -1,10 +1,7 @@
 package com.shadcn.courseservice.dto.request;
 
-import java.util.Collection;
-
 import jakarta.persistence.*;
 
-import com.shadcn.courseservice.entity.Course;
 import com.shadcn.courseservice.enums.BaseCourseStatus;
 
 import lombok.*;
@@ -25,5 +22,5 @@ public class BaseCourseCreationRequest {
     @Enumerated(EnumType.STRING)
     BaseCourseStatus status;
 
-    Collection<Course> courses;
+    // List<Course> courses;
 }

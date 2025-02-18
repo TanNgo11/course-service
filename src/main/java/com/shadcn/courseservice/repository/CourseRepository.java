@@ -13,4 +13,6 @@ public interface CourseRepository extends JpaRepository<Course, Long>, QuerydslP
     // Custom query to find courses by department id
     @Query("SELECT c FROM Course c JOIN c.departments d WHERE d.id = :departmentId")
     Page<Course> findByDepartmentId(@Param("departmentId") Long departmentId, Pageable pageable);
+
+    Page<Course> findBySemesterId(long semesterId, Pageable pageable);
 }

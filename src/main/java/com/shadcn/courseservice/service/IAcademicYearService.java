@@ -6,6 +6,7 @@ import com.shadcn.courseservice.dto.request.AcademicYearCreation;
 import com.shadcn.courseservice.dto.request.AcademicYearUpdation;
 import com.shadcn.courseservice.dto.response.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.SemesterResponse;
 
 public interface IAcademicYearService {
     void createAcademicYear(AcademicYearCreation academicYearCreation);
@@ -23,4 +24,6 @@ public interface IAcademicYearService {
     PageResponse<AcademicYearResponse> getAcademicYearsWithPagination(int current, int pageSize);
 
     List<AcademicYearResponse> getAllAcademicYears();
+
+    List<SemesterResponse> getSemestersByAcademicYearId(Long academicYearId);
 }

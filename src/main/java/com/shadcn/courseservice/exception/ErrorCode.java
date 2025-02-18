@@ -31,6 +31,11 @@ public enum ErrorCode {
     FILE_UPLOAD_FAILED(1031, "File upload failed", HttpStatus.BAD_REQUEST),
     BASE_COURSE_EXISTED(1032, "Base course existed", HttpStatus.BAD_REQUEST),
     COURSE_EXISTED_IN_SEMESTER(1033, "Course instance existed in this semester", HttpStatus.BAD_REQUEST),
+    REGISTRATION_NOT_FOUND(1034, "Registration not found", HttpStatus.BAD_REQUEST),
+    REGISTRATION_CANCELLATION_DEADLINE_PASSED(
+            1035, "Registration cancellation deadline passed", HttpStatus.BAD_REQUEST),
+    REGISTRATION_BEFORE_SEMESTER_START(1036, "Registration before semester start", HttpStatus.BAD_REQUEST),
+    INVALID_REGISTRATION_DATE(1037, "Invalid registration date", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;

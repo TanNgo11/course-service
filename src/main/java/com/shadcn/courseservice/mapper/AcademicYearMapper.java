@@ -9,7 +9,9 @@ import org.mapstruct.MappingTarget;
 import com.shadcn.courseservice.dto.request.AcademicYearCreation;
 import com.shadcn.courseservice.dto.request.AcademicYearUpdation;
 import com.shadcn.courseservice.dto.response.AcademicYearResponse;
+import com.shadcn.courseservice.dto.response.SemesterResponse;
 import com.shadcn.courseservice.entity.AcademicYear;
+import com.shadcn.courseservice.entity.Semester;
 
 @Mapper(componentModel = "spring")
 public interface AcademicYearMapper {
@@ -23,4 +25,6 @@ public interface AcademicYearMapper {
     @Mapping(target = "departments", source = "departmentIds", ignore = true)
     @Mapping(target = "semesters", source = "semesterIds", ignore = true)
     List<AcademicYearResponse> toListAcademicYearResponse(List<AcademicYear> academicYears);
+
+    List<SemesterResponse> toListSemesterResponse(List<Semester> semesters);
 }

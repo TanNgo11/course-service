@@ -42,6 +42,6 @@ public class Department extends BaseEntity {
     @JsonManagedReference
     List<Course> courses;
 
-    @ManyToMany(mappedBy = "departments")
-    private List<BaseCourse> baseCourses;
+    //    @ManyToMany(mappedBy = "departments")
+    //    private List<BaseCourse> baseCourses;
 }
