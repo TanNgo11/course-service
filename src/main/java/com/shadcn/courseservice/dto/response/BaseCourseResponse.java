@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BaseCourseResponse {
+    String id;
     String code;
     String name;
     String imageUri;

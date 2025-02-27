@@ -48,10 +48,10 @@ public class SemesterController {
         return ApiResponse.empty();
     }
 
-    @PostMapping("/add-open-courses")
+    @PostMapping("/add-open-courses/{semesterId}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public ApiResponse<Void> addOpenCoursesToSemester(
-            @RequestBody List<Long> baseCourseIds, @RequestParam long semesterId) {
+            @RequestBody List<Long> baseCourseIds, @PathVariable long semesterId) {
         semesterService.addOpenCoursesToSemester(baseCourseIds, semesterId);
         return ApiResponse.empty();
     }
