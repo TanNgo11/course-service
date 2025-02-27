@@ -42,6 +42,14 @@ public class Department extends BaseEntity {
     @JsonManagedReference
     List<Course> courses;
 
+    @ManyToMany
+    @JoinTable(
+            name = "department_basecourse",
+            joinColumns = @JoinColumn(name = "department_id"),
+            inverseJoinColumns = @JoinColumn(name = "base_course_id"))
+    @JsonManagedReference
+    List<BaseCourse> baseCourses;
+
     //    @ManyToMany(mappedBy = "departments")
     //    private List<BaseCourse> baseCourses;
 }

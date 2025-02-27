@@ -9,13 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.shadcn.courseservice.cronjob.CronSemester;
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.SemesterResponse;
-import com.shadcn.courseservice.entity.BaseCourse;
-import com.shadcn.courseservice.entity.Course;
-import com.shadcn.courseservice.entity.Registration;
-import com.shadcn.courseservice.entity.Semester;
+import com.shadcn.courseservice.entity.*;
 import com.shadcn.courseservice.mapper.CourseMapper;
 import com.shadcn.courseservice.mapper.RegistrationMapper;
 import com.shadcn.courseservice.mapper.SemesterMapper;
@@ -23,6 +21,7 @@ import com.shadcn.courseservice.repository.BaseCourseRepository;
 import com.shadcn.courseservice.repository.CourseRepository;
 import com.shadcn.courseservice.repository.RegistrationRepository;
 import com.shadcn.courseservice.repository.SemesterRepository;
+import com.shadcn.courseservice.service.IDepartmentService;
 import com.shadcn.courseservice.service.IRegistrationService;
 import com.shadcn.courseservice.service.ISemesterService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
@@ -45,12 +44,14 @@ public class SemesterService implements ISemesterService {
     CourseMapper courseMapper;
     IRegistrationService registrationService;
     RegistrationMapper registrationMapper;
+    IDepartmentService departmentService;
+    private CronSemester cronSemester;
 
     @Override
     public PageResponse<SemesterResponse> getAllSemesters(int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Page<Semester> semesters = semesterRepository.findAll(pageable);
-
+        cronSemester.updateSemesterStatus();
         return ConverToPaginationResponse.toPageResponse(semesters, semesterMapper::toSemesterResponse, current);
     }
 
@@ -60,11 +61,24 @@ public class SemesterService implements ISemesterService {
         Semester semester = semesterRepository
                 .findById(semesterId)
                 .orElseThrow(() -> new IllegalArgumentException("Semester not found"));
+
         for (BaseCourse baseCourse : baseCourses) {
-            Course course =
-                    Course.builder().baseCourse(baseCourse).semester(semester).build();
+            List<Department> departments = baseCourse.getDepartments();
+            log.info("Department: " + departments.size());
+            Course course = Course.builder()
+                    .baseCourse(baseCourse)
+                    .semester(semester)
+                    // .departments(departments)
+                    .build();
 
             courseRepository.save(course);
+
+            //            for (Department dep : departments) {
+            //                log.info("Department: " + dep.getId());
+            //                log.info("Course: " + course.getId());
+            //
+            //                departmentService.addCoursesToDepartment(dep.getId(), List.of(course.getId()));
+            //            }
         }
     }
 
@@ -72,6 +86,15 @@ public class SemesterService implements ISemesterService {
     public PageResponse<CourseResponse> getAllOpenCoursesInSemester(long semesterId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Page<Course> courses = courseRepository.findBySemesterId(semesterId, pageable);
+
+        return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
+    }
+
+    @Override
+    public PageResponse<CourseResponse> getAllCoursesInSemesterByDepartmentId(
+            long semesterId, long departmentId, int current, int pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        Page<Course> courses = courseRepository.findByDepartmentIdAndSemesterId(departmentId, semesterId, pageable);
 
         return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
     }

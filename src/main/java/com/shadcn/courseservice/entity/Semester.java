@@ -36,5 +36,7 @@ public class Semester extends BaseEntity {
 
     LocalDate registrationEndDate;
 
+    boolean semesterActive;
+
     boolean registrationOpen;
 }

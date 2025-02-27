@@ -14,10 +14,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SemesterResponse {
+    String id;
     String name;
     LocalDate startDate;
     LocalDate endDate;
     AcademicYearResponse academicYear;
     List<CourseResponse> courses;
     boolean registrationOpen;
+    boolean semesterActive;
 }

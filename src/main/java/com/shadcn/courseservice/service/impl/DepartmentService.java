@@ -7,15 +7,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.shadcn.courseservice.dto.response.BaseCourseResponse;
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.entity.BaseCourse;
 import com.shadcn.courseservice.entity.Course;
 import com.shadcn.courseservice.entity.Department;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.CourseMapper;
 import com.shadcn.courseservice.mapper.DepartmentMapper;
+import com.shadcn.courseservice.repository.BaseCourseRepository;
 import com.shadcn.courseservice.repository.CourseRepository;
 import com.shadcn.courseservice.repository.DepartmentRepository;
 import com.shadcn.courseservice.service.IDepartmentService;
@@ -35,6 +38,7 @@ public class DepartmentService implements IDepartmentService {
     CourseRepository courseRepository;
     CourseMapper courseMapper;
     DepartmentMapper departmentMapper;
+    BaseCourseRepository baseCourseRepository;
 
     @Override
     public void addCoursesToDepartment(Long departmentId, List<Long> courseIds) {
@@ -52,11 +56,36 @@ public class DepartmentService implements IDepartmentService {
     }
 
     @Override
+    public void addBaseCoursesToDepartment(Long departmentId, List<Long> baseCourseIds) {
+        Department department = getDepartment(departmentId);
+
+        for (Long baseCourseId : baseCourseIds) {
+            BaseCourse baseCourse = getBaseCourse(baseCourseId);
+            if (department.getBaseCourses().contains(baseCourse)) {
+                throw new AppException(ErrorCode.BASE_COURSE_EXISTED);
+            }
+            department.getBaseCourses().add(baseCourse);
+        }
+
+        departmentRepository.save(department);
+    }
+
+    @Override
     public void removeCoursesFromDepartment(Long departmentId, List<Long> courseIds) {
         Department department = getDepartment(departmentId);
         for (Long courseId : courseIds) {
             Course course = getCourse(courseId);
             department.getCourses().remove(course);
+        }
+        departmentRepository.save(department);
+    }
+
+    @Override
+    public void removeBaseCoursesFromDepartment(Long departmentId, List<Long> baseCourseIds) {
+        Department department = getDepartment(departmentId);
+        for (Long baseCourseId : baseCourseIds) {
+            BaseCourse baseCourse = getBaseCourse(baseCourseId);
+            department.getBaseCourses().remove(baseCourse);
         }
         departmentRepository.save(department);
     }
@@ -74,6 +103,19 @@ public class DepartmentService implements IDepartmentService {
     }
 
     @Override
+    public PageResponse<BaseCourseResponse> getBaseCoursesByDepartment(
+            Long departmentId, Integer current, Integer pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+
+        // Get all base courses in department
+        Department department = getDepartment(departmentId);
+
+        Page<BaseCourse> baseCourses = baseCourseRepository.findByDepartmentId(department.getId(), pageable);
+
+        return ConverToPaginationResponse.toPageResponse(baseCourses, courseMapper::toBaseCourseResponse, current);
+    }
+
+    @Override
     public PageResponse<DepartmentResponse> getAllDepartments(Integer current, Integer pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Page<Department> departments = departmentRepository.findAll(pageable);
@@ -88,5 +130,11 @@ public class DepartmentService implements IDepartmentService {
 
     Course getCourse(Long courseId) {
         return courseRepository.findById(courseId).orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+    }
+
+    BaseCourse getBaseCourse(Long baseCourseId) {
+        return baseCourseRepository
+                .findById(baseCourseId)
+                .orElseThrow(() -> new AppException(ErrorCode.BASE_COURSE_NOT_FOUND));
     }
 }
