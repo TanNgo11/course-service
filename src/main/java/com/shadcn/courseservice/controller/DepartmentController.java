@@ -6,10 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.dto.request.*;
-import com.shadcn.courseservice.dto.response.ApiResponse;
-import com.shadcn.courseservice.dto.response.CourseResponse;
-import com.shadcn.courseservice.dto.response.DepartmentResponse;
-import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.*;
 import com.shadcn.courseservice.service.IDepartmentService;
 
 import lombok.AccessLevel;
@@ -31,10 +28,24 @@ public class DepartmentController {
         return ApiResponse.empty();
     }
 
+    @PostMapping("/base-courses")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<Void> addBaseCoursesToDepartment(@RequestBody DepartmentCourseRequest request) {
+        departmentService.addBaseCoursesToDepartment(request.getDepartmentId(), request.getCourseIds());
+        return ApiResponse.empty();
+    }
+
     @DeleteMapping("/courses")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> removeCoursesFromDepartment(@RequestBody DepartmentCourseRequest request) {
         departmentService.removeCoursesFromDepartment(request.getDepartmentId(), request.getCourseIds());
+        return ApiResponse.empty();
+    }
+
+    @DeleteMapping("/base-courses")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<Void> removeBaseCoursesFromDepartment(@RequestBody DepartmentCourseRequest request) {
+        departmentService.removeBaseCoursesFromDepartment(request.getDepartmentId(), request.getCourseIds());
         return ApiResponse.empty();
     }
 
@@ -45,6 +56,15 @@ public class DepartmentController {
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(departmentService.getCoursesByDepartment(departmentId, current, pageSize));
+    }
+
+    @GetMapping("/{departmentId}/base-courses")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<PageResponse<BaseCourseResponse>> getAllBaseCoursesInDepartment(
+            @PathVariable Long departmentId,
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        return ApiResponse.success(departmentService.getBaseCoursesByDepartment(departmentId, current, pageSize));
     }
 
     @GetMapping

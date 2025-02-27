@@ -5,7 +5,6 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.shadcn.courseservice.enums.CourseStatus;
 
 import lombok.*;
@@ -37,9 +36,9 @@ public class Course extends BaseEntity {
     @ElementCollection
     List<String> teacherUsernames;
 
-    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
-    @JsonBackReference
-    List<Department> departments;
+    //    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    //    @JsonBackReference
+    //    List<Department> departments;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Lesson> lessons;

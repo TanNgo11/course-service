@@ -11,8 +11,13 @@ import com.shadcn.courseservice.entity.Course;
 
 public interface CourseRepository extends JpaRepository<Course, Long>, QuerydslPredicateExecutor<Course> {
     // Custom query to find courses by department id
-    @Query("SELECT c FROM Course c JOIN c.departments d WHERE d.id = :departmentId")
+    @Query("SELECT c FROM Course c JOIN c.baseCourse.departments d WHERE d.id = :departmentId")
     Page<Course> findByDepartmentId(@Param("departmentId") Long departmentId, Pageable pageable);
+
+    // find by semesterid and department id
+    @Query("SELECT c FROM Course c JOIN c.baseCourse.departments d WHERE d.id = :departmentId AND c.semester.id = :semesterId")
+    Page<Course> findByDepartmentIdAndSemesterId(
+            @Param("departmentId") Long departmentId, @Param("semesterId") Long semesterId, Pageable pageable);
 
     Page<Course> findBySemesterId(long semesterId, Pageable pageable);
 }

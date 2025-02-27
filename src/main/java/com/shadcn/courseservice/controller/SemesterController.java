@@ -64,4 +64,15 @@ public class SemesterController {
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(semesterService.getAllOpenCoursesInSemester(semesterId, current, pageSize));
     }
+
+    @GetMapping("/open-courses-department")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<PageResponse<CourseResponse>> getAllCoursesInSemesterByDepartmentId(
+            @RequestParam long semesterId,
+            @RequestParam long departmentId,
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        return ApiResponse.success(
+                semesterService.getAllCoursesInSemesterByDepartmentId(semesterId, departmentId, current, pageSize));
+    }
 }

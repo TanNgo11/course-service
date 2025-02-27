@@ -11,6 +11,9 @@ public interface ISemesterService {
 
     PageResponse<CourseResponse> getAllOpenCoursesInSemester(long semesterId, int current, int pageSize);
 
+    PageResponse<CourseResponse> getAllCoursesInSemesterByDepartmentId(
+            long semesterId, long departmentId, int current, int pageSize);
+
     void openRegistrationForSemester(long semesterId);
 
     void closeRegistrationForSemester(long semesterId);

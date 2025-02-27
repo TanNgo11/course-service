@@ -36,6 +36,7 @@ public enum ErrorCode {
             1035, "Registration cancellation deadline passed", HttpStatus.BAD_REQUEST),
     REGISTRATION_BEFORE_SEMESTER_START(1036, "Registration before semester start", HttpStatus.BAD_REQUEST),
     INVALID_REGISTRATION_DATE(1037, "Invalid registration date", HttpStatus.BAD_REQUEST),
+    BASE_COURSE_NOT_FOUND(1038, "Base course not found", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
