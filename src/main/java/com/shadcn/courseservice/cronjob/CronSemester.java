@@ -35,4 +35,10 @@ public class CronSemester {
 
         semesterRepository.saveAll(semesters);
     }
+
+    @Bean
+    @Scheduled(cron = "0 0 0 * * 1")
+    public void fetchStudentProfile() {
+        log.info("Fetch student profile");
+    }
 }

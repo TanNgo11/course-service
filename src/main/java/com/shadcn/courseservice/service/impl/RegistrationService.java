@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.RegistrationResponse;
 import com.shadcn.courseservice.entity.Course;
@@ -18,6 +19,7 @@ import com.shadcn.courseservice.entity.StudentProfile;
 import com.shadcn.courseservice.enums.RegistrationStatus;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
+import com.shadcn.courseservice.mapper.CourseMapper;
 import com.shadcn.courseservice.mapper.ProfileMapper;
 import com.shadcn.courseservice.mapper.RegistrationMapper;
 import com.shadcn.courseservice.repository.CourseRepository;
@@ -45,6 +47,7 @@ public class RegistrationService implements IRegistrationService {
     ProfileMapper profileMapper;
     RegistrationMapper registrationMapper;
     StudentProfileRepository studentProfileRepository;
+    CourseMapper courseMapper;
 
     @Override
     @Transactional
@@ -191,10 +194,38 @@ public class RegistrationService implements IRegistrationService {
         }
     }
 
-    //    public void addStudentsToCourseInSemester() {
-    //        Semester semester = semesterRepository.findByRegistrationOpen(true);
-    //        List<Registration> registrations =
-    // registrationRepository.findAllRegistrationBySemesterId(semester.getId());
-    //        addStudentToCourse(registrationMapper.toRegistrationResponseList(registrations));
-    //    }
+    @Override
+    public PageResponse<RegistrationResponse> getRegistrationsByStudentIdAndSemesterId(
+            long studentId, long semesterId, int current, int pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        Page<Registration> registrations =
+                registrationRepository.getRegistrationByStudentIdAndSemesterId(studentId, semesterId, pageable);
+
+        return ConverToPaginationResponse.toPageResponse(
+                registrations, registrationMapper::toRegistrationResponse, current);
+    }
+
+    @Override
+    public PageResponse<CourseResponse> getAllUnregisteredCoursesInSemesterByDepartmentForStudent(
+            String studentId, String semesterId, String departmentId, int current, int pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+
+        Page<Course> allUnregisteredCoursesPage =
+                courseRepository.findUnregisteredCoursesByDepartmentIdAndSemesterIdAndStudentId(
+                        departmentId, semesterId, studentId, pageable);
+
+        return ConverToPaginationResponse.toPageResponse(
+                allUnregisteredCoursesPage, courseMapper::toCourseResponse, current);
+    }
+
+    @Override
+    public PageResponse<CourseResponse> getAllRegisteredCoursesInSemesterByDepartmentForStudent(
+            String studentId, String semesterId, String departmentId, int current, int pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+
+        Page<Course> courses = courseRepository.findRegisteredCoursesByDepartmentIdAndSemesterIdAndStudentId(
+                departmentId, semesterId, studentId, pageable);
+
+        return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
+    }
 }

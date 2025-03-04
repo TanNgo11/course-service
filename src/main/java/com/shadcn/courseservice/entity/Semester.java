@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -29,7 +31,8 @@ public class Semester extends BaseEntity {
     @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Course> courses;
 
-    @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "semester", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     List<Registration> registrations;
 
     LocalDate registrationStartDate;

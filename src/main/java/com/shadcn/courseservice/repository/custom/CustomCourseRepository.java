@@ -11,6 +11,12 @@ import com.shadcn.courseservice.entity.Course;
 public interface CustomCourseRepository {
     Page<Course> findByDepartmentIdAndSemesterId(String departmentId, String semesterId, Pageable pageable);
 
+    Page<Course> findUnregisteredCoursesByDepartmentIdAndSemesterIdAndStudentId(
+            String departmentId, String semesterId, String studentId, Pageable pageable);
+
+    Page<Course> findRegisteredCoursesByDepartmentIdAndSemesterIdAndStudentId(
+            String departmentId, String semesterId, String studentId, Pageable pageable);
+
     Page<Course> findByDepartmentId(Long departmentId, Pageable pageable);
 
     List<Course> findByDepartmentIdToList(Long departmentId);

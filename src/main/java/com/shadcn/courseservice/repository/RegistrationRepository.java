@@ -36,4 +36,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
             "SELECT CASE WHEN EXISTS (SELECT r FROM Registration r WHERE r.studentProfile.studentId = :studentId AND r.course.id = :courseId AND r.semester.id = :semesterId) THEN true ELSE false END")
     boolean existsByStudentIdAndCourseIdAndSemesterId(
             @Param("studentId") long studentId, @Param("courseId") long courseId, @Param("semesterId") long semesterId);
+
+    @Query("SELECT r FROM Registration r WHERE r.studentProfile.studentId = :studentId AND r.semester.id = :semesterId")
+    Page<Registration> getRegistrationByStudentIdAndSemesterId(long studentId, long semesterId, Pageable pageable);
 }

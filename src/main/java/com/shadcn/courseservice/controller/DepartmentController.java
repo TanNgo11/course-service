@@ -79,7 +79,7 @@ public class DepartmentController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     ApiResponse<PageResponse<DepartmentResponse>> getAllDepartments(
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
