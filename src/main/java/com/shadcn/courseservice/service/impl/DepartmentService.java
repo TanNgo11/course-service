@@ -71,16 +71,6 @@ public class DepartmentService implements IDepartmentService {
     }
 
     @Override
-    public void removeCoursesFromDepartment(Long departmentId, List<Long> courseIds) {
-        Department department = getDepartment(departmentId);
-        for (Long courseId : courseIds) {
-            Course course = getCourse(courseId);
-            department.getCourses().remove(course);
-        }
-        departmentRepository.save(department);
-    }
-
-    @Override
     public void removeBaseCoursesFromDepartment(Long departmentId, List<Long> baseCourseIds) {
         Department department = getDepartment(departmentId);
         for (Long baseCourseId : baseCourseIds) {

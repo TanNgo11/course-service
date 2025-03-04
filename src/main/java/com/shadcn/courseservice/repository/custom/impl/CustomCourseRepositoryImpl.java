@@ -13,6 +13,7 @@ import com.shadcn.courseservice.repository.custom.CustomCourseRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.transaction.annotation.Transactional;
 
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @Repository
@@ -46,6 +47,25 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
                 .fetch();
 
         return new PageImpl<>(courses, pageable, courses.size());
+    }
+
+    @Override
+    public List<Course> findByDepartmentIdToList(Long departmentId) {
+        QCourse course = QCourse.course;
+        return queryFactory
+                .selectFrom(course)
+                .where(course.baseCourse.departments.any().id.eq(departmentId))
+                .fetch();
+    }
+
+    @Override
+    @Transactional
+    public void removeOpeningCoursesFromSemester(Long semesterId, List<Long> courseIds) {
+        QCourse course = QCourse.course;
+        queryFactory
+                .delete(course)
+                .where(course.semester.id.eq(semesterId).and(course.id.in(courseIds)))
+                .execute();
     }
 
     @Override

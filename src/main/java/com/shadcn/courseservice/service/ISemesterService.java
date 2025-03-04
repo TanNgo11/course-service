@@ -9,6 +9,8 @@ public interface ISemesterService {
 
     void addOpenCoursesToSemester(List<Long> baseCourseIds, long semesterId);
 
+    void removeOpenCoursesFromSemester(List<Long> openingCourseIds, long semesterId);
+
     PageResponse<CourseResponse> getAllOpenCoursesInSemester(String semesterId, int current, int pageSize);
 
     PageResponse<CourseResponse> getAllCoursesInSemesterByDepartmentId(
