@@ -14,4 +14,7 @@ public interface SemesterRepository extends JpaRepository<Semester, Long>, Query
     boolean existsCourseInSemester(@Param("semesterId") Long semesterId, @Param("courseId") Long courseId);
 
     Semester findByRegistrationOpen(boolean registrationOpen);
+
+    @Query("SELECT s FROM Semester s WHERE s.semesterActive = :semesterActive")
+    Semester findBySemesterActive(@Param("semesterActive") boolean semesterActive);
 }

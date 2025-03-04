@@ -21,7 +21,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
     void deleteAllByStudentId(@Param("courseId") long studentId);
 
     @Query("SELECT r FROM Registration r WHERE r.studentProfile.studentId = :studentId")
-    Page<Registration> findAllByStudentId(@Param("studentId") long studentId, Pageable pageable);
+    Page<Registration> findAllByStudentProfileId(@Param("studentId") long studentId, Pageable pageable);
 
     @Query("SELECT r FROM Registration r WHERE r.course.id = :courseId")
     Page<Registration> findAllByCourseId(@Param("courseId") long courseId, Pageable pageable);
@@ -31,4 +31,9 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
 
     @Query("SELECT r FROM Registration r WHERE r.semester.id = :semesterId")
     List<Registration> findAllRegistrationBySemesterId(@Param("semesterId") long semesterId);
+
+    @Query(
+            "SELECT CASE WHEN EXISTS (SELECT r FROM Registration r WHERE r.studentProfile.studentId = :studentId AND r.course.id = :courseId AND r.semester.id = :semesterId) THEN true ELSE false END")
+    boolean existsByStudentIdAndCourseIdAndSemesterId(
+            @Param("studentId") long studentId, @Param("courseId") long courseId, @Param("semesterId") long semesterId);
 }

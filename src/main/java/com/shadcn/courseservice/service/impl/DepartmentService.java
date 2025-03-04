@@ -122,6 +122,16 @@ public class DepartmentService implements IDepartmentService {
         return ConverToPaginationResponse.toPageResponse(departments, departmentMapper::toDepartmentResponse, 1);
     }
 
+    @Override
+    public PageResponse<BaseCourseResponse> getAllUnOpenedBaseCoursesByDepartment(
+            Long semesterId, Long departmentId, Integer current, Integer pageSize) {
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        Page<BaseCourse> baseCourses =
+                courseRepository.findOpenCoursesBySemesterAdnDepartment(semesterId, departmentId, pageable);
+
+        return ConverToPaginationResponse.toPageResponse(baseCourses, courseMapper::toBaseCourseResponse, current);
+    }
+
     Department getDepartment(Long departmentId) {
         return departmentRepository
                 .findById(departmentId)

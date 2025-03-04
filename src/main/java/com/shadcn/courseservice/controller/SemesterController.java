@@ -57,22 +57,28 @@ public class SemesterController {
     }
 
     @GetMapping("/open-courses")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public ApiResponse<PageResponse<CourseResponse>> getAllOpenCoursesInSemester(
-            @RequestParam long semesterId,
+            @RequestParam String semesterId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(semesterService.getAllOpenCoursesInSemester(semesterId, current, pageSize));
     }
 
     @GetMapping("/open-courses-department")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public ApiResponse<PageResponse<CourseResponse>> getAllCoursesInSemesterByDepartmentId(
-            @RequestParam long semesterId,
-            @RequestParam long departmentId,
+            @RequestParam String semesterId,
+            @RequestParam String departmentId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(
                 semesterService.getAllCoursesInSemesterByDepartmentId(semesterId, departmentId, current, pageSize));
+    }
+
+    @GetMapping("/current-open-semester")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public ApiResponse<SemesterResponse> getCurrentOpenSemester() {
+        return ApiResponse.success(semesterService.getCurrentOpenSemester());
     }
 }

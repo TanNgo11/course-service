@@ -1,5 +1,7 @@
 package com.shadcn.courseservice.dto.request;
 
+import java.util.List;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,6 +12,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegistrationRequest {
     long studentId;
-    long courseId;
+    List<Long> courseIds;
     long semesterId;
 }

@@ -9,12 +9,14 @@ public interface ISemesterService {
 
     void addOpenCoursesToSemester(List<Long> baseCourseIds, long semesterId);
 
-    PageResponse<CourseResponse> getAllOpenCoursesInSemester(long semesterId, int current, int pageSize);
+    PageResponse<CourseResponse> getAllOpenCoursesInSemester(String semesterId, int current, int pageSize);
 
     PageResponse<CourseResponse> getAllCoursesInSemesterByDepartmentId(
-            long semesterId, long departmentId, int current, int pageSize);
+            String semesterId, String departmentId, int current, int pageSize);
 
     void openRegistrationForSemester(long semesterId);
 
     void closeRegistrationForSemester(long semesterId);
+
+    SemesterResponse getCurrentOpenSemester();
 }

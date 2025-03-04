@@ -14,6 +14,8 @@ import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.SemesterResponse;
 import com.shadcn.courseservice.entity.*;
+import com.shadcn.courseservice.exception.AppException;
+import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.CourseMapper;
 import com.shadcn.courseservice.mapper.RegistrationMapper;
 import com.shadcn.courseservice.mapper.SemesterMapper;
@@ -60,15 +62,17 @@ public class SemesterService implements ISemesterService {
         List<BaseCourse> baseCourses = baseCourseRepository.findAllById(baseCourseIds);
         Semester semester = semesterRepository
                 .findById(semesterId)
-                .orElseThrow(() -> new IllegalArgumentException("Semester not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
 
         for (BaseCourse baseCourse : baseCourses) {
             List<Department> departments = baseCourse.getDepartments();
-            log.info("Department: " + departments.size());
             Course course = Course.builder()
                     .baseCourse(baseCourse)
                     .semester(semester)
                     // .departments(departments)
+                    .startDate(semester.getStartDate())
+                    .endDate(semester.getEndDate())
+                    .remain(20)
                     .build();
 
             courseRepository.save(course);
@@ -83,16 +87,16 @@ public class SemesterService implements ISemesterService {
     }
 
     @Override
-    public PageResponse<CourseResponse> getAllOpenCoursesInSemester(long semesterId, int current, int pageSize) {
+    public PageResponse<CourseResponse> getAllOpenCoursesInSemester(String semesterId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
-        Page<Course> courses = courseRepository.findBySemesterId(semesterId, pageable);
+        Page<Course> courses = courseRepository.findBySemesterId(Long.parseLong(semesterId), pageable);
 
         return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
     }
 
     @Override
     public PageResponse<CourseResponse> getAllCoursesInSemesterByDepartmentId(
-            long semesterId, long departmentId, int current, int pageSize) {
+            String semesterId, String departmentId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Page<Course> courses = courseRepository.findByDepartmentIdAndSemesterId(departmentId, semesterId, pageable);
 
@@ -103,7 +107,7 @@ public class SemesterService implements ISemesterService {
     public void openRegistrationForSemester(long semesterId) {
         Semester semester = semesterRepository
                 .findById(semesterId)
-                .orElseThrow(() -> new IllegalArgumentException("Semester not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
 
         semester.setRegistrationOpen(true);
         semesterRepository.save(semester);
@@ -118,7 +122,7 @@ public class SemesterService implements ISemesterService {
         } else {
             semester = semesterRepository
                     .findById(semesterId)
-                    .orElseThrow(() -> new IllegalArgumentException("Semester not found"));
+                    .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
         }
 
         List<Registration> registrations = registrationRepository.findAllRegistrationBySemesterId(semester.getId());
@@ -128,5 +132,14 @@ public class SemesterService implements ISemesterService {
             semester.setRegistrationOpen(false);
         }
         semesterRepository.save(semester);
+    }
+
+    @Override
+    public SemesterResponse getCurrentOpenSemester() {
+        Semester semester = semesterRepository.findBySemesterActive(true);
+        if (semester == null) {
+            throw new AppException(ErrorCode.SEMESTER_NOT_FOUND);
+        }
+        return semesterMapper.toSemesterResponse(semester);
     }
 }

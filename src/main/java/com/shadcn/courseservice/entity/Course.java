@@ -1,6 +1,7 @@
 package com.shadcn.courseservice.entity;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -56,9 +57,15 @@ public class Course extends BaseEntity {
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     List<CourseFile> files;
 
+    LocalTime startTime;
+
+    LocalTime endTime;
+
     LocalDate startDate;
 
     LocalDate endDate;
+
+    int remain;
 
     CourseStatus processStatus;
 }

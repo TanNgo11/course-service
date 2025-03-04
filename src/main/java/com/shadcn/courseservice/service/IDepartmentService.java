@@ -21,4 +21,7 @@ public interface IDepartmentService {
     PageResponse<BaseCourseResponse> getBaseCoursesByDepartment(Long departmentId, Integer current, Integer pageSize);
 
     PageResponse<DepartmentResponse> getAllDepartments(Integer current, Integer pageSize);
+
+    PageResponse<BaseCourseResponse> getAllUnOpenedBaseCoursesByDepartment(
+            Long semesterId, Long departmentId, Integer current, Integer pageSize);
 }
