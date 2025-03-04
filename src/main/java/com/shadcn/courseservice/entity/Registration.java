@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.shadcn.courseservice.enums.RegistrationStatus;
 
 import lombok.*;
@@ -18,15 +19,19 @@ import lombok.experimental.FieldDefaults;
 @Entity
 public class Registration extends BaseEntity {
     @ManyToOne
+    @JsonBackReference
     StudentProfile studentProfile;
 
     @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "course_id")
     Course course;
 
     @Enumerated(EnumType.STRING)
     RegistrationStatus status;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "semester_id")
     Semester semester;
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.shadcn.courseservice.enums.CourseStatus;
 
 import lombok.*;
@@ -56,6 +57,10 @@ public class Course extends BaseEntity {
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     List<CourseFile> files;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    List<Registration> registrations;
 
     LocalTime startTime;
 
