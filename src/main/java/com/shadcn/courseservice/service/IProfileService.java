@@ -10,6 +10,8 @@ public interface IProfileService {
 
     List<TeacherProfileResponse> getPublicTeacherProfiles(long[] teacherIds);
 
+    StudentProfileResponse getStudentProfileByStudentEntityId(long studentId);
+
     boolean isStudentExist(long studentId);
 
     boolean isTeacherExist(long teacherId);

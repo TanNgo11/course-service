@@ -7,7 +7,7 @@ import com.shadcn.courseservice.dto.response.RegistrationResponse;
 import com.shadcn.courseservice.entity.Registration;
 
 public interface IRegistrationService {
-    RegistrationResponse registerStudentToCourse(long studentId, long courseId, long semesterId);
+    void registerStudentToCourse(long studentId, List<Long> courseId, long semesterId);
 
     void unregisterStudentsFromCourseForStudent(long courseId, long studentId);
 

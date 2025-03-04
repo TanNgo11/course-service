@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.RegistrationResponse;
@@ -22,6 +23,7 @@ import com.shadcn.courseservice.mapper.RegistrationMapper;
 import com.shadcn.courseservice.repository.CourseRepository;
 import com.shadcn.courseservice.repository.RegistrationRepository;
 import com.shadcn.courseservice.repository.SemesterRepository;
+import com.shadcn.courseservice.repository.StudentProfileRepository;
 import com.shadcn.courseservice.service.IProfileService;
 import com.shadcn.courseservice.service.IRegistrationService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
@@ -42,38 +44,52 @@ public class RegistrationService implements IRegistrationService {
     IProfileService profileService;
     ProfileMapper profileMapper;
     RegistrationMapper registrationMapper;
+    StudentProfileRepository studentProfileRepository;
 
     @Override
-    public RegistrationResponse registerStudentToCourse(long studentId, long courseId, long semesterId) {
-        StudentProfile studentProfile = profileMapper.toStudentProfile(
-                profileService.getPublicStudentProfiles(new long[] {studentId}).get(0));
-        Course currentCourse = courseRepository.findById(courseId).get();
-        Semester currentSemester = semesterRepository.findById(semesterId).get();
+    @Transactional
+    public void registerStudentToCourse(long studentId, List<Long> courseIds, long semesterId) {
+        // Fetch or create StudentProfile
+        StudentProfile studentProfile = studentProfileRepository.getStudentProfileByStudentId(studentId);
+
         if (studentProfile == null) {
-            throw new AppException(ErrorCode.STUDENT_NOT_FOUND);
+            studentProfile =
+                    profileMapper.toStudentProfile(profileService.getStudentProfileByStudentEntityId(studentId));
+            studentProfile = studentProfileRepository.save(studentProfile);
         }
-        if (currentCourse == null) {
-            throw new AppException(ErrorCode.COURSE_NOT_FOUND);
-        }
-        if (currentSemester == null) {
-            throw new AppException(ErrorCode.SEMESTER_NOT_FOUND);
-        }
-        if (currentSemester.getStartDate().isAfter(LocalDate.now())
-                || currentSemester.getEndDate().isBefore(LocalDate.now())) {
+
+        Semester currentSemester = semesterRepository
+                .findById(semesterId)
+                .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
+
+        LocalDate now = LocalDate.now();
+        if (currentSemester.getStartDate().isAfter(now)
+                || currentSemester.getEndDate().isBefore(now)) {
             throw new AppException(ErrorCode.INVALID_REGISTRATION_DATE);
         }
 
-        Registration registration = Registration.builder()
-                .studentProfile(studentProfile)
-                .course(currentCourse)
-                .registrationDate(LocalDate.now())
-                .semester(currentSemester)
-                .status(RegistrationStatus.PENDING)
-                .cancellationDeadline(currentSemester.getRegistrationEndDate())
-                .build();
-        registrationRepository.save(registration);
+        for (Long courseId : courseIds) {
 
-        return registrationMapper.toRegistrationResponse(registration);
+            // Check if the student is already registered for the course
+            if (registrationRepository.existsByStudentIdAndCourseIdAndSemesterId(studentId, courseId, semesterId)) {
+                continue;
+            }
+
+            Course currentCourse =
+                    courseRepository.findById(courseId).orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+
+            // Create and save Registration
+            Registration registration = Registration.builder()
+                    .studentProfile(studentProfile)
+                    .course(currentCourse)
+                    .registrationDate(now)
+                    .semester(currentSemester)
+                    .status(RegistrationStatus.PENDING)
+                    .cancellationDeadline(currentSemester.getRegistrationEndDate())
+                    .build();
+
+            registrationRepository.save(registration);
+        }
     }
 
     @Override
@@ -108,13 +124,13 @@ public class RegistrationService implements IRegistrationService {
 
     @Override
     public PageResponse<RegistrationResponse> getAllRegistrationsForStudent(long studentId, int current, int pageSize) {
-        StudentProfile studentProfile = profileMapper.toStudentProfile(
-                profileService.getPublicStudentProfiles(new long[] {studentId}).get(0));
-        if (studentProfile == null) {
-            throw new AppException(ErrorCode.STUDENT_NOT_FOUND);
-        }
+        //        StudentProfile studentProfile = profileMapper.toStudentProfile(
+        //                profileService.getPublicStudentProfiles(new long[] {studentId}).get(0));
+        //        if (studentProfile == null) {
+        //            throw new AppException(ErrorCode.STUDENT_NOT_FOUND);
+        //        }
         Pageable pageable = PageRequest.of(current - 1, pageSize);
-        Page<Registration> registrations = registrationRepository.findAllByStudentId(studentId, pageable);
+        Page<Registration> registrations = registrationRepository.findAllByStudentProfileId(studentId, pageable);
 
         return ConverToPaginationResponse.toPageResponse(
                 registrations, registrationMapper::toRegistrationResponse, current);

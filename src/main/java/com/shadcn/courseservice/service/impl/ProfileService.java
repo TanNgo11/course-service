@@ -30,6 +30,13 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
+    public StudentProfileResponse getStudentProfileByStudentEntityId(long studentId) {
+        return profileClient
+                .getStudentProfileByStudentEntityId(String.valueOf(studentId))
+                .getResult();
+    }
+
+    @Override
     public boolean isStudentExist(long studentId) {
         StudentProfileResponse studentProfile = profileClient
                 .getPublicStudentProfile(new long[] {studentId})

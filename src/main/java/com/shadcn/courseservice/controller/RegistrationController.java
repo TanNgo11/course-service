@@ -25,9 +25,10 @@ public class RegistrationController {
     IRegistrationService registrationService;
 
     @PostMapping("/student-registrations")
-    public ApiResponse<RegistrationResponse> registerStudentToCourse(@RequestParam RegistrationRequest request) {
-        return ApiResponse.success(registrationService.registerStudentToCourse(
-                request.getStudentId(), request.getCourseId(), request.getSemesterId()));
+    public ApiResponse<RegistrationResponse> registerStudentToCourse(@RequestBody RegistrationRequest request) {
+        registrationService.registerStudentToCourse(
+                request.getStudentId(), request.getCourseIds(), request.getSemesterId());
+        return ApiResponse.empty();
     }
 
     @DeleteMapping("/unregister-student")
@@ -53,20 +54,27 @@ public class RegistrationController {
     }
 
     @GetMapping("/student-registrations")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public ApiResponse<PageResponse<RegistrationResponse>> getAllRegistrationsForStudent(
-            @RequestParam long studentId, @RequestParam int current, @RequestParam int pageSize) {
+            @RequestParam long studentId,
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(registrationService.getAllRegistrationsForStudent(studentId, current, pageSize));
     }
 
     @GetMapping("/course-registrations")
     public ApiResponse<PageResponse<RegistrationResponse>> getAllRegistrationsForCourse(
-            @RequestParam long courseId, @RequestParam int current, @RequestParam int pageSize) {
+            @RequestParam long courseId,
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(registrationService.getAllRegistrationsForCourse(courseId, current, pageSize));
     }
 
     @GetMapping("/semester-registrations")
     public ApiResponse<PageResponse<RegistrationResponse>> getAllRegistrationsForSemester(
-            @RequestParam long semesterId, @RequestParam int current, @RequestParam int pageSize) {
+            @RequestParam long semesterId,
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(registrationService.getAllRegistrationsForSemester(semesterId, current, pageSize));
     }
 }

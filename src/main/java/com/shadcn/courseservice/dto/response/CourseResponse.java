@@ -17,6 +17,12 @@ public class CourseResponse {
     String imageUri;
     String code;
     String credit;
+    String description;
+    String startTime;
+    String endTime;
+    String startDate;
+    String endDate;
+    int remain;
     List<String> teacherIds;
     List<String> studentIds;
     List<DepartmentResponse> departments;
