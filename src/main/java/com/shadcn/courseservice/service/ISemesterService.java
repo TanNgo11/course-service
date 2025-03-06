@@ -2,6 +2,7 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.request.CourseIdsRequest;
 import com.shadcn.courseservice.dto.response.*;
 
 public interface ISemesterService {
@@ -19,4 +20,6 @@ public interface ISemesterService {
     void closeRegistrationForSemester(long semesterId);
 
     SemesterResponse getCurrentOpenSemester();
+
+    void deleteCoursesByIds(CourseIdsRequest request);
 }

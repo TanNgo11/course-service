@@ -4,6 +4,7 @@ import static com.shadcn.courseservice.constant.PathConstant.*;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.request.CourseIdsRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,5 +81,12 @@ public class SemesterController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public ApiResponse<SemesterResponse> getCurrentOpenSemester() {
         return ApiResponse.success(semesterService.getCurrentOpenSemester());
+    }
+
+    @DeleteMapping("/delete-opened-courses/")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<Void> deleteCoursesByIds(@RequestBody CourseIdsRequest request) {
+        semesterService.deleteCoursesByIds(request);
+        return ApiResponse.empty();
     }
 }

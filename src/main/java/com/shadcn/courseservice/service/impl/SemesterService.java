@@ -3,6 +3,8 @@ package com.shadcn.courseservice.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.shadcn.courseservice.dto.request.CourseIdsRequest;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -141,5 +143,12 @@ public class SemesterService implements ISemesterService {
             throw new AppException(ErrorCode.SEMESTER_NOT_FOUND);
         }
         return semesterMapper.toSemesterResponse(semester);
+    }
+
+    @Override
+    public void deleteCoursesByIds(CourseIdsRequest request) {
+        List<Long> courseIds = request.getCourseIds();
+        List<Course> coursesToDelete = courseRepository.findAllById(courseIds);
+        courseRepository.deleteAll(coursesToDelete);
     }
 }
