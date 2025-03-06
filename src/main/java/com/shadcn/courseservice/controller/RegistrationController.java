@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.dto.request.RegistrationRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
+import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.RegistrationResponse;
 import com.shadcn.courseservice.service.IRegistrationService;
@@ -25,6 +26,7 @@ public class RegistrationController {
     IRegistrationService registrationService;
 
     @PostMapping("/student-registrations")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public ApiResponse<RegistrationResponse> registerStudentToCourse(@RequestBody RegistrationRequest request) {
         registrationService.registerStudentToCourse(
                 request.getStudentId(), request.getCourseIds(), request.getSemesterId());
@@ -63,6 +65,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/course-registrations")
+    @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<PageResponse<RegistrationResponse>> getAllRegistrationsForCourse(
             @RequestParam long courseId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
@@ -71,10 +74,46 @@ public class RegistrationController {
     }
 
     @GetMapping("/semester-registrations")
+    @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<PageResponse<RegistrationResponse>> getAllRegistrationsForSemester(
             @RequestParam long semesterId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(registrationService.getAllRegistrationsForSemester(semesterId, current, pageSize));
+    }
+
+    @GetMapping("/student-semester-registrations/{studentId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public ApiResponse<PageResponse<RegistrationResponse>> getAllRegistrationsForStudentAndSemester(
+            @PathVariable long studentId,
+            @RequestParam long semesterId,
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        return ApiResponse.success(
+                registrationService.getRegistrationsByStudentIdAndSemesterId(studentId, semesterId, current, pageSize));
+    }
+
+    @GetMapping("/student-registered-courses")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public ApiResponse<PageResponse<CourseResponse>> getAllRegisteredCoursesInSemesterByDepartmentForStudent(
+            @RequestParam String studentId,
+            @RequestParam String semesterId,
+            @RequestParam String departmentId,
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        return ApiResponse.success(registrationService.getAllRegisteredCoursesInSemesterByDepartmentForStudent(
+                studentId, semesterId, departmentId, current, pageSize));
+    }
+
+    @GetMapping("/student-unregistered-courses")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public ApiResponse<PageResponse<CourseResponse>> getAllUnregisteredCoursesInSemesterByDepartmentForStudent(
+            @RequestParam String studentId,
+            @RequestParam String semesterId,
+            @RequestParam String departmentId,
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        return ApiResponse.success(registrationService.getAllUnregisteredCoursesInSemesterByDepartmentForStudent(
+                studentId, semesterId, departmentId, current, pageSize));
     }
 }

@@ -12,8 +12,6 @@ public interface IDepartmentService {
 
     void addBaseCoursesToDepartment(Long departmentId, List<Long> baseCourseIds);
 
-    void removeCoursesFromDepartment(Long departmentId, List<Long> courseIds);
-
     void removeBaseCoursesFromDepartment(Long departmentId, List<Long> baseCourseIds);
 
     PageResponse<CourseResponse> getCoursesByDepartment(Long departmentId, Integer current, Integer pageSize);

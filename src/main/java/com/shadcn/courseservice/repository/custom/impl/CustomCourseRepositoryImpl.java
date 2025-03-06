@@ -6,13 +6,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shadcn.courseservice.entity.*;
 import com.shadcn.courseservice.repository.custom.CustomCourseRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.transaction.annotation.Transactional;
 
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @Repository
@@ -38,6 +41,54 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
     }
 
     @Override
+    public Page<Course> findUnregisteredCoursesByDepartmentIdAndSemesterIdAndStudentId(
+            String departmentId, String semesterId, String studentId, Pageable pageable) {
+        QCourse course = QCourse.course;
+        QRegistration registration = QRegistration.registration;
+
+        // Query to fetch all unregistered courses
+        List<Course> unregisteredCourses = queryFactory
+                .selectFrom(course)
+                .where(course.baseCourse
+                        .departments
+                        .any()
+                        .id
+                        .eq(Long.valueOf(departmentId))
+                        .and(course.semester.id.eq(Long.valueOf(semesterId)))
+                        .and(course.id.notIn(JPAExpressions.select(registration.course.id)
+                                .from(registration)
+                                .where(registration.studentProfile.studentId.eq(studentId)))))
+                .fetch();
+
+        return new PageImpl<>(unregisteredCourses, pageable, unregisteredCourses.size());
+    }
+
+    @Override
+    public Page<Course> findRegisteredCoursesByDepartmentIdAndSemesterIdAndStudentId(
+            String departmentId, String semesterId, String studentId, Pageable pageable) {
+        QRegistration registration = QRegistration.registration;
+
+        List<Course> courses = queryFactory
+                .select(registration.course)
+                .from(registration)
+                .where(registration
+                        .course
+                        .baseCourse
+                        .departments
+                        .any()
+                        .id
+                        .eq(Long.valueOf(departmentId))
+                        .and(registration
+                                .semester
+                                .id
+                                .eq(Long.valueOf(semesterId))
+                                .and(registration.studentProfile.studentId.eq(studentId))))
+                .fetch();
+
+        return new PageImpl<>(courses, pageable, courses.size());
+    }
+
+    @Override
     public Page<Course> findByDepartmentId(Long departmentId, Pageable pageable) {
         QCourse course = QCourse.course;
         List<Course> courses = queryFactory
@@ -46,6 +97,25 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
                 .fetch();
 
         return new PageImpl<>(courses, pageable, courses.size());
+    }
+
+    @Override
+    public List<Course> findByDepartmentIdToList(Long departmentId) {
+        QCourse course = QCourse.course;
+        return queryFactory
+                .selectFrom(course)
+                .where(course.baseCourse.departments.any().id.eq(departmentId))
+                .fetch();
+    }
+
+    @Override
+    @Transactional
+    public void removeOpeningCoursesFromSemester(Long semesterId, List<Long> courseIds) {
+        QCourse course = QCourse.course;
+        queryFactory
+                .delete(course)
+                .where(course.semester.id.eq(semesterId).and(course.id.in(courseIds)))
+                .execute();
     }
 
     @Override

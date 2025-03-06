@@ -89,6 +89,11 @@ public class SemesterService implements ISemesterService {
     }
 
     @Override
+    public void removeOpenCoursesFromSemester(List<Long> openingCourseIds, long semesterId) {
+        courseRepository.removeOpeningCoursesFromSemester(semesterId, openingCourseIds);
+    }
+
+    @Override
     public PageResponse<CourseResponse> getAllOpenCoursesInSemester(String semesterId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Page<Course> courses = courseRepository.findBySemesterId(Long.parseLong(semesterId), pageable);

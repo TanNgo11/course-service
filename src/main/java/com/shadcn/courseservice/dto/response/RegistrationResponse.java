@@ -1,5 +1,9 @@
 package com.shadcn.courseservice.dto.response;
 
+import java.time.LocalDate;
+
+import com.shadcn.courseservice.enums.RegistrationStatus;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,9 +13,11 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegistrationResponse {
-    long id;
-    long studentId;
-    long courseId;
-    long semesterId;
-    boolean registrationOpen;
+    String studentId;
+    String courseCode;
+    RegistrationStatus status;
+    String semesterName;
+    String semesterId;
+    LocalDate registrationDate;
+    LocalDate cancellationDeadline;
 }

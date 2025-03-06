@@ -35,12 +35,12 @@ public class DepartmentController {
         return ApiResponse.empty();
     }
 
-    @DeleteMapping("/courses")
-    @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<Void> removeCoursesFromDepartment(@RequestBody DepartmentCourseRequest request) {
-        departmentService.removeCoursesFromDepartment(request.getDepartmentId(), request.getCourseIds());
-        return ApiResponse.empty();
-    }
+    //    @DeleteMapping("/courses")
+    //    @PreAuthorize("hasRole('ADMIN')")
+    //    ApiResponse<Void> removeCoursesFromDepartment(@RequestBody DepartmentCourseRequest request) {
+    //        departmentService.removeCoursesFromDepartment(request.getDepartmentId(), request.getCourseIds());
+    //        return ApiResponse.empty();
+    //    }
 
     @DeleteMapping("/base-courses")
     @PreAuthorize("hasRole('ADMIN')")
@@ -79,7 +79,7 @@ public class DepartmentController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     ApiResponse<PageResponse<DepartmentResponse>> getAllDepartments(
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {

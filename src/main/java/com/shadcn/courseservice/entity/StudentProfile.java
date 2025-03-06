@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.shadcn.courseservice.enums.Gender;
 import com.shadcn.courseservice.enums.Present;
 import com.shadcn.courseservice.validator.DobConstraint;
@@ -64,6 +65,8 @@ public class StudentProfile extends BaseEntity implements Serializable {
 
     String religion;
 
+    String academicYearId;
+
     String citizenId;
     // At the moment just have Information technology and Business Administration
     String faculty;
@@ -76,6 +79,7 @@ public class StudentProfile extends BaseEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     Present present;
 
-    @OneToMany(mappedBy = "studentProfile")
+    @OneToMany(mappedBy = "studentProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Registration> registrations;
 }

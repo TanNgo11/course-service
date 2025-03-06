@@ -57,6 +57,14 @@ public class SemesterController {
         return ApiResponse.empty();
     }
 
+    @DeleteMapping("/remove-open-courses/{semesterId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public ApiResponse<Void> removeOpenCoursesFromSemester(
+            @RequestBody List<Long> openingCourseIds, @PathVariable long semesterId) {
+        semesterService.removeOpenCoursesFromSemester(openingCourseIds, semesterId);
+        return ApiResponse.empty();
+    }
+
     @GetMapping("/open-courses")
     @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public ApiResponse<PageResponse<CourseResponse>> getAllOpenCoursesInSemester(

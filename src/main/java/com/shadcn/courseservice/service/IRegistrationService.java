@@ -2,6 +2,7 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.RegistrationResponse;
 import com.shadcn.courseservice.entity.Registration;
@@ -23,4 +24,13 @@ public interface IRegistrationService {
 
     void addStudentToCourse(List<Registration> registrations);
     // void addStudentsToCourseInSemester();
+
+    PageResponse<RegistrationResponse> getRegistrationsByStudentIdAndSemesterId(
+            long studentId, long semesterId, int current, int pageSize);
+
+    PageResponse<CourseResponse> getAllUnregisteredCoursesInSemesterByDepartmentForStudent(
+            String studentId, String semesterId, String departmentId, int current, int pageSize);
+
+    PageResponse<CourseResponse> getAllRegisteredCoursesInSemesterByDepartmentForStudent(
+            String studentId, String semesterId, String departmentId, int current, int pageSize);
 }
