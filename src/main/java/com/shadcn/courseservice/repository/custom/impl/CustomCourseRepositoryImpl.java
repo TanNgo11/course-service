@@ -15,7 +15,6 @@ import com.shadcn.courseservice.repository.custom.CustomCourseRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.transaction.annotation.Transactional;
 
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @Repository

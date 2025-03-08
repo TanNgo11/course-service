@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.shadcn.courseservice.enums.BaseCourseStatus;
 
 import lombok.*;
@@ -40,6 +41,7 @@ public class BaseCourse extends BaseEntity {
     //    private List<Department> departments;
 
     @OneToMany(mappedBy = "baseCourse", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     List<Course> courses;
 
     @ManyToMany(mappedBy = "baseCourses", fetch = FetchType.LAZY)

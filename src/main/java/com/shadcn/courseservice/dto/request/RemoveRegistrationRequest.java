@@ -10,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CourseIdsRequest {
-    List<Long> courseIds;
+public class RemoveRegistrationRequest {
+    long studentId;
+    List<String> courseCodes;
+    long semesterId;
 }

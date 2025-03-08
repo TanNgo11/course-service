@@ -16,6 +16,8 @@ public interface RegistrationMapper {
         @Mapping(target = "courseCode", source = "registration.course.baseCourse.code"),
         @Mapping(target = "semesterId", source = "registration.semester.id"),
         @Mapping(target = "semesterName", source = "registration.semester.name"),
+        @Mapping(target = "courseDetails", source = "registration.course"),
+        @Mapping(target = "baseCourseDetails", source = "registration.course.baseCourse")
     })
     RegistrationResponse toRegistrationResponse(Registration registration);
 

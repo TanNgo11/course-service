@@ -4,10 +4,10 @@ import static com.shadcn.courseservice.constant.PathConstant.*;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.request.CourseIdsRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.shadcn.courseservice.dto.request.CourseIdsRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
