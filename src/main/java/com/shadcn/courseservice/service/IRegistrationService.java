@@ -10,7 +10,7 @@ import com.shadcn.courseservice.entity.Registration;
 public interface IRegistrationService {
     void registerStudentToCourse(long studentId, List<Long> courseId, long semesterId);
 
-    void unregisterStudentsFromCourseForStudent(long courseId, long studentId);
+    void unregisterStudentsFromCourseForStudent(long studentId, List<String> courseCodes, long semesterId);
 
     void unregisterStudentsFromCourseForAdmin(long courseId, long studentId);
 

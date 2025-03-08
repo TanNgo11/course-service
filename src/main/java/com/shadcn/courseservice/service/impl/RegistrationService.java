@@ -84,6 +84,7 @@ public class RegistrationService implements IRegistrationService {
             // Create and save Registration
             Registration registration = Registration.builder()
                     .studentProfile(studentProfile)
+                    .studentId(String.valueOf(studentId))
                     .course(currentCourse)
                     .registrationDate(now)
                     .semester(currentSemester)
@@ -96,18 +97,15 @@ public class RegistrationService implements IRegistrationService {
     }
 
     @Override
-    public void unregisterStudentsFromCourseForStudent(long courseId, long studentId) {
-        Registration registration = registrationRepository.findByStudentIdAndCourseId(studentId, courseId);
-        if (registration == null) {
-            throw new AppException(ErrorCode.REGISTRATION_NOT_FOUND);
+    public void unregisterStudentsFromCourseForStudent(long studentId, List<String> courseCodes, long semesterId) {
+        for (String code : courseCodes) {
+            Registration registration = registrationRepository.findByRegistrationByStudentIdAndCourseCodeAndSemesterId(
+                    studentId, code, semesterId);
+            if (registration == null) {
+                throw new AppException(ErrorCode.REGISTRATION_NOT_FOUND);
+            }
+            registrationRepository.delete(registration);
         }
-
-        if (registration.getCancellationDeadline() != null
-                && registration.getCancellationDeadline().isBefore(LocalDate.now())) {
-            throw new AppException(ErrorCode.REGISTRATION_CANCELLATION_DEADLINE_PASSED);
-        }
-
-        registrationRepository.delete(registration);
     }
 
     @Override

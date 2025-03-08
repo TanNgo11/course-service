@@ -37,6 +37,12 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
     boolean existsByStudentIdAndCourseIdAndSemesterId(
             @Param("studentId") long studentId, @Param("courseId") long courseId, @Param("semesterId") long semesterId);
 
-    @Query("SELECT r FROM Registration r WHERE r.studentProfile.studentId = :studentId AND r.semester.id = :semesterId")
+    @Query(
+            "SELECT r FROM Registration r WHERE r.studentProfile.studentId = :studentId AND r.semester.id = :semesterId  AND r.status = 'APPROVED'")
     Page<Registration> getRegistrationByStudentIdAndSemesterId(long studentId, long semesterId, Pageable pageable);
+
+    @Query(
+            "SELECT r FROM Registration r WHERE r.studentProfile.studentId = :studentId AND r.semester.id = :semesterId AND r.course.baseCourse.code = :courseCode")
+    Registration findByRegistrationByStudentIdAndCourseCodeAndSemesterId(
+            long studentId, String courseCode, long semesterId);
 }
