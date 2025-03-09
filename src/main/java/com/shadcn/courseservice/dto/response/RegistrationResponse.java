@@ -15,9 +15,12 @@ import lombok.experimental.FieldDefaults;
 public class RegistrationResponse {
     String studentId;
     String courseCode;
+    String courseName;
+    String courseDescription;
     RegistrationStatus status;
     String semesterName;
     String semesterId;
     LocalDate registrationDate;
     LocalDate cancellationDeadline;
+    String thumbnail;
 }

@@ -127,12 +127,8 @@ public class RegistrationService implements IRegistrationService {
 
     @Override
     public PageResponse<RegistrationResponse> getAllRegistrationsForStudent(long studentId, int current, int pageSize) {
-        //        StudentProfile studentProfile = profileMapper.toStudentProfile(
-        //                profileService.getPublicStudentProfiles(new long[] {studentId}).get(0));
-        //        if (studentProfile == null) {
-        //            throw new AppException(ErrorCode.STUDENT_NOT_FOUND);
-        //        }
         Pageable pageable = PageRequest.of(current - 1, pageSize);
+
         Page<Registration> registrations = registrationRepository.findAllByStudentProfileId(studentId, pageable);
 
         return ConverToPaginationResponse.toPageResponse(
