@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.dto.request.RegistrationRequest;
+import com.shadcn.courseservice.dto.request.RemoveRegistrationRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
@@ -35,8 +36,9 @@ public class RegistrationController {
 
     @DeleteMapping("/unregister-student")
     @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
-    public ApiResponse<Void> unregisterStudentFromCourse(@RequestParam long studentId, @RequestParam long courseId) {
-        registrationService.unregisterStudentsFromCourseForStudent(studentId, courseId);
+    public ApiResponse<Void> unregisterStudentFromCourse(@RequestBody RemoveRegistrationRequest request) {
+        registrationService.unregisterStudentsFromCourseForStudent(
+                request.getStudentId(), request.getCourseCodes(), request.getSemesterId());
         return ApiResponse.empty();
     }
 

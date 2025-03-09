@@ -6,6 +6,8 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.shadcn.courseservice.enums.CourseStatus;
 
@@ -22,6 +24,7 @@ import lombok.experimental.FieldDefaults;
 public class Course extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "base_course_id", nullable = false)
+    @JsonBackReference
     BaseCourse baseCourse;
 
     String imageUri;
@@ -43,19 +46,20 @@ public class Course extends BaseEntity {
     //    List<Department> departments;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     List<Lesson> lessons;
 
     @ManyToOne
     @JoinColumn(name = "semester_id", nullable = false)
+    @JsonIgnore
     Semester semester;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
-    List<Enrollment> enrollments;
-
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<TeacherReference> teacherReferences;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<CourseFile> files;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)

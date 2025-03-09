@@ -22,6 +22,8 @@ public class Registration extends BaseEntity {
     @JsonBackReference
     StudentProfile studentProfile;
 
+    String studentId;
+
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "course_id")
