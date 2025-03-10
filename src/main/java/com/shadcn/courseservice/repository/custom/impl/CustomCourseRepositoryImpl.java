@@ -26,7 +26,7 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
     public Page<Course> findByDepartmentIdAndSemesterId(String departmentId, String semesterId, Pageable pageable) {
         QCourse course = QCourse.course;
 
-        List<Course> courses = queryFactory
+        List<Course> totalCourses = queryFactory
                 .selectFrom(course)
                 .where(course.baseCourse
                         .departments
@@ -36,7 +36,20 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
                         .and(course.semester.id.eq(Long.valueOf(semesterId))))
                 .fetch();
 
-        return new PageImpl<>(courses, pageable, courses.size());
+        // Fetch paginated results
+        List<Course> courses = queryFactory
+                .selectFrom(course)
+                .where(course.baseCourse
+                        .departments
+                        .any()
+                        .id
+                        .eq(Long.valueOf(departmentId))
+                        .and(course.semester.id.eq(Long.valueOf(semesterId))))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return new PageImpl<>(courses, pageable, totalCourses.size());
     }
 
     @Override
@@ -45,7 +58,6 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
         QCourse course = QCourse.course;
         QRegistration registration = QRegistration.registration;
 
-        // Query to fetch all unregistered courses
         List<Course> unregisteredCourses = queryFactory
                 .selectFrom(course)
                 .where(course.baseCourse
@@ -57,6 +69,8 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
                         .and(course.id.notIn(JPAExpressions.select(registration.course.id)
                                 .from(registration)
                                 .where(registration.studentProfile.studentId.eq(studentId)))))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return new PageImpl<>(unregisteredCourses, pageable, unregisteredCourses.size());
@@ -82,6 +96,8 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
                                 .id
                                 .eq(Long.valueOf(semesterId))
                                 .and(registration.studentProfile.studentId.eq(studentId))))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return new PageImpl<>(courses, pageable, courses.size());
@@ -93,6 +109,8 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
         List<Course> courses = queryFactory
                 .selectFrom(course)
                 .where(course.baseCourse.departments.any().id.eq(departmentId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return new PageImpl<>(courses, pageable, courses.size());
@@ -133,6 +151,8 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
                         .eq(departmentId)
                         .and(course.semester.id.ne(semesterId).or(course.semester.id.isNull())))
                 .distinct()
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return new PageImpl<>(baseCourses, pageable, baseCourses.size());

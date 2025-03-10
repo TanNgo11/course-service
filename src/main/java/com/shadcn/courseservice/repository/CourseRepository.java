@@ -24,4 +24,6 @@ public interface CourseRepository
     Page<Course> findBySemesterId(long semesterId, Pageable pageable);
 
     void removeCourseById(Long id);
+
+    Course getCourseById(Long id);
 }

@@ -67,26 +67,24 @@ public class CourseController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/{departmentId}/course/{courseId}/students")
+    @GetMapping("/course/{courseId}/students")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<PageResponse<StudentProfileResponse>> getAllStudentsByIds(
-            @PathVariable String departmentId,
             @PathVariable String courseId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(
-                courseService.getAllStudentsInCourseByIds(departmentId, courseId, current, pageSize));
+                courseService.getAllStudentsInCourseByIds(courseId, current, pageSize));
     }
 
-    @GetMapping("/{departmentId}/course/{courseId}/teachers")
+    @GetMapping("/course/{courseId}/teachers")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<PageResponse<TeacherProfileResponse>> getAllTeachersByIds(
-            @PathVariable String departmentId,
             @PathVariable String courseId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(
-                courseService.getAllTeachersInCourseByIds(departmentId, courseId, current, pageSize));
+                courseService.getAllTeachersInCourseByIds(courseId, current, pageSize));
     }
 
     @PostMapping(value = "/{departmentId}/course/{courseId}/upload-image")

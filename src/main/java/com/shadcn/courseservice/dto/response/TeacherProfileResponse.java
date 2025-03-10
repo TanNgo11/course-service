@@ -2,16 +2,17 @@ package com.shadcn.courseservice.dto.response;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shadcn.courseservice.enums.Gender;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
@@ -20,49 +21,38 @@ import lombok.experimental.SuperBuilder;
 public class TeacherProfileResponse extends UserProfileResponse {
     String teacherId;
 
-    String grade;
+    String username;
 
-    LocalDate enrollmentDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    LocalDate hireDate;
 
-    String major;
+    String departmentId;
+
+    Double salary;
+
+    String officeHours;
+
+    String address;
 
     String emergencyContactName;
 
     String emergencyContactPhoneNumber;
 
-    String email;
-
-    String hireDate;
-
-    String avatarPath;
-
-    // 54 dân tộc :)))
-    String nation;
-
-    String religion;
-
-    String citizenId;
-
-    String present;
-
     String firstName;
+
+    String middleName;
 
     String lastName;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate dateOfBirth;
 
-    String city;
-
     String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
     Gender gender;
 
-    String address;
+    String email;
 
-    String department;
-
-    Double salary;
-
-    String officeHours;
+    String avatarPath;
 }

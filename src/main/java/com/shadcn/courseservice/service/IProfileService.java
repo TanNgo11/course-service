@@ -12,6 +12,8 @@ public interface IProfileService {
 
     StudentProfileResponse getStudentProfileByStudentEntityId(long studentId);
 
+    TeacherProfileResponse getTeacherProfileByTeacherEntityId(long teacherId);
+
     boolean isStudentExist(long studentId);
 
     boolean isTeacherExist(long teacherId);

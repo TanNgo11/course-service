@@ -5,6 +5,7 @@ import static com.shadcn.courseservice.constant.PathConstant.API_V1_REGISTRATION
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.shadcn.courseservice.dto.request.AssignTeacherRequest;
 import com.shadcn.courseservice.dto.request.RegistrationRequest;
 import com.shadcn.courseservice.dto.request.RemoveRegistrationRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
@@ -117,5 +118,21 @@ public class RegistrationController {
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(registrationService.getAllUnregisteredCoursesInSemesterByDepartmentForStudent(
                 studentId, semesterId, departmentId, current, pageSize));
+    }
+
+    @PostMapping("/assign-teacher")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<Void> registerTeacherToCourse(@RequestBody AssignTeacherRequest request) {
+        registrationService.registerTeacherToCourse(
+                request.getTeacherId(), request.getCourseIds(), request.getSemesterId());
+        return ApiResponse.empty();
+    }
+
+    @DeleteMapping("/remove-teacher")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<Void> unregisterTeacherFromCourse(@RequestBody AssignTeacherRequest request) {
+        registrationService.unregisterTeacherFromCourse(
+                request.getTeacherId(), request.getCourseIds(), request.getSemesterId());
+        return ApiResponse.empty();
     }
 }

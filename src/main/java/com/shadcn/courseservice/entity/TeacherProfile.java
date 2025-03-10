@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shadcn.courseservice.enums.Gender;
 
 import lombok.*;
@@ -19,17 +20,14 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table(name = "teacher_profile")
 public class TeacherProfile extends BaseEntity implements Serializable {
-    @Column(unique = true)
     String teacherId;
 
-    @Column(unique = true)
     String username;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate hireDate;
 
-    String department;
-
-    String major;
+    String departmentId;
 
     Double salary;
 
@@ -43,11 +41,13 @@ public class TeacherProfile extends BaseEntity implements Serializable {
 
     String firstName;
 
+    String middleName;
+
     String lastName;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate dateOfBirth;
 
-    // @Column(unique = true)
     String phoneNumber;
 
     @Enumerated(EnumType.STRING)

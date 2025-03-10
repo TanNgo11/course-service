@@ -27,4 +27,9 @@ public interface ProfileClient {
             value = "/api/v1/users/students/student-entity-id/{studentId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     ApiResponse<StudentProfileResponse> getStudentProfileByStudentEntityId(@PathVariable String studentId);
+
+    @GetMapping(
+            value = "/api/v1/users/teachers/teacher-entity-id/{teacherId}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    ApiResponse<TeacherProfileResponse> getStudentProfileByTeacherEntityId(@PathVariable String teacherId);
 }
