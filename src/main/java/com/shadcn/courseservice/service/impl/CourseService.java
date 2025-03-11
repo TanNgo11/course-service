@@ -143,15 +143,12 @@ public class CourseService implements ICourseService {
     public PageResponse<StudentProfileResponse> getAllStudentsInCourseByIds(
             String courseId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
-        Course course = courseRepository.getCourseById(Long.valueOf(courseId));
+        Course course = courseRepository
+                .getCourseById(Long.valueOf(courseId))
+                .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
 
-        if (course == null) {
-            throw new AppException(ErrorCode.COURSE_NOT_FOUND);
-        }
-
-        long[] studentIdsArray =
-                course.getStudentIds().stream().mapToLong(Long::valueOf).toArray();
-        List<StudentProfileResponse> studentProfiles = profileService.getPublicStudentProfiles(studentIdsArray);
+        long[] studentIdsArray = courseRepository.findAllStudentIdsByCourseId(Long.valueOf(courseId));
+        List<StudentProfileResponse> studentProfiles = profileService.getStudentProfilesByEntityIds(studentIdsArray);
         Page<StudentProfileResponse> responses = new PageImpl<>(studentProfiles, pageable, studentProfiles.size());
 
         return ConverToPaginationResponse.toPageResponse(responses, Function.identity(), current);
@@ -161,15 +158,13 @@ public class CourseService implements ICourseService {
     public PageResponse<TeacherProfileResponse> getAllTeachersInCourseByIds(
             String courseId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
-        Course course = courseRepository.getCourseById(Long.valueOf(courseId));
+        Course course = courseRepository
+                .getCourseById(Long.valueOf(courseId))
+                .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
 
-        if (course == null) {
-            throw new AppException(ErrorCode.COURSE_NOT_FOUND);
-        }
-
-        long[] teacherIdsArray =
-                course.getTeacherIds().stream().mapToLong(Long::valueOf).toArray();
-        List<TeacherProfileResponse> teacherProfiles = profileService.getPublicTeacherProfiles(teacherIdsArray);
+        long[] teacherIdsArray = courseRepository.findAllTeacherIdsByCourseId(Long.valueOf(courseId));
+        log.info("length: ", teacherIdsArray.length);
+        List<TeacherProfileResponse> teacherProfiles = profileService.getTeacherProfilesByEntityIds(teacherIdsArray);
         Page<TeacherProfileResponse> responses = new PageImpl<>(teacherProfiles, pageable, teacherProfiles.size());
 
         return ConverToPaginationResponse.toPageResponse(responses, Function.identity(), current);

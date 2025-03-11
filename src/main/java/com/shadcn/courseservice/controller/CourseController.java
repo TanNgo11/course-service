@@ -73,8 +73,7 @@ public class CourseController {
             @PathVariable String courseId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
-        return ApiResponse.success(
-                courseService.getAllStudentsInCourseByIds(courseId, current, pageSize));
+        return ApiResponse.success(courseService.getAllStudentsInCourseByIds(courseId, current, pageSize));
     }
 
     @GetMapping("/course/{courseId}/teachers")
@@ -83,8 +82,7 @@ public class CourseController {
             @PathVariable String courseId,
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
-        return ApiResponse.success(
-                courseService.getAllTeachersInCourseByIds(courseId, current, pageSize));
+        return ApiResponse.success(courseService.getAllTeachersInCourseByIds(courseId, current, pageSize));
     }
 
     @PostMapping(value = "/{departmentId}/course/{courseId}/upload-image")
