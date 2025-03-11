@@ -1,12 +1,17 @@
 package com.shadcn.courseservice.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.shadcn.courseservice.entity.Course;
 import com.shadcn.courseservice.repository.custom.CustomCourseRepository;
+
+import feign.Param;
 
 public interface CourseRepository
         extends JpaRepository<Course, Long>, QuerydslPredicateExecutor<Course>, CustomCourseRepository {
@@ -25,5 +30,11 @@ public interface CourseRepository
 
     void removeCourseById(Long id);
 
-    Course getCourseById(Long id);
+    Optional<Course> getCourseById(@Param("id") Long id);
+
+    @Query("SELECT c.teacherIds FROM Course c WHERE c.id = :courseId")
+    long[] findAllTeacherIdsByCourseId(@Param("courseId") Long courseId);
+
+    @Query("SELECT c.studentIds FROM Course c WHERE c.id = :courseId")
+    long[] findAllStudentIdsByCourseId(@Param("courseId") Long courseId);
 }
