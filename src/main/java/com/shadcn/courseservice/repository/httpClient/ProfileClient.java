@@ -32,4 +32,10 @@ public interface ProfileClient {
             value = "/api/v1/users/teachers/teacher-entity-id/{teacherId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     ApiResponse<TeacherProfileResponse> getStudentProfileByTeacherEntityId(@PathVariable String teacherId);
+
+    @GetMapping(value = "/api/v1/users/teachers/entity-ids", produces = MediaType.APPLICATION_JSON_VALUE)
+    ApiResponse<List<TeacherProfileResponse>> getTeacherProfilesByEntityIds(@RequestParam long[] teacherIds);
+
+    @GetMapping(value = "/api/v1/users/students/entity-ids", produces = MediaType.APPLICATION_JSON_VALUE)
+    ApiResponse<List<StudentProfileResponse>> getStudentProfilesByEntityIds(@RequestParam long[] studentIds);
 }

@@ -21,11 +21,9 @@ public interface ICourseService {
 
     void removeSemesterFromCourse(String departmentId, String courseId, List<String> semesterIds);
 
-    PageResponse<StudentProfileResponse> getAllStudentsInCourseByIds(
-            String courseId, int current, int pageSize);
+    PageResponse<StudentProfileResponse> getAllStudentsInCourseByIds(String courseId, int current, int pageSize);
 
-    PageResponse<TeacherProfileResponse> getAllTeachersInCourseByIds(
-           String courseId, int current, int pageSize);
+    PageResponse<TeacherProfileResponse> getAllTeachersInCourseByIds(String courseId, int current, int pageSize);
 
     void uploadCourseImage(String departmentId, String courseId, MultipartFile image);
 

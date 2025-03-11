@@ -3,6 +3,7 @@ package com.shadcn.courseservice.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.shadcn.courseservice.dto.response.StudentProfileResponse;
 import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
@@ -12,10 +13,13 @@ import com.shadcn.courseservice.service.IProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Component
+@Service
+@Slf4j
 public class ProfileService implements IProfileService {
     ProfileClient profileClient;
 
@@ -27,6 +31,19 @@ public class ProfileService implements IProfileService {
     @Override
     public List<TeacherProfileResponse> getPublicTeacherProfiles(long[] teacherIds) {
         return profileClient.getPublicTeacherProfile(teacherIds).getResult();
+    }
+
+    @Override
+    public List<TeacherProfileResponse> getTeacherProfilesByEntityIds(long[] teacherIds) {
+        log.info("ids: ", teacherIds);
+        return profileClient
+                .getTeacherProfilesByEntityIds(teacherIds.length == 0 ? new long[] {} : teacherIds)
+                .getResult();
+    }
+
+    @Override
+    public List<StudentProfileResponse> getStudentProfilesByEntityIds(long[] studentIds) {
+        return profileClient.getStudentProfilesByEntityIds(studentIds).getResult();
     }
 
     @Override

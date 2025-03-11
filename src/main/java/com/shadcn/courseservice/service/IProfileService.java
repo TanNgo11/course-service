@@ -10,6 +10,10 @@ public interface IProfileService {
 
     List<TeacherProfileResponse> getPublicTeacherProfiles(long[] teacherIds);
 
+    List<TeacherProfileResponse> getTeacherProfilesByEntityIds(long[] teacherIds);
+
+    List<StudentProfileResponse> getStudentProfilesByEntityIds(long[] studentIds);
+
     StudentProfileResponse getStudentProfileByStudentEntityId(long studentId);
 
     TeacherProfileResponse getTeacherProfileByTeacherEntityId(long teacherId);
