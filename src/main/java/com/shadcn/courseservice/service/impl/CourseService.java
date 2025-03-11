@@ -141,10 +141,13 @@ public class CourseService implements ICourseService {
 
     @Override
     public PageResponse<StudentProfileResponse> getAllStudentsInCourseByIds(
-            String departmentId, String courseId, int current, int pageSize) {
+            String courseId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
-        Department department = getDepartment(Long.valueOf(departmentId));
-        Course course = getCourse(department, courseId);
+        Course course = courseRepository.getCourseById(Long.valueOf(courseId));
+
+        if (course == null) {
+            throw new AppException(ErrorCode.COURSE_NOT_FOUND);
+        }
 
         long[] studentIdsArray =
                 course.getStudentIds().stream().mapToLong(Long::valueOf).toArray();
@@ -156,10 +159,13 @@ public class CourseService implements ICourseService {
 
     @Override
     public PageResponse<TeacherProfileResponse> getAllTeachersInCourseByIds(
-            String departmentId, String courseId, int current, int pageSize) {
+            String courseId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
-        Department department = getDepartment(Long.valueOf(departmentId));
-        Course course = getCourse(department, courseId);
+        Course course = courseRepository.getCourseById(Long.valueOf(courseId));
+
+        if (course == null) {
+            throw new AppException(ErrorCode.COURSE_NOT_FOUND);
+        }
 
         long[] teacherIdsArray =
                 course.getTeacherIds().stream().mapToLong(Long::valueOf).toArray();
