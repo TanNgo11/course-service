@@ -280,4 +280,17 @@ public class RegistrationService implements IRegistrationService {
 
         return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
     }
+
+    @Override
+    public void approveStudentRegistration(List<Long> registrationIds, long semesterId) {
+        List<Registration> registrations = registrationRepository.findAllRegistrationBySemesterId(semesterId);
+
+        for (Registration registration : registrations) {
+            if (registrationIds.contains(registration.getId())) {
+                registration.setStatus(RegistrationStatus.APPROVED);
+            }
+        }
+
+        registrationRepository.saveAll(registrations);
+    }
 }

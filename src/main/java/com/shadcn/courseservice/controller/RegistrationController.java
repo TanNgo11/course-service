@@ -5,6 +5,7 @@ import static com.shadcn.courseservice.constant.PathConstant.API_V1_REGISTRATION
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.shadcn.courseservice.dto.request.ApproveRegistrationRequest;
 import com.shadcn.courseservice.dto.request.AssignTeacherRequest;
 import com.shadcn.courseservice.dto.request.RegistrationRequest;
 import com.shadcn.courseservice.dto.request.RemoveRegistrationRequest;
@@ -133,6 +134,13 @@ public class RegistrationController {
     public ApiResponse<Void> unregisterTeacherFromCourse(@RequestBody AssignTeacherRequest request) {
         registrationService.unregisterTeacherFromCourse(
                 request.getTeacherId(), request.getCourseIds(), request.getSemesterId());
+        return ApiResponse.empty();
+    }
+
+    @PostMapping("/approve-registrations")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<Void> approveStudentRegistration(@RequestBody ApproveRegistrationRequest request) {
+        registrationService.approveStudentRegistration(request.getRegistrationIds(), request.getSemesterId());
         return ApiResponse.empty();
     }
 }

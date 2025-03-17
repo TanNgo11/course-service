@@ -5,7 +5,6 @@ import java.util.List;
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.RegistrationResponse;
-import com.shadcn.courseservice.dto.response.StudentProfileResponse;
 import com.shadcn.courseservice.entity.Registration;
 
 public interface IRegistrationService {
@@ -38,4 +37,6 @@ public interface IRegistrationService {
 
     PageResponse<CourseResponse> getAllRegisteredCoursesInSemesterByDepartmentForStudent(
             String studentId, String semesterId, String departmentId, int current, int pageSize);
+
+    void approveStudentRegistration(List<Long> registrationIds, long semesterId);
 }
