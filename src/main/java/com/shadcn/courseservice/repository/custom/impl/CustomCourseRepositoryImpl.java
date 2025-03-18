@@ -68,7 +68,7 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
                         .and(course.semester.id.eq(Long.valueOf(semesterId)))
                         .and(course.id.notIn(JPAExpressions.select(registration.course.id)
                                 .from(registration)
-                                .where(registration.studentProfile.studentId.eq(studentId)))))
+                                .where(registration.studentReference.studentId.eq(Long.valueOf(studentId))))))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -95,7 +95,7 @@ public class CustomCourseRepositoryImpl implements CustomCourseRepository {
                                 .semester
                                 .id
                                 .eq(Long.valueOf(semesterId))
-                                .and(registration.studentProfile.studentId.eq(studentId))))
+                                .and(registration.studentReference.studentId.eq(Long.valueOf(studentId)))))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

@@ -26,7 +26,7 @@ public class ReferenceController {
     @PostMapping("/teachers")
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> addATeacherReference(@RequestBody TeacherReferenceCreateRequest request) {
-        referenceService.addATeacherReference(request.getTeacherId(), request.getCourseId(), request.getDepartmentId());
+        referenceService.addATeacherReference(request.getTeacherId(), request.getDepartmentId());
         return ApiResponse.empty();
     }
 

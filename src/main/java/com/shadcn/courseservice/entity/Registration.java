@@ -18,11 +18,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Registration extends BaseEntity {
-    @ManyToOne
-    @JsonBackReference
-    StudentProfile studentProfile;
 
-    String studentId;
+    @ManyToOne
+    StudentReference studentReference;
 
     @ManyToOne
     @JsonBackReference
@@ -39,5 +37,5 @@ public class Registration extends BaseEntity {
 
     LocalDate registrationDate;
 
-    LocalDate cancellationDeadline; // Allow cancellation until this date
+    LocalDate cancellationDeadline;
 }

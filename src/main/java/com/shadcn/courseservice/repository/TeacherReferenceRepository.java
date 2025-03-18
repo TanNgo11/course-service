@@ -5,5 +5,11 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.shadcn.courseservice.entity.TeacherReference;
 
+import java.util.Optional;
+
 public interface TeacherReferenceRepository
-        extends JpaRepository<TeacherReference, Long>, QuerydslPredicateExecutor<TeacherReference> {}
+        extends JpaRepository<TeacherReference, Long>, QuerydslPredicateExecutor<TeacherReference> {
+    
+    Optional<TeacherReference> findByTeacherId(Long teacherId);
+ 
+}

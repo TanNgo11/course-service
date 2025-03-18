@@ -29,13 +29,11 @@ public class ReferenceService implements IReferenceService {
 
     @Override
     @Transactional
-    public void addATeacherReference(Long teacherId, Long courseId, Long departmentId) {
-        Course course = getCourse(courseId);
+    public void addATeacherReference(Long teacherId, Long departmentId) {
         Department department = getDepartment(departmentId);
 
         TeacherReference teacherReference = TeacherReference.builder()
                 .teacherId(teacherId)
-                .course(course)
                 .department(department)
                 .build();
 

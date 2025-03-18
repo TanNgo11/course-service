@@ -12,7 +12,6 @@ import com.shadcn.courseservice.entity.Registration;
 public interface RegistrationMapper {
 
     @Mappings({
-        @Mapping(target = "studentId", source = "registration.studentProfile.studentId"),
         @Mapping(target = "courseName", source = "registration.course.baseCourse.name"),
         @Mapping(target = "courseDescription", source = "registration.course.baseCourse.description"),
         @Mapping(target = "courseCode", source = "registration.course.baseCourse.code"),
