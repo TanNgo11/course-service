@@ -14,4 +14,5 @@ public class AssignTeacherRequest {
     long teacherId;
     List<Long> courseIds;
     long semesterId;
+    long departmentId;
 }

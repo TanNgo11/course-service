@@ -5,13 +5,12 @@ import java.util.List;
 import com.shadcn.courseservice.dto.response.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.RegistrationResponse;
-import com.shadcn.courseservice.dto.response.StudentProfileResponse;
 import com.shadcn.courseservice.entity.Registration;
 
 public interface IRegistrationService {
     void registerStudentToCourse(long studentId, List<Long> courseId, long semesterId);
 
-    void registerTeacherToCourse(long teacherId, List<Long> courseId, long semesterId);
+    void registerTeacherToCourse(long teacherId, List<Long> courseId, long semesterId, long departmentId);
 
     void unregisterTeacherFromCourse(long teacherId, List<Long> courseId, long semesterId);
 

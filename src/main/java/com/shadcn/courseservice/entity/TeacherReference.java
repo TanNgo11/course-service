@@ -1,5 +1,6 @@
 package com.shadcn.courseservice.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -18,9 +19,6 @@ public class TeacherReference extends BaseEntity {
 
     Long teacherId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id")
-    Course course;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
@@ -31,5 +29,5 @@ public class TeacherReference extends BaseEntity {
             name = "course_teacher",
             joinColumns = @JoinColumn(name = "teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id"))
-    List<Course> courses;
+    List<Course> courses = new ArrayList<>();
 }

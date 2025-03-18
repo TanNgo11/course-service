@@ -30,8 +30,12 @@ public class StudentReference extends BaseEntity {
     @JoinColumn(name = "academic_year_id")
     AcademicYear academicYear;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    List<Enrollment> enrollments;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "course_student",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    List<Course> courses;
 
     @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
     List<Lesson> lessons;

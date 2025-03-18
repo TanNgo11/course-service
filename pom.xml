@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.2.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.shadcn</groupId>
@@ -113,6 +113,11 @@
         </dependency>
 
         <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
@@ -177,6 +182,7 @@
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${mapstruct.version}</version>
                         </path>
+
                     </annotationProcessorPaths>
                     <compilerArgs>
                         <arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
@@ -185,6 +191,8 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+
+
 
 
             <plugin>
@@ -218,15 +226,15 @@
                 <version>${spotless.version}</version>
                 <configuration>
                     <java>
-                        <removeUnusedImports/>
-                        <toggleOffOn/>
-                        <trimTrailingWhitespace/>
-                        <endWithNewline/>
+                        <removeUnusedImports />
+                        <toggleOffOn />
+                        <trimTrailingWhitespace />
+                        <endWithNewline />
                         <indent>
                             <tabs>true</tabs>
                             <spacesPerTab>4</spacesPerTab>
                         </indent>
-                        <palantirJavaFormat/>
+                        <palantirJavaFormat />
                         <importOrder>
                             <!-- Specify either order or file, but not both -->
                             <order>java,jakarta,org,com,com.diffplug,</order>

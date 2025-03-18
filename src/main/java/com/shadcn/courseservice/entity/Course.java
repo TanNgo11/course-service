@@ -29,18 +29,6 @@ public class Course extends BaseEntity {
 
     String imageUri;
 
-    @ElementCollection
-    List<String> studentIds;
-
-    @ElementCollection
-    List<String> studentUsernames;
-
-    @ElementCollection
-    List<String> teacherIds;
-
-    @ElementCollection
-    List<String> teacherUsernames;
-
     //    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     //    @JsonBackReference
     //    List<Department> departments;
@@ -53,6 +41,10 @@ public class Course extends BaseEntity {
     @JoinColumn(name = "semester_id", nullable = false)
     @JsonIgnore
     Semester semester;
+
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<StudentReference> studentReferences;
 
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     @JsonIgnore

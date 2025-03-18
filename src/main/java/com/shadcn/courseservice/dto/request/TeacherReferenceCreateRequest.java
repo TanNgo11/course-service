@@ -10,6 +10,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TeacherReferenceCreateRequest {
     Long teacherId;
-    Long courseId;
     Long departmentId;
 }

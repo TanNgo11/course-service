@@ -29,6 +29,7 @@ app:
   services:
     file: http://localhost:8085/file-svc
     profile: http://localhost:8081/profile
+    identity: http://localhost:8080/identity
 
 
 servlet:
