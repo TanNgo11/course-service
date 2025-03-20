@@ -8,7 +8,10 @@ import jakarta.persistence.Enumerated;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shadcn.courseservice.enums.Gender;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
@@ -38,6 +41,8 @@ public class UserProfileResponse {
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate hireDate; // For teachers
+
+
 
     String phoneNumber;
 

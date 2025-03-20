@@ -20,7 +20,6 @@ import lombok.experimental.FieldDefaults;
 public class Registration extends BaseEntity {
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "student_reference_id")
     StudentReference studentReference;
 

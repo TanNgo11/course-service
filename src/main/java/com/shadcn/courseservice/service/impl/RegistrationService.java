@@ -1,15 +1,5 @@
 package com.shadcn.courseservice.service.impl;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.shadcn.courseservice.dto.response.*;
 import com.shadcn.courseservice.entity.*;
 import com.shadcn.courseservice.enums.RegistrationStatus;
@@ -22,11 +12,20 @@ import com.shadcn.courseservice.repository.httpClient.IdentityClient;
 import com.shadcn.courseservice.service.IProfileService;
 import com.shadcn.courseservice.service.IRegistrationService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Identity;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,26 +43,24 @@ public class RegistrationService implements IRegistrationService {
     StudentReferenceRepository studentReferenceRepository;
     IdentityClient identityClient;
     AcademicYearRepository academicYearRepository;
+    
+    
 
     @Override
     @Transactional
     public void registerStudentToCourse(long studentId, List<Long> courseIds, long semesterId) {
-        StudentProfileResponse studentProfile =
-                identityClient.getStudentProfileById(studentId).getResult();
+        StudentProfileResponse studentProfile = identityClient.getStudentProfileById(studentId).getResult();
         Semester currentSemester = semesterRepository
                 .findById(semesterId)
                 .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
 
-        AcademicYear academicYear = academicYearRepository
-                .findById(Long.valueOf(studentProfile.getAcademicYearId()))
+        AcademicYear academicYear = academicYearRepository.findById(Long.valueOf(studentProfile.getAcademicYearId()))
                 .orElseThrow(() -> new AppException(ErrorCode.ACADEMIC_YEAR_NOT_FOUND));
-
-        Department department = departmentRepository
-                .findById(Long.valueOf(studentProfile.getDepartmentId()))
+        
+        Department department = departmentRepository.findById(Long.valueOf(studentProfile.getDepartmentId()))
                 .orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_FOUND));
 
-        StudentReference studentReference = studentReferenceRepository
-                .findByStudentId(studentId)
+        StudentReference studentReference = studentReferenceRepository.findByStudentId(studentId)
                 .orElseGet(() -> {
                     StudentReference newStudentReference = StudentReference.builder()
                             .studentId(studentId)
@@ -74,8 +71,7 @@ public class RegistrationService implements IRegistrationService {
                 });
 
         LocalDate now = LocalDate.now();
-        if (currentSemester.getStartDate().isAfter(now)
-                || currentSemester.getEndDate().isBefore(now)) {
+        if (currentSemester.getStartDate().isAfter(now) || currentSemester.getEndDate().isBefore(now)) {
             throw new AppException(ErrorCode.INVALID_REGISTRATION_DATE);
         }
 
@@ -84,8 +80,8 @@ public class RegistrationService implements IRegistrationService {
                 continue;
             }
 
-            Course currentCourse =
-                    courseRepository.findById(courseId).orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+            Course currentCourse = courseRepository.findById(courseId)
+                    .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
 
             Registration registration = Registration.builder()
                     .studentReference(studentReference)
@@ -103,9 +99,7 @@ public class RegistrationService implements IRegistrationService {
     @Override
     @Transactional
     public void registerTeacherToCourse(long teacherId, List<Long> courseIds, long semesterId, long departmentId) {
-        Department department = departmentRepository
-                .findById(departmentId)
-                .orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_FOUND));
+        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_FOUND));
 
         Semester currentSemester = semesterRepository
                 .findById(semesterId)
@@ -142,49 +136,20 @@ public class RegistrationService implements IRegistrationService {
     @Override
     @Transactional
     public void unregisterTeacherFromCourse(long teacherId, List<Long> courseIds, long semesterId) {
-        //        TeacherReference teacherProfile = teacherReferenceRepository
-        //                .findByTeacherId(teacherId)
-        //                .orElseGet(() -> {
-        //                    List<TeacherProfileResponse> profile =
-        //                            profileService.getPublicTeacherProfiles(new long[] {teacherId});
-        //
-        //                    if (profile.isEmpty()) {
-        //                        throw new AppException(ErrorCode.TEACHER_NOT_FOUND);
-        //                    }
-        //
-        //                    TeacherProfileResponse myProfile = profile.get(0);
-        //
-        //                    return TeacherReference.builder()
-        //                            .teacherId(teacherId)
-        //                            .department(departmentRepository
-        //                                    .findById(Long.valueOf(myProfile.getDepartmentId()))
-        //                                    .orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_FOUND)))
-        //                            .courses(new ArrayList<>())
-        //                            .build();
-        //                });
-
-        TeacherReference teacherProfile = teacherReferenceRepository
-                .findByTeacherId(teacherId)
+        TeacherReference teacherProfile = teacherReferenceRepository.findByTeacherId(teacherId)
                 .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_FOUND));
 
-        log.info("Teacher profile: {}", teacherProfile);
-
-        Semester currentSemester = semesterRepository
-                .findById(semesterId)
+        Semester currentSemester = semesterRepository.findById(semesterId)
                 .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
 
-        log.info("Current semester: {}", currentSemester);
-
         LocalDate now = LocalDate.now();
-        if (currentSemester.getStartDate().isAfter(now)
-                || currentSemester.getEndDate().isBefore(now)) {
+        if (currentSemester.getStartDate().isAfter(now) || currentSemester.getEndDate().isBefore(now)) {
             throw new AppException(ErrorCode.INVALID_REGISTRATION_DATE);
         }
 
         for (Long courseId : courseIds) {
-            Course course =
-                    courseRepository.findById(courseId).orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
-            log.info("Course: {}", course);
+            Course course = courseRepository.findById(courseId)
+                    .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
 
             if (course.getTeacherReferences().contains(teacherProfile)) {
                 log.info("Removing teacher from course");
@@ -262,30 +227,42 @@ public class RegistrationService implements IRegistrationService {
     }
 
     @Override
-    public void addStudentToCourse(List<Registration> registrations) {
-        for (Registration registration : registrations) {
-            StudentReference studentReference = studentReferenceRepository
-                    .findByStudentId(registration.getStudentReference().getStudentId())
-                    .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
-            Course course =
-                    courseRepository.findById(registration.getCourse().getId()).get();
-            Semester semester = semesterRepository
-                    .findById(registration.getSemester().getId())
-                    .get();
-            if (studentReference == null) {
-                throw new AppException(ErrorCode.STUDENT_NOT_FOUND);
-            }
-            if (course == null) {
-                throw new AppException(ErrorCode.COURSE_NOT_FOUND);
-            }
-            if (semester == null) {
-                throw new AppException(ErrorCode.SEMESTER_NOT_FOUND);
-            }
+    @Transactional
+    public void approveStudentRegistration(List<Long> registrationIds, long semesterId) {
+        List<Registration> registrations = registrationRepository.findAllRegistrationBySemesterId(semesterId);
 
-            course.getStudentReferences().add(studentReference);
-            registration.setStatus(RegistrationStatus.APPROVED);
-            registrationRepository.save(registration);
+        for (Registration registration : registrations) {
+            if (registrationIds.contains(registration.getId())) {
+                registration.setStatus(RegistrationStatus.APPROVED);
+            }
         }
+        registrationRepository.saveAll(registrations);
+    }
+
+    @Override
+    public void addStudentToCourse(List<Registration> registrations) {
+                for (Registration registration : registrations) {
+                StudentReference studentReference = studentReferenceRepository.findByStudentId(registration.getStudentReference().getStudentId())
+                        .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
+                    Course course =
+                            courseRepository.findById(registration.getCourse().getId()).get();
+                    Semester semester = semesterRepository
+                            .findById(registration.getSemester().getId())
+                            .get();
+                    if (studentReference == null) {
+                        throw new AppException(ErrorCode.STUDENT_NOT_FOUND);
+                    }
+                    if (course == null) {
+                        throw new AppException(ErrorCode.COURSE_NOT_FOUND);
+                    }
+                    if (semester == null) {
+                        throw new AppException(ErrorCode.SEMESTER_NOT_FOUND);
+                    }
+
+                    course.getStudentReferences().add(studentReference);
+                    registration.setStatus(RegistrationStatus.APPROVED);
+                    registrationRepository.save(registration);
+                }
     }
 
     @Override
@@ -321,18 +298,5 @@ public class RegistrationService implements IRegistrationService {
                 departmentId, semesterId, studentId, pageable);
 
         return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
-    }
-
-    @Override
-    public void approveStudentRegistration(List<Long> registrationIds, long semesterId) {
-        List<Registration> registrations = registrationRepository.findAllRegistrationBySemesterId(semesterId);
-
-        for (Registration registration : registrations) {
-            if (registrationIds.contains(registration.getId())) {
-                registration.setStatus(RegistrationStatus.APPROVED);
-            }
-        }
-
-        registrationRepository.saveAll(registrations);
     }
 }

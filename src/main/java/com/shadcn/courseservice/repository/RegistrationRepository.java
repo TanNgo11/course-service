@@ -45,4 +45,5 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
             "SELECT r FROM Registration r WHERE r.studentReference.studentId = :studentId AND r.semester.id = :semesterId AND r.course.baseCourse.code = :courseCode")
     Registration findByRegistrationByStudentIdAndCourseCodeAndSemesterId(
             long studentId, String courseCode, long semesterId);
+    
 }

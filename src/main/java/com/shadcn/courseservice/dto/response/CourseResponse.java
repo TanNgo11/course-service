@@ -24,7 +24,7 @@ public class CourseResponse {
     String startDate;
     String endDate;
     int remain;
-    List<String> teacherIds;
+    TeacherInformationDTO teacher;
     List<String> studentIds;
     List<DepartmentResponse> departments;
     //    List<LessonResponse> lessons;
