@@ -3,7 +3,7 @@ package com.shadcn.courseservice.service;
 import java.util.List;
 
 public interface IReferenceService {
-    void addATeacherReference(Long teacherId,Long departmentId);
+    void addATeacherReference(Long teacherId, Long departmentId);
 
     void deleteTeacherReferences(List<Long> referenceIds);
 

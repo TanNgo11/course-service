@@ -15,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegistrationResponse {
+    String id;
     String studentId;
     String courseCode;
     String courseName;

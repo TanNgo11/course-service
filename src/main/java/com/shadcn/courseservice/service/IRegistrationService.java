@@ -37,4 +37,6 @@ public interface IRegistrationService {
 
     PageResponse<CourseResponse> getAllRegisteredCoursesInSemesterByDepartmentForStudent(
             String studentId, String semesterId, String departmentId, int current, int pageSize);
+
+    void approveStudentRegistration(List<Long> registrationIds, long semesterId);
 }

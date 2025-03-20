@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AdminProfileResponse extends UserProfileResponse {
+public class AdminProfileResponse {
     String adminId;
 
     String grade;
