@@ -5,6 +5,8 @@ import java.util.List;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -39,4 +41,8 @@ public class StudentReference extends BaseEntity {
 
     @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
     List<Lesson> lessons;
+
+    @OneToMany(mappedBy = "studentReference", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    List<Registration> registrations;
 }

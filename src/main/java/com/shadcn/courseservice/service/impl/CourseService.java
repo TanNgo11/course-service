@@ -1,25 +1,11 @@
 package com.shadcn.courseservice.service.impl;
 
-import com.shadcn.courseservice.dto.request.BaseCourseCreationRequest;
-import com.shadcn.courseservice.dto.request.CourseCreationRequest;
-import com.shadcn.courseservice.dto.response.BaseCourseResponse;
-import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.StudentProfileResponse;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
-import com.shadcn.courseservice.entity.*;
-import com.shadcn.courseservice.exception.AppException;
-import com.shadcn.courseservice.exception.ErrorCode;
-import com.shadcn.courseservice.mapper.CourseMapper;
-import com.shadcn.courseservice.repository.*;
-import com.shadcn.courseservice.service.ICourseService;
-import com.shadcn.courseservice.service.IFileUploadService;
-import com.shadcn.courseservice.service.IProfileService;
-import com.shadcn.courseservice.util.ConverToPaginationResponse;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import jakarta.transaction.Transactional;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -27,9 +13,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
+import com.shadcn.courseservice.dto.request.BaseCourseCreationRequest;
+import com.shadcn.courseservice.dto.request.CourseCreationRequest;
+import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.entity.*;
+import com.shadcn.courseservice.exception.AppException;
+import com.shadcn.courseservice.exception.ErrorCode;
+import com.shadcn.courseservice.mapper.CourseMapper;
+import com.shadcn.courseservice.repository.*;
+import com.shadcn.courseservice.repository.httpClient.IdentityClient;
+import com.shadcn.courseservice.repository.httpClient.ProfileClient;
+import com.shadcn.courseservice.service.ICourseService;
+import com.shadcn.courseservice.service.IFileUploadService;
+import com.shadcn.courseservice.service.IProfileService;
+import com.shadcn.courseservice.util.ConverToPaginationResponse;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +44,8 @@ public class CourseService implements ICourseService {
     CourseMapper courseMapper;
     IFileUploadService fileUploadService;
     IProfileService profileService;
+    ProfileClient profileClient;
+    IdentityClient identityClient;
     BaseCourseRepository baseCourseRepository;
     StudentReferenceRepository studentReferenceRepository;
     TeacherReferenceRepository teacherReferenceRepository;
@@ -53,7 +57,9 @@ public class CourseService implements ICourseService {
         Course course = getCourse(department, courseId);
 
         for (String id : studentIds) {
-            StudentReference studentReference = studentReferenceRepository.findByStudentId(Long.valueOf(id)).orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
+            StudentReference studentReference = studentReferenceRepository
+                    .findByStudentId(Long.valueOf(id))
+                    .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
             if (!course.getStudentReferences().contains(studentReference)) {
                 course.getStudentReferences().add(studentReference);
             }
@@ -69,7 +75,8 @@ public class CourseService implements ICourseService {
         Course course = getCourse(department, courseId);
 
         for (String id : studentIds) {
-            StudentReference studentReference = studentReferenceRepository.findByStudentId(Long.valueOf(id))
+            StudentReference studentReference = studentReferenceRepository
+                    .findByStudentId(Long.valueOf(id))
                     .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
             course.getStudentReferences().remove(studentReference);
         }
@@ -85,7 +92,8 @@ public class CourseService implements ICourseService {
         Course course = getCourse(department, courseId);
 
         for (String id : teacherIds) {
-            TeacherReference teacherReference = teacherReferenceRepository.findByTeacherId(Long.valueOf(id))
+            TeacherReference teacherReference = teacherReferenceRepository
+                    .findByTeacherId(Long.valueOf(id))
                     .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_FOUND));
             if (!course.getTeacherReferences().contains(teacherReference)) {
                 course.getTeacherReferences().add(teacherReference);
@@ -102,7 +110,8 @@ public class CourseService implements ICourseService {
         Course course = getCourse(department, courseId);
 
         for (String id : teacherIds) {
-            TeacherReference teacherReference = teacherReferenceRepository.findByTeacherId(Long.valueOf(id))
+            TeacherReference teacherReference = teacherReferenceRepository
+                    .findByTeacherId(Long.valueOf(id))
                     .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_FOUND));
             course.getTeacherReferences().remove(teacherReference);
         }
@@ -113,20 +122,20 @@ public class CourseService implements ICourseService {
 
     @Override
     public void addSemesterIntoCourse(String departmentId, String courseId, List<String> semesterIds) {
-//                Department department = getDepartment(Long.valueOf(departmentId));
-//                Course course = getCourse(department, courseId);
-//                Semester semester;
-//
-//                for (String id : semesterIds) {
-//                    semester = getSemester(Long.valueOf(id));
-//                    if (course.getSemesters().contains(semester)) {
-//                        continue;
-//                    }
-//                    course.getSemesters().add(semester);
-//                }
-//
-//                departmentRepository.save(department);
-//                courseRepository.save(course);
+        //                Department department = getDepartment(Long.valueOf(departmentId));
+        //                Course course = getCourse(department, courseId);
+        //                Semester semester;
+        //
+        //                for (String id : semesterIds) {
+        //                    semester = getSemester(Long.valueOf(id));
+        //                    if (course.getSemesters().contains(semester)) {
+        //                        continue;
+        //                    }
+        //                    course.getSemesters().add(semester);
+        //                }
+        //
+        //                departmentRepository.save(department);
+        //                courseRepository.save(course);
     }
 
     @Override
@@ -145,34 +154,37 @@ public class CourseService implements ICourseService {
     }
 
     @Override
-    public PageResponse<StudentProfileResponse> getAllStudentsInCourseByIds(
-            String courseId, int current, int pageSize) {
+    public PageResponse<UserProfileResponse> getAllStudentsInCourseByIds(String courseId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Course course = courseRepository
                 .getCourseById(Long.valueOf(courseId))
                 .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
-        List<Course> ListCourse = java.util.List.of(course);
-        //example here chỗ này call api bên identity lấy ra profile nha Huy
-        List<StudentReference> studentReferences=  studentReferenceRepository.findAllByCourses(ListCourse);
-//        profileService.getStudentProfilesByEntityIds(studentIdsArray);
-        List<StudentProfileResponse> studentProfiles = new ArrayList<>();
-        Page<StudentProfileResponse> responses = new PageImpl<>(studentProfiles, pageable, studentProfiles.size());
+
+        List<StudentReference> studentReferences = studentReferenceRepository.findAllByCourses(List.of(course));
+        List<Long> studentIds =
+                studentReferences.stream().map(StudentReference::getStudentId).collect(Collectors.toList());
+
+        List<UserProfileResponse> studentProfiles =
+                identityClient.getUserProfileResponses(studentIds).getResult();
+        Page<UserProfileResponse> responses = new PageImpl<>(studentProfiles, pageable, studentProfiles.size());
 
         return ConverToPaginationResponse.toPageResponse(responses, Function.identity(), current);
     }
 
     @Override
-    public PageResponse<TeacherProfileResponse> getAllTeachersInCourseByIds(
-            String courseId, int current, int pageSize) {
+    public PageResponse<UserProfileResponse> getAllTeachersInCourseByIds(String courseId, int current, int pageSize) {
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Course course = courseRepository
                 .getCourseById(Long.valueOf(courseId))
                 .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
-        //        courseRepository.findAllTeacherIdsByCourseId(Long.valueOf(courseId));
-        long[] teacherIdsArray = new long[3];
-        log.info("length: ", teacherIdsArray.length);
-        List<TeacherProfileResponse> teacherProfiles = profileService.getTeacherProfilesByEntityIds(teacherIdsArray);
-        Page<TeacherProfileResponse> responses = new PageImpl<>(teacherProfiles, pageable, teacherProfiles.size());
+
+        List<TeacherReference> teacherReferences = teacherReferenceRepository.findAllByCourses(List.of(course));
+        List<Long> teacherIds =
+                teacherReferences.stream().map(TeacherReference::getTeacherId).collect(Collectors.toList());
+
+        List<UserProfileResponse> teacherProfiles =
+                identityClient.getUserProfileResponses(teacherIds).getResult();
+        Page<UserProfileResponse> responses = new PageImpl<>(teacherProfiles, pageable, teacherProfiles.size());
 
         return ConverToPaginationResponse.toPageResponse(responses, Function.identity(), current);
     }
