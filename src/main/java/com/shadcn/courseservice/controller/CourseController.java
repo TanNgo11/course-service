@@ -1,5 +1,6 @@
 package com.shadcn.courseservice.controller;
 
+import static com.shadcn.courseservice.constant.PathConstant.API_V1_COURSES;
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(API_V1_DEPARTMENTS)
@@ -122,4 +125,24 @@ public class CourseController {
         courseService.createBaseCourse(request);
         return ApiResponse.success(null);
     }
+
+
+    @GetMapping(value = "/courses/teacher/semesters/{semesterId}")
+    @PreAuthorize("hasRole('TEACHER')")
+    ApiResponse<List<CourseResponse>> getCoursesByTeacherAndSemester(
+            @PathVariable String semesterId) {
+        return ApiResponse.success(courseService.getCoursesOfCurrentTeacherBySemesterId(semesterId));
+    }
+
+
+    @GetMapping(value = "/courses/{courseId}")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    ApiResponse<CourseResponse> getCourseById(
+             @PathVariable String courseId) {
+        return ApiResponse.success(courseService.getCourseById(courseId));
+    }
+
+
+
+
 }

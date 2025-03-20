@@ -40,4 +40,9 @@ public interface ICourseService {
     //    void addRegistrationToCourseInSemester(Registration registration d);
     //
     //    void registerCourseForStudent(String studentId, list<String> courseId);
+
+    List<CourseResponse> getCoursesOfCurrentTeacherBySemesterId(String semesterId);
+
+    CourseResponse getCourseById(String courseId);
+
 }

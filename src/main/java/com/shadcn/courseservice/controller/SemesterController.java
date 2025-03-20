@@ -28,7 +28,7 @@ public class SemesterController {
     ISemesterService semesterService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER') or hasRole('STUDENT')")
     public ApiResponse<PageResponse<SemesterResponse>> getAllSemesters(
             @RequestParam(defaultValue = "1", required = false) Integer current,
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {

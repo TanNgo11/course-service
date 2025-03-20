@@ -2,10 +2,10 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_REGISTRATIONS;
 
+import com.shadcn.courseservice.dto.request.ApproveRegistrationRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.shadcn.courseservice.dto.request.ApproveRegistrationRequest;
 import com.shadcn.courseservice.dto.request.AssignTeacherRequest;
 import com.shadcn.courseservice.dto.request.RegistrationRequest;
 import com.shadcn.courseservice.dto.request.RemoveRegistrationRequest;
