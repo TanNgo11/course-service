@@ -2,6 +2,7 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_REFERENCES;
 
+import com.shadcn.courseservice.dto.request.teacher.UpdateTeacherReferenceRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,13 @@ public class ReferenceController {
     @DeleteMapping("/students")
     ApiResponse<Void> deleteStudentReferences(@RequestBody ReferenceDeleteRequest request) {
         referenceService.deleteStudentReferences(request.getReferenceIds());
+        return ApiResponse.empty();
+    }
+
+    @PutMapping("/teachers")
+    @PreAuthorize("hasRole('TEACHER')")
+    ApiResponse<Void> updateTeacherReference(@RequestBody UpdateTeacherReferenceRequest request) {
+        referenceService.updateTeacherReference(request);
         return ApiResponse.empty();
     }
 }

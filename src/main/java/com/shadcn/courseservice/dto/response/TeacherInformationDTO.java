@@ -2,7 +2,6 @@ package com.shadcn.courseservice.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
@@ -19,5 +18,9 @@ public class TeacherInformationDTO {
     String email;
     String phoneNumber;
     String avatarPath;
+    String contactLink;
+    String officeLocation;
+    String officeHours;
+    String otherInformation;
  
 }

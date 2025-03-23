@@ -1,5 +1,7 @@
 package com.shadcn.courseservice.service;
 
+import com.shadcn.courseservice.dto.request.teacher.UpdateTeacherReferenceRequest;
+
 import java.util.List;
 
 public interface IReferenceService {
@@ -10,4 +12,8 @@ public interface IReferenceService {
     void addAStudentReference(Long studentId, Long academicYearId, Long departmentId, String name);
 
     void deleteStudentReferences(List<Long> referenceIds);
+    
+    void updateTeacherReference(UpdateTeacherReferenceRequest updateTeacherReferenceRequest);
+    
+    
 }
