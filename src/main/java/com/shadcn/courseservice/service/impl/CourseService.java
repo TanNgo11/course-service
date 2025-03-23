@@ -2,7 +2,13 @@ package com.shadcn.courseservice.service.impl;
 
 import com.shadcn.courseservice.dto.request.BaseCourseCreationRequest;
 import com.shadcn.courseservice.dto.request.CourseCreationRequest;
-import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.dto.request.course.UpdateCourseInformationRequest;
+import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.TeacherInformationDTO;
+import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
+import com.shadcn.courseservice.dto.response.UserProfileResponse;
+import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.entity.*;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
@@ -27,7 +33,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -147,6 +152,15 @@ public class CourseService implements ICourseService {
         }
 
         departmentRepository.save(department);
+        courseRepository.save(course);
+    }
+
+    @Override
+    @Transactional
+    public void updateCourseInformation(UpdateCourseInformationRequest request , Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+        courseMapper.updateCourseInformation(course, request);
         courseRepository.save(course);
     }
 

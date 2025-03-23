@@ -2,6 +2,8 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
+import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

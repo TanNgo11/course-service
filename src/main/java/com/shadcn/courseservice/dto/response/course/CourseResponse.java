@@ -1,7 +1,10 @@
-package com.shadcn.courseservice.dto.response;
+package com.shadcn.courseservice.dto.response.course;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.response.DepartmentResponse;
+import com.shadcn.courseservice.dto.response.TeacherInformationDTO;
+import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -24,6 +27,10 @@ public class CourseResponse {
     String startDate;
     String endDate;
     int remain;
+    String courseInformation;
+    String assessmentPlan;
+    String learningMaterialsAndOutcomes;
+    
     TeacherInformationDTO teacher;
     List<String> studentIds;
     List<DepartmentResponse> departments;

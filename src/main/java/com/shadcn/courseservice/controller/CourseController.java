@@ -1,21 +1,23 @@
 package com.shadcn.courseservice.controller;
 
-import static com.shadcn.courseservice.constant.PathConstant.API_V1_COURSES;
-import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
-
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
 import com.shadcn.courseservice.dto.request.*;
-import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.dto.request.course.UpdateCourseInformationRequest;
+import com.shadcn.courseservice.dto.response.ApiResponse;
+import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.UserProfileResponse;
+import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.service.ICourseService;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
 @RestController
 @RequestMapping(API_V1_DEPARTMENTS)
@@ -141,6 +143,15 @@ public class CourseController {
              @PathVariable String courseId) {
         return ApiResponse.success(courseService.getCourseById(courseId));
     }
+
+    @PutMapping(value = "/courses/{courseId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    ApiResponse<Void> updateCourseInformation(@RequestBody UpdateCourseInformationRequest request, @PathVariable Long courseId) {
+        courseService.updateCourseInformation(request, courseId);
+        return ApiResponse.empty();
+    }
+    
+    
 
 
 

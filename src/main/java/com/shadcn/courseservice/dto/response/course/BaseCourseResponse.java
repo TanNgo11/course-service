@@ -1,4 +1,4 @@
-package com.shadcn.courseservice.dto.response;
+package com.shadcn.courseservice.dto.response.course;
 
 import java.util.Collection;
 

@@ -1,6 +1,7 @@
 package com.shadcn.courseservice.service.impl;
 
 import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.entity.*;
 import com.shadcn.courseservice.enums.RegistrationStatus;
 import com.shadcn.courseservice.exception.AppException;
@@ -22,7 +23,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Identity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
