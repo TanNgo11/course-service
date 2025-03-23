@@ -127,7 +127,7 @@ public class CourseController {
     }
 
 
-    @GetMapping(value = "/courses/teacher/semesters/{semesterId}")
+    @GetMapping(value = "/courses/teacher/semester/{semesterId}")
     @PreAuthorize("hasRole('TEACHER')")
     ApiResponse<List<CourseResponse>> getCoursesByTeacherAndSemester(
             @PathVariable String semesterId) {

@@ -157,8 +157,11 @@ public class CourseService implements ICourseService {
         TeacherProfileResponse teacherProfileResponse = identityClient
                 .getTeacherProfileById(course.getTeacherReferences().get(0).getTeacherId())
                 .getResult();
+        
+        TeacherReference teacherReference = teacherReferenceRepository.findByTeacherId(course.getTeacherReferences().get(0).getTeacherId())
+                .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_FOUND));
 
-        TeacherInformationDTO teacherInfo = teacherMapper.toTeacherInfo(teacherProfileResponse);
+        TeacherInformationDTO teacherInfo = teacherMapper.toTeacherInfo(teacherProfileResponse, teacherReference);
         return courseMapper.toCourseResponseDetail(course, teacherInfo);
     }
 
