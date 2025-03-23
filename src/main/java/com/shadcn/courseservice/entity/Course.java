@@ -29,6 +29,15 @@ public class Course extends BaseEntity {
 
     String imageUri;
 
+    @Column(columnDefinition = "TEXT")
+    String courseInformation;
+
+    @Column(columnDefinition = "TEXT")
+    String assessmentPlan;
+
+    @Column(columnDefinition = "TEXT")
+    String learningMaterialsAndOutcomes;
+    
     //    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     //    @JsonBackReference
     //    List<Department> departments;

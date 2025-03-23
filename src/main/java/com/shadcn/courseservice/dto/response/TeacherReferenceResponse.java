@@ -2,6 +2,7 @@ package com.shadcn.courseservice.dto.response;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;

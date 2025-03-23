@@ -2,6 +2,9 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.request.course.UpdateCourseInformationRequest;
+import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.shadcn.courseservice.dto.request.BaseCourseCreationRequest;
@@ -44,5 +47,7 @@ public interface ICourseService {
     List<CourseResponse> getCoursesOfCurrentTeacherBySemesterId(String semesterId);
 
     CourseResponse getCourseById(String courseId);
+    
+    void updateCourseInformation(UpdateCourseInformationRequest request, Long courseId);
 
 }

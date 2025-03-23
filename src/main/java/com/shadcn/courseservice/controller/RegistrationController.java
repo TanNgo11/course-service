@@ -10,7 +10,7 @@ import com.shadcn.courseservice.dto.request.AssignTeacherRequest;
 import com.shadcn.courseservice.dto.request.RegistrationRequest;
 import com.shadcn.courseservice.dto.request.RemoveRegistrationRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
-import com.shadcn.courseservice.dto.response.CourseResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.RegistrationResponse;
 import com.shadcn.courseservice.service.IRegistrationService;

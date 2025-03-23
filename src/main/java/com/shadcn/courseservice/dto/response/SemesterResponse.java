@@ -3,6 +3,7 @@ package com.shadcn.courseservice.dto.response;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;

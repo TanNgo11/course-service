@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.shadcn.courseservice.dto.request.CourseIdsRequest;
 import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 
 public interface ISemesterService {
     PageResponse<SemesterResponse> getAllSemesters(int current, int pageSize);
