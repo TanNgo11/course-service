@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.shadcn.courseservice.dto.response.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.TeacherInformationDTO;
-import jakarta.persistence.Column;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -30,7 +30,7 @@ public class CourseResponse {
     String courseInformation;
     String assessmentPlan;
     String learningMaterialsAndOutcomes;
-    
+
     TeacherInformationDTO teacher;
     List<String> studentIds;
     List<DepartmentResponse> departments;

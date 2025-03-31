@@ -15,4 +15,5 @@ public class AssignTeacherRequest {
     List<Long> courseIds;
     long semesterId;
     long departmentId;
+    String username;
 }

@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateTeacherReferenceRequest {
     Long id;
-    
+
     String contactLink;
 
     String officeLocation;
@@ -18,5 +18,4 @@ public class UpdateTeacherReferenceRequest {
     String officeHours;
 
     String otherInformation;
-    
 }

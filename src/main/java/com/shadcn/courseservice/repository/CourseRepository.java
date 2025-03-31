@@ -3,9 +3,6 @@ package com.shadcn.courseservice.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.shadcn.courseservice.entity.Semester;
-import com.shadcn.courseservice.entity.StudentReference;
-import com.shadcn.courseservice.entity.TeacherReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.shadcn.courseservice.entity.Course;
+import com.shadcn.courseservice.entity.Semester;
+import com.shadcn.courseservice.entity.TeacherReference;
 import com.shadcn.courseservice.repository.custom.CustomCourseRepository;
 
 import feign.Param;
@@ -41,7 +40,6 @@ public interface CourseRepository
 
     @Query("SELECT c.studentReferences FROM Course c WHERE c.id = :courseId")
     long[] findAllStudentIdsByCourseId(@Param("courseId") Long courseId);
-    
+
     List<Course> findByTeacherReferencesAndSemester(TeacherReference teacherReference, Semester semester);
-        
 }

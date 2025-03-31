@@ -18,15 +18,16 @@ import lombok.experimental.FieldDefaults;
 public class TeacherReference extends BaseEntity {
 
     Long teacherId;
-    
+
     String contactLink;
-    
+
     String officeLocation;
-    
+
     String officeHours;
-    
+
     String otherInformation;
 
+    String username;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     Department department;

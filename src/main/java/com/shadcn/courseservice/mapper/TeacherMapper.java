@@ -1,14 +1,14 @@
 package com.shadcn.courseservice.mapper;
 
-import com.shadcn.courseservice.dto.request.teacher.UpdateTeacherReferenceRequest;
-import com.shadcn.courseservice.dto.response.TeacherInformationDTO;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
-import com.shadcn.courseservice.entity.TeacherReference;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import com.shadcn.courseservice.dto.request.teacher.UpdateTeacherReferenceRequest;
+import com.shadcn.courseservice.dto.response.TeacherInformationDTO;
+import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
+import com.shadcn.courseservice.entity.TeacherReference;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface TeacherMapper {
@@ -31,6 +31,7 @@ public interface TeacherMapper {
     @Mapping(target = "teacherId", ignore = true)
     @Mapping(target = "department", ignore = true)
     @Mapping(target = "courses", ignore = true)
-    void updateTeacherReference(@MappingTarget TeacherReference teacherReference,
-                                UpdateTeacherReferenceRequest updateTeacherReferenceRequest);
+    void updateTeacherReference(
+            @MappingTarget TeacherReference teacherReference,
+            UpdateTeacherReferenceRequest updateTeacherReferenceRequest);
 }
