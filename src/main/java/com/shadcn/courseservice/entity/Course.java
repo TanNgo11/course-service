@@ -37,7 +37,7 @@ public class Course extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     String learningMaterialsAndOutcomes;
-    
+
     //    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     //    @JsonBackReference
     //    List<Department> departments;
@@ -51,15 +51,15 @@ public class Course extends BaseEntity {
     @JsonIgnore
     Semester semester;
 
-    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL)
     @JsonIgnore
     List<StudentReference> studentReferences;
 
-    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL)
     @JsonIgnore
     List<TeacherReference> teacherReferences;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     List<CourseFile> files;
 
