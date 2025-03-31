@@ -1,5 +1,10 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.shadcn.courseservice.dto.request.teacher.UpdateTeacherReferenceRequest;
 import com.shadcn.courseservice.entity.*;
 import com.shadcn.courseservice.exception.AppException;
@@ -7,14 +12,11 @@ import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.TeacherMapper;
 import com.shadcn.courseservice.repository.*;
 import com.shadcn.courseservice.service.IReferenceService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -86,10 +88,11 @@ public class ReferenceService implements IReferenceService {
     @Override
     @Transactional
     public void updateTeacherReference(UpdateTeacherReferenceRequest updateTeacherReferenceRequest) {
-        TeacherReference teacherReference = teacherReferenceRepository.findByTeacherId(updateTeacherReferenceRequest.getId())
+        TeacherReference teacherReference = teacherReferenceRepository
+                .findByTeacherId(updateTeacherReferenceRequest.getId())
                 .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_FOUND));
 
-         teacherMapper.updateTeacherReference(teacherReference, updateTeacherReferenceRequest);
+        teacherMapper.updateTeacherReference(teacherReference, updateTeacherReferenceRequest);
 
         teacherReferenceRepository.save(teacherReference);
     }

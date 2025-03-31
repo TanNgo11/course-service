@@ -2,10 +2,10 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
-import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.dto.response.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 
 public interface IDepartmentService {
     void addCoursesToDepartment(Long departmentId, List<Long> courseIds);

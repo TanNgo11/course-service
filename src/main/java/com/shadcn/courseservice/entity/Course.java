@@ -37,7 +37,7 @@ public class Course extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     String learningMaterialsAndOutcomes;
-    
+
     //    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     //    @JsonBackReference
     //    List<Department> departments;

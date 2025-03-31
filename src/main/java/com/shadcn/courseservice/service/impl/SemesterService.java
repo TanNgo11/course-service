@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.shadcn.courseservice.cronjob.CronSemester;
 import com.shadcn.courseservice.dto.request.CourseIdsRequest;
-import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.SemesterResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.entity.*;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;

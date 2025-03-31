@@ -42,8 +42,6 @@ public class UserProfileResponse {
     @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate hireDate; // For teachers
 
-
-
     String phoneNumber;
 
     @Enumerated(EnumType.STRING)

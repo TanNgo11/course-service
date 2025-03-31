@@ -2,15 +2,15 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.RegistrationResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.entity.Registration;
 
 public interface IRegistrationService {
     void registerStudentToCourse(long studentId, List<Long> courseId, long semesterId);
 
-    void registerTeacherToCourse(long teacherId, List<Long> courseId, long semesterId, long departmentId);
+    void registerTeacherToCourse(long teacherId, List<Long> courseId, long semesterId, long departmentId, String username);
 
     void unregisterTeacherFromCourse(long teacherId, List<Long> courseId, long semesterId);
 

@@ -52,6 +52,6 @@ public class StudentProfileResponse extends UserProfileResponse {
     Gender gender;
 
     String academicYearId;
-    
+
     String departmentId;
 }

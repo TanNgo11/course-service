@@ -22,5 +22,4 @@ public class TeacherInformationDTO {
     String officeLocation;
     String officeHours;
     String otherInformation;
- 
 }
