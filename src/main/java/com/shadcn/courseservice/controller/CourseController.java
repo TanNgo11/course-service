@@ -137,7 +137,7 @@ public class CourseController {
     }
 
     @GetMapping(value = "/courses/{courseId}")
-    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN') or hasRole('STUDENT')")
     ApiResponse<CourseResponse> getCourseById(@PathVariable String courseId) {
         return ApiResponse.success(courseService.getCourseById(courseId));
     }

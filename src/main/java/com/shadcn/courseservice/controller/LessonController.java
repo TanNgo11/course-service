@@ -52,7 +52,7 @@ public class LessonController {
     }
 
     @GetMapping("/courses/{courseId}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN') or hasRole('STUDENT')")
     ApiResponse<List<LessonResponse>> getLessonsByCourseId(
             @PathVariable Long courseId
     ) {
