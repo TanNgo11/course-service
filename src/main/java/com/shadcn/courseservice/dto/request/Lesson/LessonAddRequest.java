@@ -1,4 +1,4 @@
-package com.shadcn.courseservice.dto.request;
+package com.shadcn.courseservice.dto.request.Lesson;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

@@ -2,7 +2,8 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.response.LessonResponse;
+import com.shadcn.courseservice.dto.request.Lesson.UpdateLessonRequest;
+import com.shadcn.courseservice.dto.response.Lesson.LessonResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 
 public interface ILessonService {
@@ -11,4 +12,8 @@ public interface ILessonService {
     void deleteLessons(List<Long> lessonIds);
 
     PageResponse<LessonResponse> getAllLessons(Integer current, Integer pageSize);
+    
+    List<LessonResponse> getLessonsByCourseId(Long courseId);
+    
+    void updateLessonById(Long lessonId, UpdateLessonRequest request);
 }

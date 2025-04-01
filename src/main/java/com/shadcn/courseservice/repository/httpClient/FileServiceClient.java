@@ -11,6 +11,8 @@ import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.FileUploadResponse;
 import com.shadcn.courseservice.exception.RetreiveMessageErrorDecoder;
 
+import java.util.List;
+
 @FeignClient(
         name = "file-service",
         url = "${app.services.file}",
@@ -21,4 +23,12 @@ public interface FileServiceClient {
             headers = "Content-Type: multipart/form-data",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ApiResponse<FileUploadResponse> uploadFile(@RequestPart(value = "file") MultipartFile file);
+
+    @PostMapping(
+            value = "/upload/multiple",
+            headers = "Content-Type: multipart/form-data",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ApiResponse<List<FileUploadResponse>> uploadMultipleFiles(@RequestPart(value = "files") MultipartFile[] file);
+    
+    
 }

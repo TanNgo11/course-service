@@ -43,7 +43,6 @@ public class Course extends BaseEntity {
     //    List<Department> departments;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
     List<Lesson> lessons;
 
     @ManyToOne

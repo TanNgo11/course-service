@@ -1,8 +1,11 @@
-package com.shadcn.courseservice.dto.response;
+package com.shadcn.courseservice.dto.response.Lesson;
 
+import com.shadcn.courseservice.dto.response.lessonFile.LessonFileResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,4 +18,6 @@ public class LessonResponse {
     String title;
     Long courseId;
     String description;
+    boolean isPublished;
+    List<LessonFileResponse> files;
 }
