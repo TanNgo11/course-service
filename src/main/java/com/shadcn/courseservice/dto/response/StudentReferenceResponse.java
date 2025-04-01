@@ -2,7 +2,7 @@ package com.shadcn.courseservice.dto.response;
 
 import java.util.List;
 
-import jakarta.persistence.*;
+import com.shadcn.courseservice.dto.response.Lesson.LessonResponse;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

@@ -1,9 +1,8 @@
 package com.shadcn.courseservice.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
-
-import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
@@ -37,7 +36,7 @@ public enum ErrorCode {
     REGISTRATION_BEFORE_SEMESTER_START(1036, "Registration before semester start", HttpStatus.BAD_REQUEST),
     INVALID_REGISTRATION_DATE(1037, "Invalid registration date", HttpStatus.BAD_REQUEST),
     BASE_COURSE_NOT_FOUND(1038, "Base course not found", HttpStatus.BAD_REQUEST),
-    ;
+    LESSON_NOT_FOUND(1039, "Lesson not found", HttpStatus.BAD_REQUEST);
 
     private final int code;
     private final String message;
