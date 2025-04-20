@@ -125,7 +125,11 @@ public class RegistrationController {
     @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<Void> registerTeacherToCourse(@RequestBody AssignTeacherRequest request) {
         registrationService.registerTeacherToCourse(
-                request.getTeacherId(), request.getCourseIds(), request.getSemesterId(), request.getDepartmentId(), request.getUsername());
+                request.getTeacherId(),
+                request.getCourseIds(),
+                request.getSemesterId(),
+                request.getDepartmentId(),
+                request.getUsername());
         return ApiResponse.empty();
     }
 

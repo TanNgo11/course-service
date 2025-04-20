@@ -28,6 +28,7 @@ public class TeacherReference extends BaseEntity {
     String otherInformation;
 
     String username;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     Department department;

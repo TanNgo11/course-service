@@ -1,7 +1,6 @@
 package com.shadcn.courseservice.entity;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -66,9 +65,8 @@ public class Course extends BaseEntity {
     @JsonManagedReference
     List<Registration> registrations;
 
-    LocalTime startTime;
-
-    LocalTime endTime;
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Timetable> timetables;
 
     LocalDate startDate;
 

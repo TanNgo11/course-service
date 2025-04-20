@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.shadcn.courseservice.repository.httpClient.ProfileClient;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +20,7 @@ import com.shadcn.courseservice.mapper.CourseMapper;
 import com.shadcn.courseservice.mapper.RegistrationMapper;
 import com.shadcn.courseservice.repository.*;
 import com.shadcn.courseservice.repository.httpClient.IdentityClient;
+import com.shadcn.courseservice.repository.httpClient.ProfileClient;
 import com.shadcn.courseservice.service.IProfileService;
 import com.shadcn.courseservice.service.IRegistrationService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
@@ -48,6 +47,7 @@ public class RegistrationService implements IRegistrationService {
     IdentityClient identityClient;
     ProfileClient profileClient;
     AcademicYearRepository academicYearRepository;
+
     @Override
     @Transactional
     public void registerStudentToCourse(long studentId, List<Long> courseIds, long semesterId) {
@@ -105,7 +105,8 @@ public class RegistrationService implements IRegistrationService {
 
     @Override
     @Transactional
-    public void registerTeacherToCourse(long teacherId, List<Long> courseIds, long semesterId, long departmentId, String username) {
+    public void registerTeacherToCourse(
+            long teacherId, List<Long> courseIds, long semesterId, long departmentId, String username) {
         Department department = departmentRepository
                 .findById(departmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_FOUND));

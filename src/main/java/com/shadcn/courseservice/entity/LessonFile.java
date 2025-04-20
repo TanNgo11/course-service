@@ -1,6 +1,7 @@
 package com.shadcn.courseservice.entity;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "lesson_file")
 public class LessonFile extends BaseEntity {
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     String fileName;
 
     @Column(nullable = false)

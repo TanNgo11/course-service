@@ -12,8 +12,8 @@ public interface ILessonService {
     void deleteLessons(List<Long> lessonIds);
 
     PageResponse<LessonResponse> getAllLessons(Integer current, Integer pageSize);
-    
+
     List<LessonResponse> getLessonsByCourseId(Long courseId);
-    
+
     void updateLessonById(Long lessonId, UpdateLessonRequest request);
 }

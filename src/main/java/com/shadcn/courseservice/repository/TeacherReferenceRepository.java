@@ -13,6 +13,8 @@ public interface TeacherReferenceRepository
         extends JpaRepository<TeacherReference, Long>, QuerydslPredicateExecutor<TeacherReference> {
 
     Optional<TeacherReference> findByTeacherId(Long teacherId);
+
     Optional<TeacherReference> findByUsername(String username);
+
     List<TeacherReference> findAllByCourses(List<Course> courses);
 }
