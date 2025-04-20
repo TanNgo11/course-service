@@ -1,5 +1,15 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.shadcn.courseservice.dto.request.Lesson.UpdateLessonRequest;
 import com.shadcn.courseservice.dto.response.FileUploadResponse;
 import com.shadcn.courseservice.dto.response.Lesson.LessonResponse;
@@ -15,19 +25,11 @@ import com.shadcn.courseservice.repository.LessonRepository;
 import com.shadcn.courseservice.repository.httpClient.FileServiceClient;
 import com.shadcn.courseservice.service.ILessonService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,14 +44,15 @@ public class LessonService implements ILessonService {
     @Override
     @Transactional
     public void updateLessonById(Long lessonId, UpdateLessonRequest request) {
-        Lesson lesson = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new AppException(ErrorCode.LESSON_NOT_FOUND));
+        Lesson lesson =
+                lessonRepository.findById(lessonId).orElseThrow(() -> new AppException(ErrorCode.LESSON_NOT_FOUND));
         lesson.setTitle(request.getTitle());
         lesson.setDescription(request.getDescription());
         lesson.setPublished(request.isPublished());
         if (request.getFiles() != null && request.getFiles().length > 0) {
-            lesson.getFiles().clear(); 
-            List<FileUploadResponse> fileUploadResponses = fileServiceClient.uploadMultipleFiles(request.getFiles()).getResult();
+            lesson.getFiles().clear();
+            List<FileUploadResponse> fileUploadResponses =
+                    fileServiceClient.uploadMultipleFiles(request.getFiles()).getResult();
             for (FileUploadResponse fileUploadResponse : fileUploadResponses) {
                 LessonFile lessonFile = LessonFile.builder()
                         .fileName(fileUploadResponse.getFileName())
@@ -85,7 +88,8 @@ public class LessonService implements ILessonService {
         List<Lesson> lessons = lessonRepository.findAllByCourseId(courseId);
         var tenWeeks = 10;
         if (lessons.isEmpty()) {
-            Course course = courseRepository.findById(courseId)
+            Course course = courseRepository
+                    .findById(courseId)
                     .orElseThrow(() -> new RuntimeException("Course not found with ID: " + courseId));
 
             lessons = new ArrayList<>();

@@ -1,11 +1,12 @@
 package com.shadcn.courseservice.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.*;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class Lesson extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     String description;
-    
+
     boolean isPublished;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,5 +31,3 @@ public class Lesson extends BaseEntity {
     @OneToMany(mappedBy = "lesson", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     List<LessonFile> files = new ArrayList<>();
 }
-
-    

@@ -1,5 +1,7 @@
 package com.shadcn.courseservice.repository.httpClient;
 
+import java.util.List;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,8 +12,6 @@ import com.shadcn.courseservice.config.AuthenticationRequestInterceptor;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.FileUploadResponse;
 import com.shadcn.courseservice.exception.RetreiveMessageErrorDecoder;
-
-import java.util.List;
 
 @FeignClient(
         name = "file-service",
@@ -29,6 +29,4 @@ public interface FileServiceClient {
             headers = "Content-Type: multipart/form-data",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ApiResponse<List<FileUploadResponse>> uploadMultipleFiles(@RequestPart(value = "files") MultipartFile[] file);
-    
-    
 }

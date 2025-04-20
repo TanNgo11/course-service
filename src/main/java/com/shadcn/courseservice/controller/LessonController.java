@@ -1,5 +1,14 @@
 package com.shadcn.courseservice.controller;
 
+import static com.shadcn.courseservice.constant.PathConstant.API_V1_LESSONS;
+
+import java.util.List;
+
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shadcn.courseservice.dto.request.Lesson.LessonAddRequest;
@@ -9,17 +18,10 @@ import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.Lesson.LessonResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.service.impl.LessonService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-
-import static com.shadcn.courseservice.constant.PathConstant.API_V1_LESSONS;
 
 @RestController
 @RequestMapping(API_V1_LESSONS)
@@ -53,9 +55,7 @@ public class LessonController {
 
     @GetMapping("/courses/{courseId}")
     @PreAuthorize("hasRole('TEACHER') or hasRole('ADMIN') or hasRole('STUDENT')")
-    ApiResponse<List<LessonResponse>> getLessonsByCourseId(
-            @PathVariable Long courseId
-    ) {
+    ApiResponse<List<LessonResponse>> getLessonsByCourseId(@PathVariable Long courseId) {
         return ApiResponse.success(lessonService.getLessonsByCourseId(courseId));
     }
 
@@ -64,8 +64,8 @@ public class LessonController {
     ApiResponse<Void> updateLessonById(
             @PathVariable Long lessonId,
             @RequestPart("request") String request,
-            @RequestPart(value = "files", required = false) MultipartFile[] files
-    ) throws JsonProcessingException {
+            @RequestPart(value = "files", required = false) MultipartFile[] files)
+            throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         UpdateLessonRequest data = objectMapper.readValue(request, UpdateLessonRequest.class);
         if (files != null) {
