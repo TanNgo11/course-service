@@ -8,10 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BuildingCreationRequest {
+public class BuildingUpdateRequest {
     String code;
     String name;
-    int defaultNumberOfRooms;
-    int defaultCapacityOfRooms;
-    // Long departmentId;
 }

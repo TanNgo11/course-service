@@ -2,9 +2,9 @@ package com.shadcn.courseservice.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,8 +27,8 @@ public class Building extends BaseEntity {
     @JsonManagedReference
     List<Room> rooms;
 
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "department_id", nullable = false)
-    Department department;
+    //    @ManyToOne
+    //    @JsonBackReference
+    //    @JoinColumn(name = "department_id", nullable = true)
+    //    Department department;
 }

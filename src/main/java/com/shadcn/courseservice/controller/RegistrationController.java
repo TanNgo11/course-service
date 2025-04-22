@@ -5,14 +5,14 @@ import static com.shadcn.courseservice.constant.PathConstant.API_V1_REGISTRATION
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.shadcn.courseservice.dto.request.registration.ApproveRegistrationRequest;
 import com.shadcn.courseservice.dto.request.course.AssignTeacherRequest;
+import com.shadcn.courseservice.dto.request.registration.ApproveRegistrationRequest;
 import com.shadcn.courseservice.dto.request.registration.RegistrationRequest;
 import com.shadcn.courseservice.dto.request.registration.RemoveRegistrationRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.registration.RegistrationResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
+import com.shadcn.courseservice.dto.response.registration.RegistrationResponse;
 import com.shadcn.courseservice.service.IRegistrationService;
 
 import lombok.AccessLevel;

@@ -5,8 +5,8 @@ import java.util.List;
 import com.shadcn.courseservice.dto.response.academicYear.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.building.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.lesson.LessonResponse;
-
 import com.shadcn.courseservice.dto.response.registration.EnrollmentResponse;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;

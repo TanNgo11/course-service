@@ -3,8 +3,8 @@ package com.shadcn.courseservice.service;
 import java.util.List;
 
 import com.shadcn.courseservice.dto.request.lesson.UpdateLessonRequest;
-import com.shadcn.courseservice.dto.response.lesson.LessonResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.lesson.LessonResponse;
 
 public interface ILessonService {
     void addALesson(Long courseId, String title);

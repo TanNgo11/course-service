@@ -1,13 +1,20 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.util.List;
+
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.shadcn.courseservice.dto.request.building.RoomCreationRequest;
+import com.shadcn.courseservice.dto.request.building.RoomUpdateRequest;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.building.RoomResponse;
 import com.shadcn.courseservice.entity.Building;
-import com.shadcn.courseservice.entity.Department;
 import com.shadcn.courseservice.entity.Room;
-import com.shadcn.courseservice.entity.Semester;
 import com.shadcn.courseservice.enums.RoomStatus;
-import com.shadcn.courseservice.enums.RoomType;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.RoomMapper;
@@ -16,17 +23,8 @@ import com.shadcn.courseservice.repository.DepartmentRepository;
 import com.shadcn.courseservice.repository.RoomRepository;
 import com.shadcn.courseservice.service.IRoomService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -39,22 +37,20 @@ public class RoomService implements IRoomService {
 
     @Override
     @Transactional
-    public Room addRoom(Long buildingId, String code, String name, int capacity, RoomType roomType) {
-        // Check if building exists
-        Building building = buildingRepository.findById(buildingId)
+    public Room addRoom(Long buildingId, RoomCreationRequest request) {
+        Building building = buildingRepository
+                .findById(buildingId)
                 .orElseThrow(() -> new AppException(ErrorCode.BUILDING_NOT_FOUND));
 
-        // Check if room code already exists
-        if (roomRepository.existsByCode(code)) {
+        if (roomRepository.existsByCode(request.getCode())) {
             throw new AppException(ErrorCode.ROOM_CODE_ALREADY_EXISTS);
         }
 
-        // Create and save the room
         Room room = Room.builder()
-                .code(code)
-                .name(name)
-                .capacity(capacity)
-                .roomType(roomType)
+                .code(request.getCode())
+                .name(request.getName())
+                .capacity(request.getCapacity())
+                .roomType(request.getRoomType())
                 .status(RoomStatus.AVAILABLE)
                 .building(building)
                 .build();
@@ -64,41 +60,48 @@ public class RoomService implements IRoomService {
 
     @Override
     @Transactional
-    public Room updateRoom(Long roomId, String name, Integer capacity, RoomType roomType) {
-        // Find the room
-        Room room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
+    public Room updateRoom(RoomUpdateRequest request, Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
 
-        // Update fields if provided
-        if (name != null) {
-            room.setName(name);
-        }
-        
-        if (capacity != null) {
-            room.setCapacity(capacity);
-        }
-        
-        if (roomType != null) {
-            room.setRoomType(roomType);
+        if (request.getName() != null) {
+            room.setName(request.getName());
         }
 
-        // Save and return the updated room
+        if (request.getCapacity() != room.getCapacity()) {
+            room.setCapacity(request.getCapacity());
+        }
+
+        if (request.getRoomType() != null) {
+            room.setRoomType(request.getRoomType());
+        }
+
+        if (request.getCode() != null && !roomRepository.existsByCode(request.getCode())) {
+            room.setCode(request.getCode());
+        } else if (request.getCode() != null) {
+            throw new AppException(ErrorCode.ROOM_CODE_ALREADY_EXISTS);
+        }
+
         return roomRepository.save(room);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<RoomResponse> getListRoomByDepartment(Long departmentId) {
-        Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_FOUND));
+    public PageResponse<RoomResponse> getListRoomByBuilding(Long buildingId, Integer current, Integer pageSize) {
+        List<Room> rooms = roomRepository.findByBuildingId(buildingId);
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        PageImpl<Room> roomPage = new PageImpl<>(rooms, pageable, rooms.size());
+        return ConverToPaginationResponse.toPageResponse(roomPage, roomMapper::toRoomResponse, current);
+    }
 
-        List<Building> allBuildingsInDepartment = department.getBuildings();
+    @Override
+    public void deleteRoom(List<Long> roomIds) {
+        List<Room> rooms = roomRepository.findAllById(roomIds);
+        roomRepository.deleteAll(rooms);
+        roomRepository.flush();
+    }
 
-        List<Room> allRooms = new ArrayList<>();
-        for (Building building : allBuildingsInDepartment) {
-            allRooms.addAll(roomRepository.findByBuildingId(building.getId()));
-        }
-
-        return roomMapper.toRoomResponse(allRooms);
+    @Override
+    public RoomResponse getRoomById(Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
+        return roomMapper.toRoomResponse(room);
     }
 }

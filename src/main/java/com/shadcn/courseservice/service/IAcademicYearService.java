@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.shadcn.courseservice.dto.request.academicYear.AcademicYearCreation;
 import com.shadcn.courseservice.dto.request.academicYear.AcademicYearUpdation;
-import com.shadcn.courseservice.dto.response.academicYear.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.academicYear.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 
 public interface IAcademicYearService {

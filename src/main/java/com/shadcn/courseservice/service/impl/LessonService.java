@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shadcn.courseservice.dto.request.lesson.UpdateLessonRequest;
+import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.file.FileUploadResponse;
 import com.shadcn.courseservice.dto.response.lesson.LessonResponse;
-import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.entity.Course;
 import com.shadcn.courseservice.entity.Lesson;
 import com.shadcn.courseservice.entity.LessonFile;

@@ -1,5 +1,7 @@
 package com.shadcn.courseservice.dto.request.building;
 
+import com.shadcn.courseservice.enums.RoomType;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,10 +10,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BuildingCreationRequest {
+public class RoomCreationRequest {
     String code;
     String name;
-    int defaultNumberOfRooms;
-    int defaultCapacityOfRooms;
-    // Long departmentId;
+    int capacity;
+    RoomType roomType;
 }

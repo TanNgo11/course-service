@@ -76,7 +76,7 @@ public class Course extends BaseEntity {
 
     Integer numsOfPracticeSessions;
 
-    Integer sessionsPerWeek;  // Số buổi học tối đa mỗi tuần (để tránh xếp lịch quá dày)
+    Integer sessionsPerWeek; // Số buổi học tối đa mỗi tuần (để tránh xếp lịch quá dày)
 
     LocalDate startDate;
 

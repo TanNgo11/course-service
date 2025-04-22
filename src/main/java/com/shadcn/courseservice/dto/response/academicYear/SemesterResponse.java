@@ -3,7 +3,6 @@ package com.shadcn.courseservice.dto.response.academicYear;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.shadcn.courseservice.dto.response.academicYear.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 
 import lombok.*;

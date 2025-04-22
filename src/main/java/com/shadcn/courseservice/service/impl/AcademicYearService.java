@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shadcn.courseservice.dto.request.academicYear.AcademicYearCreation;
 import com.shadcn.courseservice.dto.request.academicYear.AcademicYearUpdation;
-import com.shadcn.courseservice.dto.response.academicYear.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
+import com.shadcn.courseservice.dto.response.academicYear.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 import com.shadcn.courseservice.entity.AcademicYear;
 import com.shadcn.courseservice.entity.Department;

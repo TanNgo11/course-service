@@ -48,5 +48,4 @@ public class TeacherReference extends BaseEntity {
 
     @OneToMany(mappedBy = "teacherReference", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<TeacherCourseRole> teacherCourseRoles;
-    
 }

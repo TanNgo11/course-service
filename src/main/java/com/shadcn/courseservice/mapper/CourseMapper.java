@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 import com.shadcn.courseservice.dto.request.course.BaseCourseCreationRequest;
 import com.shadcn.courseservice.dto.request.course.CourseCreationRequest;
 import com.shadcn.courseservice.dto.request.course.UpdateCourseInformationRequest;
-import com.shadcn.courseservice.dto.response.teacher.TeacherInformationDTO;
 import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
+import com.shadcn.courseservice.dto.response.teacher.TeacherInformationDTO;
 import com.shadcn.courseservice.entity.BaseCourse;
 import com.shadcn.courseservice.entity.Course;
 

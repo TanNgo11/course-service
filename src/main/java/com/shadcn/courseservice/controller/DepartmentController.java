@@ -2,12 +2,12 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
-import com.shadcn.courseservice.dto.request.course.DepartmentCourseRequest;
-import com.shadcn.courseservice.dto.response.building.DepartmentResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.shadcn.courseservice.dto.request.course.DepartmentCourseRequest;
 import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.dto.response.building.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.service.IDepartmentService;
