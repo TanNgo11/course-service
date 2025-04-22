@@ -7,10 +7,10 @@ import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.shadcn.courseservice.dto.request.CourseIdsRequest;
+import com.shadcn.courseservice.dto.request.course.CourseIdsRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.SemesterResponse;
+import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.service.ISemesterService;
 

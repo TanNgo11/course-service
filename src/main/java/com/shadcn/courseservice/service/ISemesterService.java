@@ -2,8 +2,9 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.request.CourseIdsRequest;
+import com.shadcn.courseservice.dto.request.course.CourseIdsRequest;
 import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 
 public interface ISemesterService {

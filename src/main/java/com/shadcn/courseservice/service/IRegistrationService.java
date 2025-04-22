@@ -3,7 +3,7 @@ package com.shadcn.courseservice.service;
 import java.util.List;
 
 import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.RegistrationResponse;
+import com.shadcn.courseservice.dto.response.registration.RegistrationResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.entity.Registration;
 

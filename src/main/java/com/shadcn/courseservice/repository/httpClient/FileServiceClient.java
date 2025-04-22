@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.shadcn.courseservice.config.AuthenticationRequestInterceptor;
 import com.shadcn.courseservice.dto.response.ApiResponse;
-import com.shadcn.courseservice.dto.response.FileUploadResponse;
+import com.shadcn.courseservice.dto.response.file.FileUploadResponse;
 import com.shadcn.courseservice.exception.RetreiveMessageErrorDecoder;
 
 @FeignClient(

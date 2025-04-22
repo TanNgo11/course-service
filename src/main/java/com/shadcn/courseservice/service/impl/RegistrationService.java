@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.shadcn.courseservice.dto.response.registration.RegistrationResponse;
+import com.shadcn.courseservice.dto.response.student.StudentProfileResponse;
+import com.shadcn.courseservice.dto.response.user.UserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

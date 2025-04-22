@@ -1,5 +1,6 @@
 package com.shadcn.courseservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import com.shadcn.courseservice.enums.RoomStatus;
@@ -34,6 +35,7 @@ public class Room extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "building_id", nullable = false)
+    @JsonBackReference
     Building building;
 
     @ElementCollection

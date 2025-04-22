@@ -2,10 +2,11 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.shadcn.courseservice.dto.request.BaseCourseCreationRequest;
-import com.shadcn.courseservice.dto.request.CourseCreationRequest;
+import com.shadcn.courseservice.dto.request.course.BaseCourseCreationRequest;
+import com.shadcn.courseservice.dto.request.course.CourseCreationRequest;
 import com.shadcn.courseservice.dto.request.course.UpdateCourseInformationRequest;
 import com.shadcn.courseservice.dto.response.*;
 import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;

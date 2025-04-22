@@ -1,6 +1,5 @@
 package com.shadcn.courseservice.controller;
 
-import com.shadcn.courseservice.dto.request.Lesson.LessonAddRequest;
 import com.shadcn.courseservice.dto.request.building.BuildingCreationRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.service.IBuildingService;

@@ -7,14 +7,14 @@ import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.shadcn.courseservice.dto.request.AcademicYearCreation;
-import com.shadcn.courseservice.dto.request.AcademicYearDepartmentRequest;
-import com.shadcn.courseservice.dto.request.AcademicYearSemesterRequest;
-import com.shadcn.courseservice.dto.request.AcademicYearUpdation;
-import com.shadcn.courseservice.dto.response.AcademicYearResponse;
+import com.shadcn.courseservice.dto.request.academicYear.AcademicYearCreation;
+import com.shadcn.courseservice.dto.request.academicYear.AcademicYearDepartmentRequest;
+import com.shadcn.courseservice.dto.request.academicYear.AcademicYearSemesterRequest;
+import com.shadcn.courseservice.dto.request.academicYear.AcademicYearUpdation;
+import com.shadcn.courseservice.dto.response.academicYear.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.SemesterResponse;
+import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 import com.shadcn.courseservice.service.IAcademicYearService;
 
 import lombok.AccessLevel;

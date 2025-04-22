@@ -13,13 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.shadcn.courseservice.dto.request.BaseCourseCreationRequest;
-import com.shadcn.courseservice.dto.request.CourseCreationRequest;
+import com.shadcn.courseservice.dto.request.course.BaseCourseCreationRequest;
+import com.shadcn.courseservice.dto.request.course.CourseCreationRequest;
 import com.shadcn.courseservice.dto.request.course.UpdateCourseInformationRequest;
 import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.TeacherInformationDTO;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
-import com.shadcn.courseservice.dto.response.UserProfileResponse;
+import com.shadcn.courseservice.dto.response.teacher.TeacherInformationDTO;
+import com.shadcn.courseservice.dto.response.teacher.TeacherProfileResponse;
+import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
 import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.entity.*;
