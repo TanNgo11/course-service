@@ -5,7 +5,7 @@ import java.util.List;
 import org.mapstruct.*;
 import org.mapstruct.Mapper;
 
-import com.shadcn.courseservice.dto.response.RegistrationResponse;
+import com.shadcn.courseservice.dto.response.registration.RegistrationResponse;
 import com.shadcn.courseservice.entity.Registration;
 
 @Mapper(componentModel = "spring")

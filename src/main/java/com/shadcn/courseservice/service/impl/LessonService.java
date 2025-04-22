@@ -10,9 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.shadcn.courseservice.dto.request.Lesson.UpdateLessonRequest;
-import com.shadcn.courseservice.dto.response.FileUploadResponse;
-import com.shadcn.courseservice.dto.response.Lesson.LessonResponse;
+import com.shadcn.courseservice.dto.request.lesson.UpdateLessonRequest;
+import com.shadcn.courseservice.dto.response.file.FileUploadResponse;
+import com.shadcn.courseservice.dto.response.lesson.LessonResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.entity.Course;
 import com.shadcn.courseservice.entity.Lesson;

@@ -3,7 +3,7 @@ package com.shadcn.courseservice.service.impl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.shadcn.courseservice.dto.response.FileUploadResponse;
+import com.shadcn.courseservice.dto.response.file.FileUploadResponse;
 import com.shadcn.courseservice.repository.httpClient.FileServiceClient;
 import com.shadcn.courseservice.service.IFileUploadService;
 

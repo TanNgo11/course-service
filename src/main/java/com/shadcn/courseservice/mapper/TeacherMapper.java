@@ -6,8 +6,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import com.shadcn.courseservice.dto.request.teacher.UpdateTeacherReferenceRequest;
-import com.shadcn.courseservice.dto.response.TeacherInformationDTO;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
+import com.shadcn.courseservice.dto.response.teacher.TeacherInformationDTO;
+import com.shadcn.courseservice.dto.response.teacher.TeacherProfileResponse;
 import com.shadcn.courseservice.entity.TeacherReference;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

@@ -5,9 +5,9 @@ import static com.shadcn.courseservice.constant.PathConstant.API_V1_REFERENCES;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.shadcn.courseservice.dto.request.ReferenceDeleteRequest;
-import com.shadcn.courseservice.dto.request.StudentReferenceCreateRequest;
-import com.shadcn.courseservice.dto.request.TeacherReferenceCreateRequest;
+import com.shadcn.courseservice.dto.request.reference.ReferenceDeleteRequest;
+import com.shadcn.courseservice.dto.request.student.StudentReferenceCreateRequest;
+import com.shadcn.courseservice.dto.request.teacher.TeacherReferenceCreateRequest;
 import com.shadcn.courseservice.dto.request.teacher.UpdateTeacherReferenceRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.service.impl.ReferenceService;

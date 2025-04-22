@@ -11,11 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shadcn.courseservice.dto.request.Lesson.LessonAddRequest;
-import com.shadcn.courseservice.dto.request.Lesson.UpdateLessonRequest;
-import com.shadcn.courseservice.dto.request.LessonsDeleteRequest;
+import com.shadcn.courseservice.dto.request.lesson.LessonAddRequest;
+import com.shadcn.courseservice.dto.request.lesson.UpdateLessonRequest;
+import com.shadcn.courseservice.dto.request.lesson.LessonsDeleteRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
-import com.shadcn.courseservice.dto.response.Lesson.LessonResponse;
+import com.shadcn.courseservice.dto.response.lesson.LessonResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.service.impl.LessonService;
 

@@ -8,11 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.shadcn.courseservice.dto.request.AcademicYearCreation;
-import com.shadcn.courseservice.dto.request.AcademicYearUpdation;
-import com.shadcn.courseservice.dto.response.AcademicYearResponse;
+import com.shadcn.courseservice.dto.request.academicYear.AcademicYearCreation;
+import com.shadcn.courseservice.dto.request.academicYear.AcademicYearUpdation;
+import com.shadcn.courseservice.dto.response.academicYear.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.SemesterResponse;
+import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 import com.shadcn.courseservice.entity.AcademicYear;
 import com.shadcn.courseservice.entity.Department;
 import com.shadcn.courseservice.entity.Semester;

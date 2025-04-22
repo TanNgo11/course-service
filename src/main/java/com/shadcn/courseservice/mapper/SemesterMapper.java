@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
-import com.shadcn.courseservice.dto.response.SemesterResponse;
+import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 import com.shadcn.courseservice.entity.Semester;
 
 @Mapper(componentModel = "spring")

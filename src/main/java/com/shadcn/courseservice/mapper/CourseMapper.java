@@ -5,10 +5,10 @@ import java.util.List;
 import org.mapstruct.*;
 import org.springframework.data.repository.query.Param;
 
-import com.shadcn.courseservice.dto.request.BaseCourseCreationRequest;
-import com.shadcn.courseservice.dto.request.CourseCreationRequest;
+import com.shadcn.courseservice.dto.request.course.BaseCourseCreationRequest;
+import com.shadcn.courseservice.dto.request.course.CourseCreationRequest;
 import com.shadcn.courseservice.dto.request.course.UpdateCourseInformationRequest;
-import com.shadcn.courseservice.dto.response.TeacherInformationDTO;
+import com.shadcn.courseservice.dto.response.teacher.TeacherInformationDTO;
 import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.entity.BaseCourse;

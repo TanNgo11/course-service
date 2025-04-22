@@ -38,7 +38,10 @@ public enum ErrorCode {
     INVALID_REGISTRATION_DATE(1037, "Invalid registration date", HttpStatus.BAD_REQUEST),
     BASE_COURSE_NOT_FOUND(1038, "Base course not found", HttpStatus.BAD_REQUEST),
     LESSON_NOT_FOUND(1039, "Lesson not found", HttpStatus.BAD_REQUEST),
-    BUILDING_CODE_ALREADY_EXISTS(1040, "Building code already exists", HttpStatus.BAD_REQUEST);
+    BUILDING_CODE_ALREADY_EXISTS(1040, "Building code already exists", HttpStatus.BAD_REQUEST),
+    BUILDING_NOT_FOUND(1041, "Building not found", HttpStatus.BAD_REQUEST),
+    ROOM_CODE_ALREADY_EXISTS(1042, "Room code already exists", HttpStatus.BAD_REQUEST),
+    ROOM_NOT_FOUND(1043, "Room not found", HttpStatus.BAD_REQUEST);
 
     private final int code;
     private final String message;

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.shadcn.courseservice.dto.response.StudentProfileResponse;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
+import com.shadcn.courseservice.dto.response.student.StudentProfileResponse;
+import com.shadcn.courseservice.dto.response.teacher.TeacherProfileResponse;
 import com.shadcn.courseservice.repository.httpClient.ProfileClient;
 import com.shadcn.courseservice.service.IProfileService;
 

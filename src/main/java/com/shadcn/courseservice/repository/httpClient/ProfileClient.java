@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.config.AuthenticationRequestInterceptor;
 import com.shadcn.courseservice.dto.response.ApiResponse;
-import com.shadcn.courseservice.dto.response.StudentProfileResponse;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
+import com.shadcn.courseservice.dto.response.student.StudentProfileResponse;
+import com.shadcn.courseservice.dto.response.teacher.TeacherProfileResponse;
 import com.shadcn.courseservice.exception.RetreiveMessageErrorDecoder;
 
 @FeignClient(

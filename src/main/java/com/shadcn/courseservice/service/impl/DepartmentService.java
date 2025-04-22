@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.shadcn.courseservice.dto.response.DepartmentResponse;
+import com.shadcn.courseservice.dto.response.building.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;

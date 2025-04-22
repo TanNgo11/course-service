@@ -2,8 +2,8 @@ package com.shadcn.courseservice.dto.response.course;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.response.DepartmentResponse;
-import com.shadcn.courseservice.dto.response.TeacherInformationDTO;
+import com.shadcn.courseservice.dto.response.building.DepartmentResponse;
+import com.shadcn.courseservice.dto.response.teacher.TeacherInformationDTO;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

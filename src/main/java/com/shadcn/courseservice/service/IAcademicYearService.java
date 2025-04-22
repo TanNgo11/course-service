@@ -2,11 +2,11 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.request.AcademicYearCreation;
-import com.shadcn.courseservice.dto.request.AcademicYearUpdation;
-import com.shadcn.courseservice.dto.response.AcademicYearResponse;
+import com.shadcn.courseservice.dto.request.academicYear.AcademicYearCreation;
+import com.shadcn.courseservice.dto.request.academicYear.AcademicYearUpdation;
+import com.shadcn.courseservice.dto.response.academicYear.AcademicYearResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.SemesterResponse;
+import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 
 public interface IAcademicYearService {
     void createAcademicYear(AcademicYearCreation academicYearCreation);

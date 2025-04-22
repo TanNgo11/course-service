@@ -4,14 +4,18 @@ import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.request.course.BaseCourseCreationRequest;
+import com.shadcn.courseservice.dto.request.course.CourseAddRequest;
+import com.shadcn.courseservice.dto.request.course.CourseRemoveRequest;
+import com.shadcn.courseservice.dto.request.file.FileUploadRequest;
+import com.shadcn.courseservice.dto.request.file.ListFileUploadRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.shadcn.courseservice.dto.request.*;
 import com.shadcn.courseservice.dto.request.course.UpdateCourseInformationRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
-import com.shadcn.courseservice.dto.response.UserProfileResponse;
+import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
 import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.service.ICourseService;

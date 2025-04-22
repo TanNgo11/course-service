@@ -2,8 +2,8 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.response.StudentProfileResponse;
-import com.shadcn.courseservice.dto.response.TeacherProfileResponse;
+import com.shadcn.courseservice.dto.response.student.StudentProfileResponse;
+import com.shadcn.courseservice.dto.response.teacher.TeacherProfileResponse;
 
 public interface IProfileService {
     List<StudentProfileResponse> getPublicStudentProfiles(long[] studentIds);

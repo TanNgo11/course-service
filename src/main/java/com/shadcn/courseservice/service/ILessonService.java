@@ -2,8 +2,8 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.request.Lesson.UpdateLessonRequest;
-import com.shadcn.courseservice.dto.response.Lesson.LessonResponse;
+import com.shadcn.courseservice.dto.request.lesson.UpdateLessonRequest;
+import com.shadcn.courseservice.dto.response.lesson.LessonResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 
 public interface ILessonService {
