@@ -1,7 +1,6 @@
 package com.shadcn.courseservice.entity;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import jakarta.persistence.*;
 

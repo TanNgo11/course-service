@@ -1,4 +1,6 @@
-package com.shadcn.courseservice.dto.request.building;
+package com.shadcn.courseservice.dto.response.building;
+
+import java.util.List;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,10 +10,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BuildingCreationRequest {
+public class BuildingResponse {
+    Long id;
     String code;
     String name;
-    int defaultNumberOfRooms;
-    int defaultCapacityOfRooms;
-    // Long departmentId;
+    List<RoomResponse> rooms;
+    //String departmentName;
 }

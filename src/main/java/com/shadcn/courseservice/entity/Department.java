@@ -50,9 +50,9 @@ public class Department extends BaseEntity {
     @JsonManagedReference
     List<BaseCourse> baseCourses;
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    List<Building> buildings;
+    //    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //    @JsonManagedReference
+    //    List<Building> buildings;
 
     //    @ManyToMany(mappedBy = "departments")
     //    private List<BaseCourse> baseCourses;

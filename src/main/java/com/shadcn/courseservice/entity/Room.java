@@ -1,15 +1,15 @@
 package com.shadcn.courseservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.shadcn.courseservice.enums.RoomStatus;
 import com.shadcn.courseservice.enums.RoomType;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Getter
 @Setter

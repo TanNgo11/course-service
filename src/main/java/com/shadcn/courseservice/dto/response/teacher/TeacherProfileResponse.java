@@ -6,6 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
 import com.shadcn.courseservice.enums.Gender;
 
 import lombok.*;

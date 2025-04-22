@@ -3,6 +3,7 @@ package com.shadcn.courseservice.dto.response.student;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
 import com.shadcn.courseservice.enums.Gender;
 
 import lombok.AccessLevel;

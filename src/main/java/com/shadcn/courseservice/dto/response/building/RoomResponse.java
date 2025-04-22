@@ -1,9 +1,10 @@
 package com.shadcn.courseservice.dto.response.building;
 
-import com.shadcn.courseservice.entity.Building;
+import jakarta.persistence.*;
+
 import com.shadcn.courseservice.enums.RoomStatus;
 import com.shadcn.courseservice.enums.RoomType;
-import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -20,5 +21,5 @@ public class RoomResponse {
     int capacity;
     RoomType roomType;
     RoomStatus status;
-    Building building;
+    String buildingCode;
 }

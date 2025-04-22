@@ -1,12 +1,13 @@
 package com.shadcn.courseservice.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.util.Set;
 
+import jakarta.persistence.*;
+
 import com.shadcn.courseservice.enums.TeacherRole;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter

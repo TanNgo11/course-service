@@ -2,10 +2,6 @@ package com.shadcn.courseservice.repository.httpClient;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.response.student.StudentProfileResponse;
-import com.shadcn.courseservice.dto.response.teacher.TeacherProfileResponse;
-import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
-import com.shadcn.courseservice.dto.response.user.UserResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.shadcn.courseservice.config.AuthenticationRequestInterceptor;
 import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.dto.response.student.StudentProfileResponse;
+import com.shadcn.courseservice.dto.response.teacher.TeacherProfileResponse;
+import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
+import com.shadcn.courseservice.dto.response.user.UserResponse;
 import com.shadcn.courseservice.exception.RetreiveMessageErrorDecoder;
 
 @FeignClient(

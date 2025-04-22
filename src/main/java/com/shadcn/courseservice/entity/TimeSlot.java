@@ -1,7 +1,7 @@
 package com.shadcn.courseservice.entity;
 
-import java.time.LocalTime;
 import java.time.DayOfWeek;
+import java.time.LocalTime;
 
 import jakarta.persistence.*;
 
@@ -18,9 +18,9 @@ import lombok.experimental.FieldDefaults;
 public class TimeSlot extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
-    DayOfWeek dayOfWeek; 
+    DayOfWeek dayOfWeek;
 
-    LocalTime startTime; 
+    LocalTime startTime;
 
-    LocalTime endTime; 
+    LocalTime endTime;
 }
