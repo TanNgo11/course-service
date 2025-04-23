@@ -68,6 +68,16 @@ public class Course extends BaseEntity {
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     List<Timetable> timetables;
 
+    Integer theorySessionsHours;
+
+    Integer numsOfTheorySessions;
+
+    Integer practiceSessionsHours;
+
+    Integer numsOfPracticeSessions;
+
+    Integer sessionsPerWeek;  // Số buổi học tối đa mỗi tuần (để tránh xếp lịch quá dày)
+
     LocalDate startDate;
 
     LocalDate endDate;

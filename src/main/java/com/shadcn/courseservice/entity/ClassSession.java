@@ -28,12 +28,20 @@ public class ClassSession extends BaseEntity {
     @JoinColumn(name = "room_id", nullable = false)
     Room room;
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_reference_id", nullable = false)
+    TeacherReference teacher;
+
+    @ManyToOne
+    @JoinColumn(name = "time_slot_id", nullable = false)
+    TimeSlot timeSlot;
+
     LocalDate sessionDate;
 
-    LocalTime startTime;
+    @Column(nullable = true)
+    Integer weekNumber;
 
-    LocalTime endTime;
-
+    @Enumerated(EnumType.STRING)
     ClassSessionType sessionType;
 
     String notes;
