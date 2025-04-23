@@ -8,6 +8,8 @@ import com.shadcn.courseservice.enums.RoomType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -33,4 +35,9 @@ public class Room extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "building_id", nullable = false)
     Building building;
+
+    @ElementCollection
+    @CollectionTable(name = "room_available_slots", joinColumns = @JoinColumn(name = "room_id"))
+    @Column(name = "time_slot_id")
+    Set<Long> availableTimeSlots;
 }
