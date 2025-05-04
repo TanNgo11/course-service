@@ -2,6 +2,9 @@ package com.shadcn.courseservice.service.impl;
 
 import java.util.List;
 
+import lombok.extern.log4j.Log4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +31,10 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Log4j
 public class RoomService implements IRoomService {
 
+    private static final Logger log = LoggerFactory.getLogger(RoomService.class);
     private final RoomRepository roomRepository;
     private final BuildingRepository buildingRepository;
     private final DepartmentRepository departmentRepository;
@@ -62,8 +67,7 @@ public class RoomService implements IRoomService {
     @Transactional
     public Room updateRoom(RoomUpdateRequest request, Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
-
-        if (request.getName() != null) {
+        if ( !request.getName().trim().isEmpty()) {
             room.setName(request.getName());
         }
 
@@ -71,15 +75,13 @@ public class RoomService implements IRoomService {
             room.setCapacity(request.getCapacity());
         }
 
-        if (request.getRoomType() != null) {
+        if ( !request.getRoomType().toString().isEmpty()) {
             room.setRoomType(request.getRoomType());
         }
 
-        if (request.getCode() != null && !roomRepository.existsByCode(request.getCode())) {
+        if ( !roomRepository.existsByCode(request.getCode())) {
             room.setCode(request.getCode());
-        } else if (request.getCode() != null) {
-            throw new AppException(ErrorCode.ROOM_CODE_ALREADY_EXISTS);
-        }
+        } 
 
         return roomRepository.save(room);
     }
