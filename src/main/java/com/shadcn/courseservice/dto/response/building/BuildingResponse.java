@@ -15,5 +15,5 @@ public class BuildingResponse {
     String code;
     String name;
     List<RoomResponse> rooms;
-    //String departmentName;
+    // String departmentName;
 }

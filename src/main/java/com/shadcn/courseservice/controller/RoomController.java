@@ -32,7 +32,7 @@ public class RoomController {
     }
 
     @PutMapping("/rooms/{roomId}")
-    public ApiResponse<Room> updateRoom(RoomUpdateRequest request, @PathVariable Long roomId) {
+    public ApiResponse<Room> updateRoom(@RequestBody RoomUpdateRequest request, @PathVariable Long roomId) {
         Room room = roomService.updateRoom(request, roomId);
         return ApiResponse.success(room);
     }

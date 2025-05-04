@@ -1,5 +1,6 @@
 package com.shadcn.courseservice.dto.response.building;
 
+import com.shadcn.courseservice.dto.response.BaseResponse;
 import jakarta.persistence.*;
 
 import com.shadcn.courseservice.enums.RoomStatus;
@@ -15,7 +16,8 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoomResponse {
+public class RoomResponse  {
+    Long id;
     String code;
     String name;
     int capacity;
