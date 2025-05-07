@@ -1,7 +1,6 @@
 package com.shadcn.courseservice.dto.request.academicYear;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -19,7 +18,4 @@ public class AcademicYearCreation {
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     LocalDate endYear;
-
-    List<Long> departmentIds;
-    List<Long> semesterIds;
 }

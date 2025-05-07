@@ -5,6 +5,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 
 import com.shadcn.courseservice.dto.request.academicYear.AcademicYearCreation;
 import com.shadcn.courseservice.dto.request.academicYear.AcademicYearUpdation;
@@ -15,7 +16,10 @@ import com.shadcn.courseservice.entity.Semester;
 
 @Mapper(componentModel = "spring")
 public interface AcademicYearMapper {
-    @Mapping(target = "departments", source = "departmentIds", ignore = true)
+    @Mappings({
+        @Mapping(target = "startYear", source = "startYear"),
+        @Mapping(target = "endYear", source = "endYear"),
+    })
     AcademicYear toAcademicYear(AcademicYearCreation academicYearCreation);
 
     void updateAcademicYear(@MappingTarget AcademicYear academicYear, AcademicYearUpdation request);

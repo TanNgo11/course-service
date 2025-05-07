@@ -2,7 +2,6 @@ package com.shadcn.courseservice.service.impl;
 
 import java.util.List;
 
-import lombok.extern.log4j.Log4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageImpl;
@@ -28,6 +27,7 @@ import com.shadcn.courseservice.service.IRoomService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +67,7 @@ public class RoomService implements IRoomService {
     @Transactional
     public Room updateRoom(RoomUpdateRequest request, Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
-        if ( !request.getName().trim().isEmpty()) {
+        if (!request.getName().trim().isEmpty()) {
             room.setName(request.getName());
         }
 
@@ -75,13 +75,13 @@ public class RoomService implements IRoomService {
             room.setCapacity(request.getCapacity());
         }
 
-        if ( !request.getRoomType().toString().isEmpty()) {
+        if (!request.getRoomType().toString().isEmpty()) {
             room.setRoomType(request.getRoomType());
         }
 
-        if ( !roomRepository.existsByCode(request.getCode())) {
+        if (!roomRepository.existsByCode(request.getCode())) {
             room.setCode(request.getCode());
-        } 
+        }
 
         return roomRepository.save(room);
     }
