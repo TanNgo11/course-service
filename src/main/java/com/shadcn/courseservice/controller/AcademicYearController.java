@@ -25,7 +25,7 @@ import lombok.experimental.FieldDefaults;
 @RequestMapping(API_V1_ACADEMIC_YEARS)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173")
 public class AcademicYearController {
     IAcademicYearService academicYearService;
 

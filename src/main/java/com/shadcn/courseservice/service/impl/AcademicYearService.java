@@ -19,10 +19,9 @@ import com.shadcn.courseservice.entity.Semester;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.AcademicYearMapper;
-import com.shadcn.courseservice.repository.AcademicYearRepository;
-import com.shadcn.courseservice.repository.DepartmentRepository;
-import com.shadcn.courseservice.repository.SemesterRepository;
+import com.shadcn.courseservice.repository.*;
 import com.shadcn.courseservice.service.IAcademicYearService;
+import com.shadcn.courseservice.service.ISemesterService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
 
 import lombok.AccessLevel;
@@ -39,18 +38,23 @@ public class AcademicYearService implements IAcademicYearService {
     AcademicYearMapper academicYearMapper;
     DepartmentRepository departmentRepository;
     SemesterRepository semesterRepository;
+    ISemesterService semesterService;
+    BaseCourseRepository baseCourseRepository;
 
     @Override
     @Transactional
     public void createAcademicYear(AcademicYearCreation academicYearCreation) {
+        // academicYearCreation.setEndYear(academicYearCreation.getStartYear().plusYears(1));
         boolean existAcademicYear = academicYearRepository.existsByStartYearAndEndYearInt(
                 academicYearCreation.getStartYear(), academicYearCreation.getEndYear());
         if (existAcademicYear) {
             throw new AppException(ErrorCode.ACADEMIC_YEAR_EXISTED);
         }
-        AcademicYear savedAcademicYear = academicYearMapper.toAcademicYear(academicYearCreation);
 
+        AcademicYear savedAcademicYear = academicYearMapper.toAcademicYear(academicYearCreation);
         academicYearRepository.save(savedAcademicYear);
+
+        semesterService.generateForOneYear(savedAcademicYear);
     }
 
     @Override

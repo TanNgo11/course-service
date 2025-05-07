@@ -1,6 +1,7 @@
 package com.shadcn.courseservice.service.impl;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class TimeSlotService implements ITimeSlotService {
 
     @Override
     @Transactional
-    public void initializeTimeSlots() {
+    public void initializeTimeSlots(LocalDate startDate, LocalDate endDate) {
         LocalTime[][] timeRanges = {
             {LocalTime.of(7, 30), LocalTime.of(9, 30)},
             {LocalTime.of(9, 30), LocalTime.of(11, 30)},
@@ -36,13 +37,16 @@ public class TimeSlotService implements ITimeSlotService {
             {LocalTime.of(18, 30), LocalTime.of(20, 30)}
         };
         List<TimeSlot> timeSlots = new ArrayList<>();
-        for (DayOfWeek day : DayOfWeek.values()) {
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            DayOfWeek day = date.getDayOfWeek();
             for (LocalTime[] range : timeRanges) {
                 TimeSlot timeSlot = TimeSlot.builder()
+                        .date(date)
                         .dayOfWeek(day)
                         .startTime(range[0])
                         .endTime(range[1])
                         .build();
+                timeSlots.add(timeSlot);
             }
         }
         timeSlotRepository.saveAll(timeSlots);
