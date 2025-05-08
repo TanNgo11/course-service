@@ -2,8 +2,12 @@ package com.shadcn.courseservice.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.shadcn.courseservice.dto.request.registration.RegistrationTeacherRoleRequest;
+import com.shadcn.courseservice.enums.TeacherRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +54,7 @@ public class RegistrationService implements IRegistrationService {
     IdentityClient identityClient;
     ProfileClient profileClient;
     AcademicYearRepository academicYearRepository;
+    TeacherCourseRoleRepository teacherCourseRoleRepository;
 
     @Override
     @Transactional
@@ -144,12 +149,43 @@ public class RegistrationService implements IRegistrationService {
 
             if (!currentCourse.getTeacherReferences().contains(teacherProfile)) {
                 log.info("Adding teacher to course");
-                currentCourse.getTeacherReferences().add(teacherProfile);
+                    currentCourse.getTeacherReferences().add(teacherProfile);
                 teacherProfile.getCourses().add(currentCourse);
             }
             courseRepository.save(currentCourse);
         }
         teacherReferenceRepository.save(teacherProfile);
+    }
+
+    @Override
+    @Transactional
+    public void registerTeacherRoleToCourse(RegistrationTeacherRoleRequest request) {
+        TeacherReference teacherReference = teacherReferenceRepository
+                .findByTeacherId(request.getTeacherId())
+                .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_FOUND));
+
+        Set<TeacherCourseRole> teacherCourseRoles = teacherReference.getTeacherCourseRoles();
+
+        TeacherCourseRole teacherCourseRole = teacherCourseRoles.stream()
+                .filter(tcr -> tcr.getCourse().getId().equals(request.getCourseId()))
+                .findFirst()
+                .orElseGet(() -> {
+                    TeacherCourseRole newRole = TeacherCourseRole.builder()
+                            .teacherReference(teacherReference)
+                            .course(courseRepository.findById(request.getCourseId())
+                                    .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND)))
+                            .roles(new HashSet<>())
+                            .build();
+                    teacherCourseRoles.add(newRole);
+                    return newRole;
+                });
+
+        if (teacherCourseRole.getRoles().contains(request.getTeacherRole())) {
+            throw new AppException(ErrorCode.TEACHER_ROLE_ALREADY_EXISTS);
+        }
+
+        teacherCourseRole.getRoles().add(request.getTeacherRole());
+        teacherReferenceRepository.save(teacherReference);
     }
 
     @Override
