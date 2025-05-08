@@ -31,10 +31,8 @@ import lombok.extern.log4j.Log4j;
 
 @Service
 @RequiredArgsConstructor
-@Log4j
 public class RoomService implements IRoomService {
 
-    private static final Logger log = LoggerFactory.getLogger(RoomService.class);
     private final RoomRepository roomRepository;
     private final BuildingRepository buildingRepository;
     private final DepartmentRepository departmentRepository;

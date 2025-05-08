@@ -41,10 +41,11 @@ public enum ErrorCode {
     BUILDING_CODE_ALREADY_EXISTS(1040, "Building code already exists", HttpStatus.BAD_REQUEST),
     BUILDING_NOT_FOUND(1041, "Building not found", HttpStatus.BAD_REQUEST),
     ROOM_CODE_ALREADY_EXISTS(1042, "Room code already exists", HttpStatus.BAD_REQUEST),
-    ROOM_NOT_FOUND(1043, "Room not found", HttpStatus.BAD_REQUEST),
-    CLASS_SESSION_NOT_FOUND(1044, "Class session not found", HttpStatus.BAD_REQUEST),
-    STUDENT_NOT_ENROLLED(1045, "Student not enrolled in this course", HttpStatus.BAD_REQUEST),
-    ACADEMIC_YEAR_INVALID(1046, "Academic year invalid", HttpStatus.BAD_REQUEST);
+    TEACHER_ROLE_ALREADY_EXISTS(1044, "Teacher  role already exists", HttpStatus.BAD_REQUEST),
+    ROOM_NOT_FOUND(1045, "Room not found", HttpStatus.BAD_REQUEST),
+    CLASS_SESSION_NOT_FOUND(1046, "Class session not found", HttpStatus.BAD_REQUEST),
+    STUDENT_NOT_ENROLLED(1047, "Student not enrolled in this course", HttpStatus.BAD_REQUEST),
+    ACADEMIC_YEAR_INVALID(1048, "Academic year invalid", HttpStatus.BAD_REQUEST);
 
     private final int code;
     private final String message;

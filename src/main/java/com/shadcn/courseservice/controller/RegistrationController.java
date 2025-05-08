@@ -2,6 +2,7 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_REGISTRATIONS;
 
+import com.shadcn.courseservice.dto.request.registration.RegistrationTeacherRoleRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -130,6 +131,13 @@ public class RegistrationController {
                 request.getSemesterId(),
                 request.getDepartmentId(),
                 request.getUsername());
+        return ApiResponse.empty();
+    }
+
+    @PutMapping("/assign-teacher-role")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<Void> teacherRoleToCourse(@RequestBody RegistrationTeacherRoleRequest request) {
+        registrationService.registerTeacherRoleToCourse(request);
         return ApiResponse.empty();
     }
 
