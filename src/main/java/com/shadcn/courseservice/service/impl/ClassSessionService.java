@@ -1,15 +1,16 @@
 package com.shadcn.courseservice.service.impl;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.shadcn.courseservice.dto.request.attendance.class_session.ClassSessionCreationRequest;
 import com.shadcn.courseservice.entity.ClassSession;
 import com.shadcn.courseservice.repository.*;
 import com.shadcn.courseservice.service.IClassSessionService;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor

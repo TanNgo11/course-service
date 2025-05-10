@@ -2,13 +2,13 @@ package com.shadcn.courseservice.controller;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_REGISTRATIONS;
 
-import com.shadcn.courseservice.dto.request.registration.RegistrationTeacherRoleRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.shadcn.courseservice.dto.request.course.AssignTeacherRequest;
 import com.shadcn.courseservice.dto.request.registration.ApproveRegistrationRequest;
 import com.shadcn.courseservice.dto.request.registration.RegistrationRequest;
+import com.shadcn.courseservice.dto.request.registration.RegistrationTeacherRoleRequest;
 import com.shadcn.courseservice.dto.request.registration.RemoveRegistrationRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;

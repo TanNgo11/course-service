@@ -1,10 +1,9 @@
 package com.shadcn.courseservice.dto.request.registration;
 
 import com.shadcn.courseservice.enums.TeacherRole;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
