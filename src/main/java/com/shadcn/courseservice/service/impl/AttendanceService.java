@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.shadcn.courseservice.dto.request.attendance.StudentAttendanceRecord;
 import com.shadcn.courseservice.dto.request.attendance.StudentAttendanceRequest;
 import com.shadcn.courseservice.dto.request.attendance.TeacherAttendanceRequest;
+import com.shadcn.courseservice.dto.response.attendance.AttendanceResponse;
 import com.shadcn.courseservice.entity.Attendance;
 import com.shadcn.courseservice.entity.ClassSession;
 import com.shadcn.courseservice.entity.StudentReference;
 import com.shadcn.courseservice.enums.AttendanceStatus;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
+import com.shadcn.courseservice.mapper.AttendanceMapper;
 import com.shadcn.courseservice.repository.AttendanceRepository;
 import com.shadcn.courseservice.repository.ClassSessionRepository;
 import com.shadcn.courseservice.repository.StudentReferenceRepository;
@@ -35,6 +37,7 @@ public class AttendanceService implements IAttendanceService {
     AttendanceRepository attendanceRepository;
     ClassSessionRepository classSessionRepository;
     StudentReferenceRepository studentReferenceRepository;
+    AttendanceMapper attendanceMapper;
 
     @Override
     @Transactional
@@ -83,7 +86,7 @@ public class AttendanceService implements IAttendanceService {
 
     @Override
     @Transactional
-    public List<Attendance> teacherTakeAttendance(TeacherAttendanceRequest request) {
+    public List<Attendance> teacherCheckAttendanceForStudent(TeacherAttendanceRequest request) {
         log.info("Teacher taking attendance for class session: {}", request.getClassSessionId());
 
         // Get class session
@@ -132,24 +135,28 @@ public class AttendanceService implements IAttendanceService {
     }
 
     @Override
-    public List<Attendance> getAttendancesByClassSession(Long classSessionId) {
+    public List<AttendanceResponse> getAttendancesByClassSession(Long classSessionId) {
         log.info("Getting attendances for class session: {}", classSessionId);
 
         ClassSession classSession = classSessionRepository
                 .findById(classSessionId)
                 .orElseThrow(() -> new AppException(ErrorCode.CLASS_SESSION_NOT_FOUND));
 
-        return attendanceRepository.findByClassSession(classSession);
+        return attendanceRepository.findByClassSession(classSession).stream()
+                .map(attendanceMapper::toAttendanceResponse)
+                .toList();
     }
 
     @Override
-    public List<Attendance> getAttendancesByStudent(Long studentId) {
+    public List<AttendanceResponse> getAttendancesByStudent(Long studentId) {
         log.info("Getting attendances for student: {}", studentId);
 
         StudentReference student = studentReferenceRepository
                 .findById(studentId)
                 .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
 
-        return attendanceRepository.findByStudent(student);
+        return attendanceRepository.findByStudent(student).stream()
+                .map(attendanceMapper::toAttendanceResponse)
+                .toList();
     }
 }

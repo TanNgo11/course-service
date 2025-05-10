@@ -8,7 +8,9 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.shadcn.courseservice.entity.Course;
 import com.shadcn.courseservice.entity.TeacherReference;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TeacherReferenceRepository
         extends JpaRepository<TeacherReference, Long>, QuerydslPredicateExecutor<TeacherReference> {
 

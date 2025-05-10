@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.shadcn.courseservice.dto.request.attendance.StudentAttendanceRequest;
 import com.shadcn.courseservice.dto.request.attendance.TeacherAttendanceRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
+import com.shadcn.courseservice.dto.response.attendance.AttendanceResponse;
 import com.shadcn.courseservice.entity.Attendance;
 import com.shadcn.courseservice.service.IAttendanceService;
 
@@ -37,21 +38,21 @@ public class AttendanceController {
     @PostMapping("/teacher")
     @PreAuthorize("hasRole('TEACHER')")
     public ApiResponse<List<Attendance>> teacherTakeAttendance(@RequestBody TeacherAttendanceRequest request) {
-        List<Attendance> attendances = attendanceService.teacherTakeAttendance(request);
+        List<Attendance> attendances = attendanceService.teacherCheckAttendanceForStudent(request);
         return ApiResponse.success(attendances);
     }
 
     @GetMapping("/class-session/{classSessionId}")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
-    public ApiResponse<List<Attendance>> getAttendancesByClassSession(@PathVariable Long classSessionId) {
-        List<Attendance> attendances = attendanceService.getAttendancesByClassSession(classSessionId);
+    public ApiResponse<List<AttendanceResponse>> getAttendancesByClassSession(@PathVariable Long classSessionId) {
+        List<AttendanceResponse> attendances = attendanceService.getAttendancesByClassSession(classSessionId);
         return ApiResponse.success(attendances);
     }
 
     @GetMapping("/student/{studentId}")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
-    public ApiResponse<List<Attendance>> getAttendancesByStudent(@PathVariable Long studentId) {
-        List<Attendance> attendances = attendanceService.getAttendancesByStudent(studentId);
+    public ApiResponse<List<AttendanceResponse>> getAttendancesByStudent(@PathVariable Long studentId) {
+        List<AttendanceResponse> attendances = attendanceService.getAttendancesByStudent(studentId);
         return ApiResponse.success(attendances);
     }
 }

@@ -16,16 +16,14 @@ import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.entity.*;
+import com.shadcn.courseservice.enums.CourseStatus;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.CourseMapper;
 import com.shadcn.courseservice.mapper.RegistrationMapper;
 import com.shadcn.courseservice.mapper.SemesterMapper;
 import com.shadcn.courseservice.repository.*;
-import com.shadcn.courseservice.service.IDepartmentService;
-import com.shadcn.courseservice.service.IRegistrationService;
-import com.shadcn.courseservice.service.ISemesterService;
-import com.shadcn.courseservice.service.ITimeSlotService;
+import com.shadcn.courseservice.service.*;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
 
 import lombok.AccessLevel;
@@ -49,6 +47,7 @@ public class SemesterService implements ISemesterService {
     RegistrationMapper registrationMapper;
     IDepartmentService departmentService;
     ITimeSlotService timeSlotService;
+    IScheduleService scheduleService;
     private CronSemester cronSemester;
 
     @Override
@@ -68,16 +67,25 @@ public class SemesterService implements ISemesterService {
 
         for (BaseCourse baseCourse : baseCourses) {
             List<Department> departments = baseCourse.getDepartments();
+            //            Timetable timetable = Timetable.builder()
+            //                    .
+            //                    .build();
             Course course = Course.builder()
                     .baseCourse(baseCourse)
                     .semester(semester)
                     // .departments(departments)
+                    // .timetables()
+                    .numsOfPracticeSessions(15)
+                    .numsOfTheorySessions(15)
+                    .sessionsPerWeek(4)
+                    .processStatus(CourseStatus.IN_PROGRESS)
                     .startDate(semester.getStartDate())
                     .endDate(semester.getEndDate())
                     .remain(20)
                     .build();
 
             courseRepository.save(course);
+            scheduleService.generateTimeTable(course);
 
             //            for (Department dep : departments) {
             //                log.info("Department: " + dep.getId());
