@@ -17,4 +17,6 @@ public interface RoomRepository extends JpaRepository<Room, Long>, QuerydslPredi
     Optional<Room> findByCode(String code);
 
     List<Room> findByBuildingId(Long buildingId);
+
+    Room getRoomById(Long roomId);
 }
