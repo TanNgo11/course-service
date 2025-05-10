@@ -11,6 +11,7 @@ import com.shadcn.courseservice.dto.request.attendance.StudentAttendanceRequest;
 import com.shadcn.courseservice.dto.request.attendance.TeacherAttendanceRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.attendance.AttendanceResponse;
+import com.shadcn.courseservice.dto.response.attendance.class_session.ClassSessionResponse;
 import com.shadcn.courseservice.entity.Attendance;
 import com.shadcn.courseservice.service.IAttendanceService;
 
@@ -54,5 +55,12 @@ public class AttendanceController {
     public ApiResponse<List<AttendanceResponse>> getAttendancesByStudent(@PathVariable Long studentId) {
         List<AttendanceResponse> attendances = attendanceService.getAttendancesByStudent(studentId);
         return ApiResponse.success(attendances);
+    }
+
+    @GetMapping("/class-sessions/course/{courseId}")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
+    public ApiResponse<List<ClassSessionResponse>> getClassSessionsByCourseId(@PathVariable Long courseId) {
+        List<ClassSessionResponse> classSessions = attendanceService.getClassSessionsByCourseId(courseId);
+        return ApiResponse.success(classSessions);
     }
 }

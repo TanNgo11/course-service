@@ -7,20 +7,23 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.shadcn.courseservice.dto.request.attendance.StudentAttendanceRecord;
 import com.shadcn.courseservice.dto.request.attendance.StudentAttendanceRequest;
 import com.shadcn.courseservice.dto.request.attendance.TeacherAttendanceRequest;
 import com.shadcn.courseservice.dto.response.attendance.AttendanceResponse;
+import com.shadcn.courseservice.dto.response.attendance.class_session.ClassSessionResponse;
 import com.shadcn.courseservice.entity.Attendance;
 import com.shadcn.courseservice.entity.ClassSession;
+import com.shadcn.courseservice.entity.StudentAttendanceRecord;
 import com.shadcn.courseservice.entity.StudentReference;
 import com.shadcn.courseservice.enums.AttendanceStatus;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.AttendanceMapper;
+import com.shadcn.courseservice.mapper.ClassSessionMapper;
 import com.shadcn.courseservice.repository.AttendanceRepository;
 import com.shadcn.courseservice.repository.ClassSessionRepository;
 import com.shadcn.courseservice.repository.StudentReferenceRepository;
+import com.shadcn.courseservice.repository.custom.CustomClassSessionRepository;
 import com.shadcn.courseservice.service.IAttendanceService;
 
 import lombok.AccessLevel;
@@ -36,8 +39,10 @@ public class AttendanceService implements IAttendanceService {
 
     AttendanceRepository attendanceRepository;
     ClassSessionRepository classSessionRepository;
+    CustomClassSessionRepository customClassSessionRepository;
     StudentReferenceRepository studentReferenceRepository;
     AttendanceMapper attendanceMapper;
+    ClassSessionMapper classSessionMapper;
 
     @Override
     @Transactional
@@ -157,6 +162,13 @@ public class AttendanceService implements IAttendanceService {
 
         return attendanceRepository.findByStudent(student).stream()
                 .map(attendanceMapper::toAttendanceResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ClassSessionResponse> getClassSessionsByCourseId(Long courseId) {
+        return customClassSessionRepository.findByCourseId(courseId).stream()
+                .map(classSessionMapper::toClassSessionResponse)
                 .toList();
     }
 }

@@ -85,7 +85,6 @@ public class SemesterService implements ISemesterService {
                     .build();
 
             courseRepository.save(course);
-            scheduleService.generateTimeTable(course);
 
             //            for (Department dep : departments) {
             //                log.info("Department: " + dep.getId());
@@ -220,5 +219,20 @@ public class SemesterService implements ISemesterService {
         }
 
         return List.of(semesters);
+    }
+
+    @Override
+    public void generateTimeTable(Long semesterId) {
+        Semester semester = semesterRepository
+                .findById(semesterId)
+                .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
+
+        List<Course> courses = semester.getCourses();
+        for (Course course : courses) {
+            if (course.getTeacherReferences().isEmpty()) {
+                throw new AppException(ErrorCode.COURSE_NOT_FOUND);
+            }
+            scheduleService.generateTimeTable(course);
+        }
     }
 }

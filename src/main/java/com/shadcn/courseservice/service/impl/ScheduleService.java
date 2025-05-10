@@ -5,10 +5,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import com.shadcn.courseservice.dto.request.attendance.class_session.ClassSessionCreationRequest;
@@ -19,6 +15,11 @@ import com.shadcn.courseservice.repository.TimeSlotRepository;
 import com.shadcn.courseservice.repository.TimeTableRepository;
 import com.shadcn.courseservice.service.IClassSessionService;
 import com.shadcn.courseservice.service.IScheduleService;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,6 @@ public class ScheduleService implements IScheduleService {
                 .course(course)
                 .daysOfWeek(Set.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY))
                 .students(course.getStudentReferences())
-
                 .build();
 
         // Save the timetable to the database
@@ -45,6 +45,10 @@ public class ScheduleService implements IScheduleService {
         generateTimeTableForCourse(course, timetable);
     }
 
+    /*
+     * Currently generating timetable for a course with 2 theory sessions and 1 practice session
+     * In the same day of the week
+     * */
     private void generateTimeTableForCourse(Course course, Timetable timetable) {
         int totalTheory = course.getNumsOfTheorySessions();
         int totalPractice = course.getNumsOfPracticeSessions();
@@ -68,9 +72,11 @@ public class ScheduleService implements IScheduleService {
 
                     var classSessionType =
                             theorySessionsThisWeek >= 2 ? ClassSessionType.LAB : ClassSessionType.LECTURE;
-//                    var teacherId = classSessionType == ClassSessionType.LECTURE
-//                            ? course.getTeacherReferences().get(0).getTeacherId()
-//                            : course.getTeacherReferences().get(1).getTeacherId();
+                    var teacherId = classSessionType == ClassSessionType.LECTURE
+                            ? course.getTeacherReferences().get(0).getTeacherId()
+                            : course.getTeacherReferences()
+                                    .get(course.getTeacherReferences().size() - 1)
+                                    .getTeacherId();
 
                     ClassSessionCreationRequest classSessionRequest = ClassSessionCreationRequest.builder()
                             .isException(false)
@@ -81,8 +87,8 @@ public class ScheduleService implements IScheduleService {
                             .status(ClassSessionStatus.SCHEDULED)
                             .sessionDate(currentDate.with(day))
                             .sessionType(classSessionType)
-                            .roomId(41L)
-                            .teacherId(1L)
+                            .roomId(41L) // this will be dynamic
+                            .teacherId(teacherId)
                             .timetableId(timetable.getId())
                             .build();
 
@@ -94,9 +100,7 @@ public class ScheduleService implements IScheduleService {
                     } else if (totalPractice > 0 && classSessionType == ClassSessionType.LAB) {
                         totalPractice--;
                     }
-
                     sessionsCreatedThisWeek++;
-                    if (sessionsCreatedThisWeek >= perWeek) break;
                 }
             }
             currentDate = currentDate.plusWeeks(1); // move to next week

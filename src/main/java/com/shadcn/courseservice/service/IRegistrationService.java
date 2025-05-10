@@ -7,7 +7,6 @@ import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.dto.response.registration.RegistrationResponse;
 import com.shadcn.courseservice.entity.Registration;
-import com.shadcn.courseservice.enums.TeacherRole;
 
 public interface IRegistrationService {
     void registerStudentToCourse(long studentId, List<Long> courseId, long semesterId);
@@ -15,8 +14,8 @@ public interface IRegistrationService {
     void registerTeacherToCourse(
             long teacherId, List<Long> courseId, long semesterId, long departmentId, String username);
 
-    void registerTeacherRoleToCourse (RegistrationTeacherRoleRequest request);
-    
+    void registerTeacherRoleToCourse(RegistrationTeacherRoleRequest request);
+
     void unregisterTeacherFromCourse(long teacherId, List<Long> courseId, long semesterId);
 
     void unregisterStudentsFromCourseForStudent(long studentId, List<String> courseCodes, long semesterId);

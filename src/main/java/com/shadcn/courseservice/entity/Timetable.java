@@ -6,6 +6,9 @@ import java.util.Set;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,6 +23,7 @@ public class Timetable extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
+    @JsonIgnore
     Course course;
 
     @ElementCollection
@@ -29,6 +33,7 @@ public class Timetable extends BaseEntity {
     Set<DayOfWeek> daysOfWeek;
 
     @OneToMany(mappedBy = "timetable", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     List<ClassSession> classSessions;
 
     @ManyToMany
@@ -37,4 +42,6 @@ public class Timetable extends BaseEntity {
             joinColumns = @JoinColumn(name = "timetable_id"),
             inverseJoinColumns = @JoinColumn(name = "student_reference_id"))
     List<StudentReference> students;
+
+
 }

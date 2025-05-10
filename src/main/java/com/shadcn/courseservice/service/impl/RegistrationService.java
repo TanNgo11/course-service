@@ -6,14 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.shadcn.courseservice.dto.request.registration.RegistrationTeacherRoleRequest;
-import com.shadcn.courseservice.enums.TeacherRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shadcn.courseservice.dto.request.registration.RegistrationTeacherRoleRequest;
 import com.shadcn.courseservice.dto.response.*;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.dto.response.registration.RegistrationResponse;
@@ -149,7 +148,7 @@ public class RegistrationService implements IRegistrationService {
 
             if (!currentCourse.getTeacherReferences().contains(teacherProfile)) {
                 log.info("Adding teacher to course");
-                    currentCourse.getTeacherReferences().add(teacherProfile);
+                currentCourse.getTeacherReferences().add(teacherProfile);
                 teacherProfile.getCourses().add(currentCourse);
             }
             courseRepository.save(currentCourse);
@@ -172,7 +171,8 @@ public class RegistrationService implements IRegistrationService {
                 .orElseGet(() -> {
                     TeacherCourseRole newRole = TeacherCourseRole.builder()
                             .teacherReference(teacherReference)
-                            .course(courseRepository.findById(request.getCourseId())
+                            .course(courseRepository
+                                    .findById(request.getCourseId())
                                     .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND)))
                             .roles(new HashSet<>())
                             .build();

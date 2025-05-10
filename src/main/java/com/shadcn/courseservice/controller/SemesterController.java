@@ -97,4 +97,11 @@ public class SemesterController {
         semesterService.deleteCoursesByIds(request);
         return ApiResponse.empty();
     }
+
+    @PostMapping("/generate-timetable")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<Void> generateTimeTable(@RequestParam Long semesterId) {
+        semesterService.generateTimeTable(semesterId);
+        return ApiResponse.empty();
+    }
 }

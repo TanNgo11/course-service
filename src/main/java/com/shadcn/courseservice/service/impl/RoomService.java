@@ -2,8 +2,6 @@ package com.shadcn.courseservice.service.impl;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +25,6 @@ import com.shadcn.courseservice.service.IRoomService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 
 @Service
 @RequiredArgsConstructor

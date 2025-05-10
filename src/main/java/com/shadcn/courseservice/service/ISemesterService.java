@@ -33,4 +33,6 @@ public interface ISemesterService {
     Semester createSemester(SemesterCreationRequest request);
 
     List<Semester> generateForOneYear(AcademicYear academicYear);
+
+    void generateTimeTable(Long semesterId);
 }
