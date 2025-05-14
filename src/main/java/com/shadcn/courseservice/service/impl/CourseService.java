@@ -171,6 +171,15 @@ public class CourseService implements ICourseService {
     }
 
     @Override
+    public PageResponse<CourseResponse> findAllCoursesBySemesterId(Long semesterId, int current, int pageSize) {
+
+        Pageable pageable = PageRequest.of(current - 1, pageSize);
+        Page<Course> courses = courseRepository.findBySemesterId(semesterId, pageable);
+
+        return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
+    }
+
+    @Override
     public CourseResponse getCourseById(String courseId) {
         Course course = courseRepository
                 .findById(Long.valueOf(courseId))

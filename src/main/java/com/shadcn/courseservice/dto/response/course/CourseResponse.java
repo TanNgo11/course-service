@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.shadcn.courseservice.dto.response.building.DepartmentResponse;
 import com.shadcn.courseservice.dto.response.teacher.TeacherInformationDTO;
+import com.shadcn.courseservice.enums.CourseStatus;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -34,6 +35,7 @@ public class CourseResponse {
     TeacherInformationDTO teacher;
     List<String> studentIds;
     List<DepartmentResponse> departments;
+    CourseStatus processStatus;
     //    List<LessonResponse> lessons;
     //    List<SemesterResponse> semesters;
     //    List<EnrollmentResponse> enrollments;

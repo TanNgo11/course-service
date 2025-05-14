@@ -3,7 +3,7 @@ package com.shadcn.courseservice.dto.response.attendance.class_session;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.shadcn.courseservice.entity.StudentAttendanceRecord;
+import com.shadcn.courseservice.dto.response.attendance.AttendanceResponse;
 import com.shadcn.courseservice.entity.TimeSlot;
 import com.shadcn.courseservice.entity.Timetable;
 
@@ -42,5 +42,5 @@ public class ClassSessionResponse {
     // Optional field to indicate if this session has been replaced by another
     Long replacedBySessionId;
 
-    List<StudentAttendanceRecord> attendanceRecords;
+    List<AttendanceResponse> attendances;
 }

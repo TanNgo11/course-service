@@ -1,11 +1,10 @@
 package com.shadcn.courseservice.dto.request.attendance;
 
-import java.util.List;
-
-import com.shadcn.courseservice.entity.StudentAttendanceRecord;
-
+import com.shadcn.courseservice.dto.response.attendance.AttendanceResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,5 +16,5 @@ public class TeacherAttendanceRequest {
 
     Long classSessionId;
 
-    List<StudentAttendanceRecord> attendanceRecords;
+    List<AttendanceResponse> attendanceResponses;
 }

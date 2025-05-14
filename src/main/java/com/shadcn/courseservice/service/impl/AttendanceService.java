@@ -13,7 +13,6 @@ import com.shadcn.courseservice.dto.response.attendance.AttendanceResponse;
 import com.shadcn.courseservice.dto.response.attendance.class_session.ClassSessionResponse;
 import com.shadcn.courseservice.entity.Attendance;
 import com.shadcn.courseservice.entity.ClassSession;
-import com.shadcn.courseservice.entity.StudentAttendanceRecord;
 import com.shadcn.courseservice.entity.StudentReference;
 import com.shadcn.courseservice.enums.AttendanceStatus;
 import com.shadcn.courseservice.exception.AppException;
@@ -93,7 +92,6 @@ public class AttendanceService implements IAttendanceService {
     @Transactional
     public List<Attendance> teacherCheckAttendanceForStudent(TeacherAttendanceRequest request) {
         log.info("Teacher taking attendance for class session: {}", request.getClassSessionId());
-
         // Get class session
         ClassSession classSession = classSessionRepository
                 .findById(request.getClassSessionId())
@@ -101,10 +99,10 @@ public class AttendanceService implements IAttendanceService {
 
         List<Attendance> attendances = new ArrayList<>();
 
-        for (StudentAttendanceRecord record : request.getAttendanceRecords()) {
+        for (AttendanceResponse response : request.getAttendanceResponses()) {
 
             StudentReference student = studentReferenceRepository
-                    .findById(record.getStudentId())
+                    .findByStudentId(response.getStudentId())
                     .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
 
             // Check if student is enrolled in the course
@@ -112,42 +110,33 @@ public class AttendanceService implements IAttendanceService {
                 log.warn("Student {} is not enrolled in the course", student.getId());
                 continue;
             }
-
             // Check if attendance already exists for student
             Optional<Attendance> existingAttendance =
                     attendanceRepository.findByClassSessionAndStudent(classSession, student);
             Attendance attendance;
-
             if (existingAttendance.isPresent()) {
                 // Update existing attendance
                 attendance = existingAttendance.get();
-                attendance.setStatus(record.getStatus());
-                attendance.setNotes(record.getNotes());
+                attendance.setStatus(AttendanceStatus.valueOf(response.getStatus()));
+                attendance.setNotes(response.getNotes());
             } else {
                 // Create new attendance record
                 attendance = Attendance.builder()
                         .classSession(classSession)
                         .student(student)
-                        .status(record.getStatus())
-                        .notes(record.getNotes())
+                        .status(AttendanceStatus.valueOf(response.getStatus()))
+                        .notes(response.getNotes())
                         .build();
             }
 
             attendances.add(attendanceRepository.save(attendance));
         }
-
         return attendances;
     }
 
     @Override
     public List<AttendanceResponse> getAttendancesByClassSession(Long classSessionId) {
-        log.info("Getting attendances for class session: {}", classSessionId);
-
-        ClassSession classSession = classSessionRepository
-                .findById(classSessionId)
-                .orElseThrow(() -> new AppException(ErrorCode.CLASS_SESSION_NOT_FOUND));
-
-        return attendanceRepository.findByClassSession(classSession).stream()
+        return customClassSessionRepository.findAttendanceByClassSessionId(classSessionId).stream()
                 .map(attendanceMapper::toAttendanceResponse)
                 .toList();
     }

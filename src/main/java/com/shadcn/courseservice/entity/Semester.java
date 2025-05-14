@@ -42,4 +42,6 @@ public class Semester extends BaseEntity {
     boolean semesterActive;
 
     boolean registrationOpen;
+
+    boolean timeTableSetUp;
 }

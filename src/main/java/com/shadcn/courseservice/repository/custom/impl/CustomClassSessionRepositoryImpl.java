@@ -2,6 +2,8 @@ package com.shadcn.courseservice.repository.custom.impl;
 
 import java.util.List;
 
+import com.shadcn.courseservice.entity.Attendance;
+import com.shadcn.courseservice.entity.QAttendance;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,6 +19,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class CustomClassSessionRepositoryImpl implements CustomClassSessionRepository {
     JPAQueryFactory queryFactory;
+    QClassSession classSession = QClassSession.classSession;
+    QAttendance attendance = QAttendance.attendance;
 
     @Override
     public List<ClassSession> findByCourseId(Long courseId) {
@@ -25,6 +29,14 @@ public class CustomClassSessionRepositoryImpl implements CustomClassSessionRepos
         return queryFactory
                 .selectFrom(classSession)
                 .where(classSession.timetable.course.id.eq(courseId))
+                .fetch();
+    }
+
+    @Override
+    public List<Attendance> findAttendanceByClassSessionId(Long classSessionId) {
+        return queryFactory
+                .selectFrom(attendance)
+                .where(attendance.classSession.id.eq(classSessionId))
                 .fetch();
     }
 }

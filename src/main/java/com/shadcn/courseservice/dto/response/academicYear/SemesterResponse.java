@@ -26,4 +26,5 @@ public class SemesterResponse {
     boolean semesterActive;
     LocalDate registrationStartDate;
     LocalDate registrationEndDate;
+    boolean timeTableSetUp;
 }
