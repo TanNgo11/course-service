@@ -2,6 +2,7 @@ package com.shadcn.courseservice.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -39,4 +40,8 @@ public class StudentReference extends BaseEntity {
 
     @OneToMany(mappedBy = "studentReference", fetch = FetchType.LAZY)
     List<Registration> registrations;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
+    @JsonManagedReference
+    List<Attendance> classSessions;
 }

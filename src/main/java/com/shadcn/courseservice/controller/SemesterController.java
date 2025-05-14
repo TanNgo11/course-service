@@ -12,6 +12,7 @@ import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.academicYear.SemesterResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
+import com.shadcn.courseservice.service.ICourseService;
 import com.shadcn.courseservice.service.ISemesterService;
 
 import lombok.AccessLevel;
@@ -26,13 +27,16 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SemesterController {
     ISemesterService semesterService;
+    ICourseService courseService;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER') or hasRole('STUDENT')")
-    public ApiResponse<PageResponse<SemesterResponse>> getAllSemesters(
+    public ApiResponse<PageResponse<SemesterResponse>> getAllSemestersByAcademicYearId(
             @RequestParam(defaultValue = "1", required = false) Integer current,
-            @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
-        return ApiResponse.success(semesterService.getAllSemesters(current, pageSize));
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam Long academicYearId) {
+
+        return ApiResponse.success(semesterService.getAllSemestersByAcademicYearId(current, pageSize, academicYearId));
     }
 
     @PutMapping("/open-registration")
@@ -83,6 +87,15 @@ public class SemesterController {
             @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         return ApiResponse.success(
                 semesterService.getAllCoursesInSemesterByDepartmentId(semesterId, departmentId, current, pageSize));
+    }
+
+    @GetMapping(value = "/{semesterId}/courses")
+    @PreAuthorize("hasRole('ADMIN')")
+    ApiResponse<PageResponse<CourseResponse>> getAllCoursesBySemesterId(
+            @RequestParam(defaultValue = "1", required = false) Integer current,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize,
+            @PathVariable Long semesterId) {
+        return ApiResponse.success(courseService.findAllCoursesBySemesterId(semesterId, current, pageSize));
     }
 
     @GetMapping("/current-open-semester")

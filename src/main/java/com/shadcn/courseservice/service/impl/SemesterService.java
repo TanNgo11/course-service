@@ -51,9 +51,14 @@ public class SemesterService implements ISemesterService {
     private CronSemester cronSemester;
 
     @Override
-    public PageResponse<SemesterResponse> getAllSemesters(int current, int pageSize) {
+    public PageResponse<SemesterResponse> getAllSemestersByAcademicYearId(
+            int current, int pageSize, Long academicYearId) {
+        AcademicYear academicYear = academicYearRepository
+                .findById(academicYearId)
+                .orElseThrow(() -> new AppException(ErrorCode.ACADEMIC_YEAR_NOT_FOUND));
+
         Pageable pageable = PageRequest.of(current - 1, pageSize);
-        Page<Semester> semesters = semesterRepository.findAll(pageable);
+        Page<Semester> semesters = semesterRepository.findAllByAcademicYear(academicYear, pageable);
         cronSemester.updateSemesterStatus();
         return ConverToPaginationResponse.toPageResponse(semesters, semesterMapper::toSemesterResponse, current);
     }

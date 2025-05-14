@@ -50,4 +50,6 @@ public interface ICourseService {
     CourseResponse getCourseById(String courseId);
 
     void updateCourseInformation(UpdateCourseInformationRequest request, Long courseId);
+
+    PageResponse<CourseResponse> findAllCoursesBySemesterId(Long semesterId, int current, int pageSize);
 }

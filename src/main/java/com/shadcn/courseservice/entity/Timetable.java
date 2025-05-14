@@ -42,6 +42,4 @@ public class Timetable extends BaseEntity {
             joinColumns = @JoinColumn(name = "timetable_id"),
             inverseJoinColumns = @JoinColumn(name = "student_reference_id"))
     List<StudentReference> students;
-
-
 }

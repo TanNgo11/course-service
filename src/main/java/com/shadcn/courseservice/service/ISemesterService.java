@@ -11,7 +11,7 @@ import com.shadcn.courseservice.entity.AcademicYear;
 import com.shadcn.courseservice.entity.Semester;
 
 public interface ISemesterService {
-    PageResponse<SemesterResponse> getAllSemesters(int current, int pageSize);
+    PageResponse<SemesterResponse> getAllSemestersByAcademicYearId(int current, int pageSize, Long academicYearId);
 
     void addOpenCoursesToSemester(List<Long> baseCourseIds, long semesterId);
 

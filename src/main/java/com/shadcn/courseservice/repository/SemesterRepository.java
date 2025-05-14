@@ -1,9 +1,12 @@
 package com.shadcn.courseservice.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
+import com.shadcn.courseservice.entity.AcademicYear;
 import com.shadcn.courseservice.entity.Semester;
 
 import feign.Param;
@@ -17,4 +20,6 @@ public interface SemesterRepository extends JpaRepository<Semester, Long>, Query
 
     @Query("SELECT s FROM Semester s WHERE s.semesterActive = :semesterActive")
     Semester findBySemesterActive(@Param("semesterActive") boolean semesterActive);
+
+    Page<Semester> findAllByAcademicYear(AcademicYear academicYear, Pageable pageable);
 }

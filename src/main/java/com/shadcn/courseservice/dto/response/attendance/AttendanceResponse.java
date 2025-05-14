@@ -16,7 +16,7 @@ public class AttendanceResponse {
     Long studentId;
     String studentName;
     String classSessionId;
-    String attendanceStatus;
+    String status;
     String notes;
     String date;
 }

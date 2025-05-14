@@ -1,18 +1,16 @@
 package com.shadcn.courseservice.entity;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import jakarta.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.shadcn.courseservice.enums.ClassSessionStatus;
 import com.shadcn.courseservice.enums.ClassSessionType;
-
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -63,5 +61,6 @@ public class ClassSession extends BaseEntity {
     ClassSession replacedBy;
 
     @OneToMany(mappedBy = "classSession", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<StudentAttendanceRecord> attendanceRecords;
+    @JsonManagedReference
+    List<Attendance> attendances;
 }

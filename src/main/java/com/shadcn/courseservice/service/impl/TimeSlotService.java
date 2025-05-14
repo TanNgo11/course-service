@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shadcn.courseservice.entity.TimeSlot;
+import com.shadcn.courseservice.repository.SemesterRepository;
 import com.shadcn.courseservice.repository.TimeSlotRepository;
 import com.shadcn.courseservice.service.ITimeSlotService;
 
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TimeSlotService implements ITimeSlotService {
     TimeSlotRepository timeSlotRepository;
+    SemesterRepository semesterRepository;
 
     @Override
     @Transactional
@@ -50,5 +52,28 @@ public class TimeSlotService implements ITimeSlotService {
             }
         }
         timeSlotRepository.saveAll(timeSlots);
+    }
+
+    @Override
+    @Transactional
+    public void initializeTimeSlotsForSemester(Long semesterId) {
+        var semester = semesterRepository
+                .findById(semesterId)
+                .orElseThrow(() -> new IllegalArgumentException("Semester not found"));
+
+        LocalDate startDate = semester.getStartDate();
+        LocalDate endDate = semester.getEndDate();
+
+        boolean anyTimeSlotExists = timeSlotRepository.existsByDateBetween(startDate, endDate);
+        if (anyTimeSlotExists) {
+            log.info(
+                    "Time slots already exist for semester {} between {} and {}. Skipping initialization.",
+                    semesterId,
+                    startDate,
+                    endDate);
+            return;
+        }
+
+        this.initializeTimeSlots(startDate, endDate);
     }
 }
