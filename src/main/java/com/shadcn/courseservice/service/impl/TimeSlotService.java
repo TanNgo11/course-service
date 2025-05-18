@@ -1,9 +1,11 @@
 package com.shadcn.courseservice.service.impl;
 
+import com.shadcn.courseservice.dto.response.timeslot.TimeslotResponse;
 import com.shadcn.courseservice.entity.Room;
 import com.shadcn.courseservice.entity.TeacherReference;
 import com.shadcn.courseservice.entity.TimeSlot;
 import com.shadcn.courseservice.enums.RoomStatus;
+import com.shadcn.courseservice.mapper.TimeslotMapper;
 import com.shadcn.courseservice.repository.RoomRepository;
 import com.shadcn.courseservice.repository.SemesterRepository;
 import com.shadcn.courseservice.repository.TeacherReferenceRepository;
@@ -13,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.util.Times;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,7 @@ public class TimeSlotService implements ITimeSlotService {
     SemesterRepository semesterRepository;
     TeacherReferenceRepository teacherReferenceRepository;
     RoomRepository roomRepository;
+    TimeslotMapper timeslotMapper;
 
     @Override
     @Transactional
@@ -102,6 +106,20 @@ public class TimeSlotService implements ITimeSlotService {
             room.setAvailableTimeSlots(timeSlotIds);
         }
         roomRepository.saveAll(rooms);
+    }
+
+    @Override
+    public List<TimeslotResponse> getTimeSlotsByTeacherIdAndSemesterId(Long teacherId, Long semesterId) {
+        var semester = semesterRepository
+                .findById(semesterId)
+                .orElseThrow(() -> new IllegalArgumentException("Semester not found"));
+
+        LocalDate startDate = semester.getStartDate();
+        LocalDate endDate = semester.getEndDate();
+        List<TimeslotResponse> timeSlots = timeSlotRepository
+                .findAllByTeacherIdAndDateBetween(teacherId, startDate, endDate);
+
+        return timeSlots;
     }
 
     @Override
