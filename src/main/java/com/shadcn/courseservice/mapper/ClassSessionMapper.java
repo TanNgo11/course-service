@@ -14,9 +14,9 @@ import com.shadcn.courseservice.entity.ClassSession;
 public interface ClassSessionMapper {
 
     @Mappings({
-            @Mapping(target = "teacherId", source = "classSession.teacher.id"),
-            @Mapping(target = "roomId", source = "classSession.room.id"),
-            @Mapping(target = "attendances", source = "classSession.attendances"),
+        @Mapping(target = "teacherId", source = "classSession.teacher.id"),
+        @Mapping(target = "roomId", source = "classSession.room.id"),
+        @Mapping(target = "attendances", source = "classSession.attendances"),
     })
     ClassSessionResponse toClassSessionResponse(ClassSession classSession);
 }

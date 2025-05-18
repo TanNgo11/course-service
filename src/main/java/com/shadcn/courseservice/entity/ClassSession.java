@@ -33,6 +33,7 @@ public class ClassSession extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "teacher_reference_id", nullable = false)
+            @JsonIgnore
     TeacherReference teacher;
 
     @ManyToOne

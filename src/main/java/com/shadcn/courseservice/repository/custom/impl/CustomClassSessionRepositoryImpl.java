@@ -7,7 +7,9 @@ import com.shadcn.courseservice.entity.QAttendance;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.shadcn.courseservice.entity.Attendance;
 import com.shadcn.courseservice.entity.ClassSession;
+import com.shadcn.courseservice.entity.QAttendance;
 import com.shadcn.courseservice.entity.QClassSession;
 import com.shadcn.courseservice.repository.custom.CustomClassSessionRepository;
 
@@ -24,8 +26,6 @@ public class CustomClassSessionRepositoryImpl implements CustomClassSessionRepos
 
     @Override
     public List<ClassSession> findByCourseId(Long courseId) {
-        QClassSession classSession = QClassSession.classSession;
-
         return queryFactory
                 .selectFrom(classSession)
                 .where(classSession.timetable.course.id.eq(courseId))

@@ -2,6 +2,7 @@ package com.shadcn.courseservice.service.impl;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public class ScheduleService implements IScheduleService {
         Timetable timetable = Timetable.builder()
                 .course(course)
                 .daysOfWeek(Set.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY))
-                .students(course.getStudentReferences())
+                .students(new ArrayList<>(course.getStudentReferences()))
                 .build();
 
         // Save the timetable to the database
@@ -86,8 +87,8 @@ public class ScheduleService implements IScheduleService {
                             .status(ClassSessionStatus.SCHEDULED)
                             .sessionDate(currentDate.with(day))
                             .sessionType(classSessionType)
-                            .roomId(41L) // this will be dynamic
-                            .teacherId(teacherId)
+                            .roomId(5L) // this will be dynamic
+                            .teacherId(10L) // this is for demo
                             .timetableId(timetable.getId())
                             .build();
 

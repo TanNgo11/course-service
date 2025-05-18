@@ -9,11 +9,12 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring")
 public interface AttendanceMapper {
     @Mappings({
-        @Mapping(target = "studentId", source = "attendance.student.studentId"),
-        @Mapping(target = "studentName", source = "attendance.student.name"),
-        @Mapping(target = "classSessionId", source = "classSession.id"), @Mapping(target = "status", source = "attendance.status"),
-        @Mapping(target = "notes", source = "notes"),
-        @Mapping(target = "date", source = "attendance.classSession.sessionDate"),
+            @Mapping(target = "studentId", source = "attendance.student.studentId"),
+            @Mapping(target = "studentName", source = "attendance.student.name"),
+            @Mapping(target = "classSessionId", source = "classSession.id"),
+            @Mapping(target = "status", source = "attendance.status"),
+            @Mapping(target = "notes", source = "notes"),
+            @Mapping(target = "date", source = "attendance.classSession.sessionDate"),
     })
     AttendanceResponse toAttendanceResponse(Attendance attendance);
 }

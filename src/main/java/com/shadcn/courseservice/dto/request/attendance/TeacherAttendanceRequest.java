@@ -1,10 +1,12 @@
 package com.shadcn.courseservice.dto.request.attendance;
 
 import com.shadcn.courseservice.dto.response.attendance.AttendanceResponse;
+
+import java.util.List;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
 
 @Getter
 @Setter
