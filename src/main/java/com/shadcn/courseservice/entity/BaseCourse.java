@@ -30,6 +30,14 @@ public class BaseCourse extends BaseEntity {
 
     Long credit;
 
+    Integer theorySessionsHours;
+
+    Integer numsOfTheorySessions;
+
+    Integer practiceSessionsHours;
+
+    Integer numsOfPracticeSessions;
+
     @Enumerated(EnumType.STRING)
     BaseCourseStatus status;
 

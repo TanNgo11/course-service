@@ -2,6 +2,7 @@ package com.shadcn.courseservice.service;
 
 import java.util.List;
 
+import com.shadcn.courseservice.dto.request.course.UpdateConstraintCourseRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.shadcn.courseservice.dto.request.course.BaseCourseCreationRequest;
@@ -52,4 +53,6 @@ public interface ICourseService {
     void updateCourseInformation(UpdateCourseInformationRequest request, Long courseId);
 
     PageResponse<CourseResponse> findAllCoursesBySemesterId(Long semesterId, int current, int pageSize);
+    
+    void updateCourseConstraint(Long id, UpdateConstraintCourseRequest request);
 }
