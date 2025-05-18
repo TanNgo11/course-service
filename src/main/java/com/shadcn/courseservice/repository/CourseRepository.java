@@ -42,4 +42,6 @@ public interface CourseRepository
     long[] findAllStudentIdsByCourseId(@Param("courseId") Long courseId);
 
     List<Course> findByTeacherReferencesAndSemester(TeacherReference teacherReference, Semester semester);
+
+    List<Course> findAllBySemester(Semester semester);
 }
