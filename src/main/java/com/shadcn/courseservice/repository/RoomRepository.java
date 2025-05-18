@@ -3,6 +3,7 @@ package com.shadcn.courseservice.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.shadcn.courseservice.enums.RoomStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,6 @@ public interface RoomRepository extends JpaRepository<Room, Long>, QuerydslPredi
     List<Room> findByBuildingId(Long buildingId);
 
     Room getRoomById(Long roomId);
+    
+    List<Room> findAllByStatus(RoomStatus status);
 }

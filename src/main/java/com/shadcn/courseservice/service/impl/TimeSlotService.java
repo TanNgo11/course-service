@@ -1,23 +1,28 @@
 package com.shadcn.courseservice.service.impl;
 
+import com.shadcn.courseservice.entity.Room;
+import com.shadcn.courseservice.entity.TeacherReference;
+import com.shadcn.courseservice.entity.TimeSlot;
+import com.shadcn.courseservice.enums.RoomStatus;
+import com.shadcn.courseservice.repository.RoomRepository;
+import com.shadcn.courseservice.repository.SemesterRepository;
+import com.shadcn.courseservice.repository.TeacherReferenceRepository;
+import com.shadcn.courseservice.repository.TimeSlotRepository;
+import com.shadcn.courseservice.service.ITimeSlotService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.shadcn.courseservice.entity.TimeSlot;
-import com.shadcn.courseservice.repository.SemesterRepository;
-import com.shadcn.courseservice.repository.TimeSlotRepository;
-import com.shadcn.courseservice.service.ITimeSlotService;
-
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 public class TimeSlotService implements ITimeSlotService {
     TimeSlotRepository timeSlotRepository;
     SemesterRepository semesterRepository;
+    TeacherReferenceRepository teacherReferenceRepository;
+    RoomRepository roomRepository;
 
     @Override
     @Transactional
@@ -75,5 +82,59 @@ public class TimeSlotService implements ITimeSlotService {
         }
 
         this.initializeTimeSlots(startDate, endDate);
+        this.initializeTimeSlotsForAllTeachersBySemesterId(startDate, endDate);
+        this.initializeTimeSlotsForAllRoomsBySemesterId(startDate, endDate);
+    }
+
+    @Override
+    @Transactional
+    public void initializeTimeSlotsForAllRoomsBySemesterId(LocalDate startDate, LocalDate endDate) {
+        List<TimeSlot> timeSlots = timeSlotRepository.findAllByDateBetween(
+                startDate, endDate);
+        Set<Long> timeSlotIds = timeSlots.stream()
+                .map(TimeSlot::getId)
+                .collect(Collectors.toSet());
+        if (timeSlots.isEmpty()) {
+            return;
+        }
+        List<Room> rooms = roomRepository.findAllByStatus(RoomStatus.AVAILABLE);
+        for (Room room : rooms) {
+            room.setAvailableTimeSlots(timeSlotIds);
+        }
+        roomRepository.saveAll(rooms);
+    }
+
+    @Override
+    @Transactional
+    public void initializeTimeSlotsForAllTeachersBySemesterId(LocalDate startDate, LocalDate endDate) {
+        List<TeacherReference> teachers = teacherReferenceRepository.findAll();
+        List<TimeSlot> timeSlots = timeSlotRepository.findAllByDateBetween(
+                startDate, endDate);
+        Set<Long> timeSlotIds = timeSlots.stream()
+                .map(TimeSlot::getId)
+                .collect(Collectors.toSet());
+        if (timeSlots.isEmpty()) {
+            return;
+        }
+        for (TeacherReference teacher : teachers) {
+            teacher.setAvailableTimeSlots(timeSlotIds);
+            teacherReferenceRepository.save(teacher);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeTimeslotByTeacherIdAndTimeSlotId(Long teacherId, Long timeSlotId) {
+        TeacherReference teacher = teacherReferenceRepository
+                .findByTeacherId(teacherId)
+                .orElseThrow(() -> new IllegalArgumentException("Teacher not found"));
+
+        Set<Long> availableTimeSlots = teacher.getAvailableTimeSlots();
+        if (availableTimeSlots.contains(timeSlotId)) {
+            availableTimeSlots.remove(timeSlotId);
+            teacherReferenceRepository.save(teacher);
+        } else {
+            log.warn("Time slot {} is not available for teacher {}", timeSlotId, teacherId);
+        }
     }
 }
