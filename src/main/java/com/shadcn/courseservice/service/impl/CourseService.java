@@ -1,20 +1,8 @@
 package com.shadcn.courseservice.service.impl;
 
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import jakarta.transaction.Transactional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.shadcn.courseservice.dto.request.course.BaseCourseCreationRequest;
 import com.shadcn.courseservice.dto.request.course.CourseCreationRequest;
+import com.shadcn.courseservice.dto.request.course.UpdateConstraintCourseRequest;
 import com.shadcn.courseservice.dto.request.course.UpdateCourseInformationRequest;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
@@ -34,11 +22,21 @@ import com.shadcn.courseservice.service.ICourseService;
 import com.shadcn.courseservice.service.IFileUploadService;
 import com.shadcn.courseservice.service.IProfileService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
-
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -177,6 +175,17 @@ public class CourseService implements ICourseService {
         Page<Course> courses = courseRepository.findBySemesterId(semesterId, pageable);
 
         return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
+    }
+
+    @Override
+    @Transactional
+    public void updateCourseConstraint(Long id, UpdateConstraintCourseRequest request) {
+        Course course = courseRepository
+                .findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+        course.setMaxStudents(request.getMaxStudents());
+        course.setNumsOfTimetable(request.getNumsOfTimetable());
+        courseRepository.save(course);
     }
 
     @Override

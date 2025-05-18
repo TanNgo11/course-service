@@ -50,9 +50,9 @@ public class ScheduleService implements IScheduleService {
      * In the same day of the week
      * */
     private void generateTimeTableForCourse(Course course, Timetable timetable) {
-        int totalTheory = course.getNumsOfTheorySessions();
-        int totalPractice = course.getNumsOfPracticeSessions();
-        int perWeek = course.getSessionsPerWeek();
+        BaseCourse baseCourse = course.getBaseCourse();
+        int totalTheory = baseCourse.getNumsOfTheorySessions();
+        int totalPractice = baseCourse.getNumsOfPracticeSessions();
         Set<DayOfWeek> days = timetable.getDaysOfWeek();
 
         LocalDate currentDate = course.getStartDate();
@@ -65,7 +65,6 @@ public class ScheduleService implements IScheduleService {
             int theorySessionsThisWeek = 0;
             for (DayOfWeek day : days) {
 
-                if (sessionsCreatedThisWeek >= perWeek) break;
 
                 for (TimeSlot slot : allTimeSlots) {
                     if (slot.getDayOfWeek() != day) continue;
