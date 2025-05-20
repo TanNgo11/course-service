@@ -1,5 +1,10 @@
 package com.shadcn.courseservice.controller;
 
+import static com.shadcn.courseservice.constant.PathConstant.API_V1_REFERENCES;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
 import com.shadcn.courseservice.dto.request.reference.ReferenceDeleteRequest;
 import com.shadcn.courseservice.dto.request.student.StudentReferenceCreateRequest;
 import com.shadcn.courseservice.dto.request.teacher.TeacherReferenceCreateRequest;
@@ -8,13 +13,10 @@ import com.shadcn.courseservice.dto.response.ApiResponse;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
 import com.shadcn.courseservice.service.impl.ReferenceService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import static com.shadcn.courseservice.constant.PathConstant.API_V1_REFERENCES;
 
 @RestController
 @RequestMapping(API_V1_REFERENCES)
@@ -61,7 +63,11 @@ public class ReferenceController {
 
     @GetMapping("/teachers/semesters/{semesterId}")
     @PreAuthorize("hasRole('ADMIN')")
-    ApiResponse<PageResponse<UserProfileResponse>> getAllTeachersHaveCoursesInSemester(@PathVariable Long semesterId, @RequestParam(defaultValue = "1") int current, @RequestParam(defaultValue = "10") int pageSize) {
-        return ApiResponse.success(referenceService.getAvailableTeachersInCoursesBySemesterId(semesterId, current, pageSize));
+    ApiResponse<PageResponse<UserProfileResponse>> getAllTeachersHaveCoursesInSemester(
+            @PathVariable Long semesterId,
+            @RequestParam(defaultValue = "1") int current,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return ApiResponse.success(
+                referenceService.getAvailableTeachersInCoursesBySemesterId(semesterId, current, pageSize));
     }
 }

@@ -1,5 +1,15 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.util.List;
+import java.util.function.Function;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.shadcn.courseservice.dto.request.teacher.UpdateTeacherReferenceRequest;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
@@ -11,19 +21,11 @@ import com.shadcn.courseservice.repository.*;
 import com.shadcn.courseservice.repository.httpClient.IdentityClient;
 import com.shadcn.courseservice.service.IReferenceService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -60,21 +62,24 @@ public class ReferenceService implements IReferenceService {
     }
 
     @Override
-    public PageResponse<UserProfileResponse> getAvailableTeachersInCoursesBySemesterId(Long semesterId, int current, int pageSize) {
-        Semester semester = semesterRepository.findById(semesterId)
+    public PageResponse<UserProfileResponse> getAvailableTeachersInCoursesBySemesterId(
+            Long semesterId, int current, int pageSize) {
+        Semester semester = semesterRepository
+                .findById(semesterId)
                 .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
         List<Course> courses = courseRepository.findAllBySemester(semester);
 
-        List<TeacherReference> teacherReferences = teacherReferenceRepository.findAllByCourseIds(courses.stream().map(Course::getId).toList());
+        List<TeacherReference> teacherReferences = teacherReferenceRepository.findAllByCourseIds(
+                courses.stream().map(Course::getId).toList());
 
         List<Long> teacherIds = teacherReferences.stream()
                 .map(TeacherReference::getTeacherId)
-                .distinct() 
+                .distinct()
                 .toList();
-        
+
         List<UserProfileResponse> teacherProfiles =
                 identityClient.getUserProfileResponses(teacherIds).getResult();
-        
+
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Page<UserProfileResponse> responses = new PageImpl<>(teacherProfiles, pageable, teacherProfiles.size());
 

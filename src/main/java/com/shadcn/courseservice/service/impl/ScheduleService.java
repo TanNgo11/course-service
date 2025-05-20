@@ -65,7 +65,6 @@ public class ScheduleService implements IScheduleService {
             int theorySessionsThisWeek = 0;
             for (DayOfWeek day : days) {
 
-
                 for (TimeSlot slot : allTimeSlots) {
                     if (slot.getDayOfWeek() != day) continue;
 

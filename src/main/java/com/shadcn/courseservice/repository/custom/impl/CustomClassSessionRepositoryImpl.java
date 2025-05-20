@@ -2,12 +2,12 @@ package com.shadcn.courseservice.repository.custom.impl;
 
 import java.util.List;
 
-import com.shadcn.courseservice.entity.Attendance;
-import com.shadcn.courseservice.entity.QAttendance;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.shadcn.courseservice.entity.Attendance;
 import com.shadcn.courseservice.entity.ClassSession;
+import com.shadcn.courseservice.entity.QAttendance;
 import com.shadcn.courseservice.entity.QClassSession;
 import com.shadcn.courseservice.repository.custom.CustomClassSessionRepository;
 

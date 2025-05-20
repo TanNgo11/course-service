@@ -232,7 +232,7 @@ public class SemesterService implements ISemesterService {
         List<Course> courses = semester.getCourses();
         for (Course course : courses) {
             if (course.getTeacherReferences().isEmpty()) {
-                throw new AppException(ErrorCode.COURSE_NOT_FOUND);
+                throw new AppException(ErrorCode.TEACHER_NOT_FOUND);
             }
             scheduleService.generateTimeTable(course);
         }

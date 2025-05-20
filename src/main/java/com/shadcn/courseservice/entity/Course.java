@@ -73,10 +73,10 @@ public class Course extends BaseEntity {
     LocalDate endDate;
 
     int remain;
-    
+
     int maxStudents;
-    
+
     int numsOfTimetable;
-    
+
     CourseStatus processStatus;
 }
