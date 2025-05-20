@@ -4,10 +4,10 @@ import static com.shadcn.courseservice.constant.PathConstant.API_V1_DEPARTMENTS;
 
 import java.util.List;
 
-import com.shadcn.courseservice.dto.request.course.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.shadcn.courseservice.dto.request.course.*;
 import com.shadcn.courseservice.dto.request.file.FileUploadRequest;
 import com.shadcn.courseservice.dto.request.file.ListFileUploadRequest;
 import com.shadcn.courseservice.dto.response.ApiResponse;
@@ -155,10 +155,7 @@ public class CourseController {
     @PreAuthorize("hasRole('ADMIN')")
     ApiResponse<Void> updateCourseConstrains(
             @RequestBody UpdateConstraintCourseRequest request, @PathVariable Long courseId) {
-        courseService.updateCourseConstraint(courseId, request );
+        courseService.updateCourseConstraint(courseId, request);
         return ApiResponse.empty();
     }
-    
-    
-    
 }

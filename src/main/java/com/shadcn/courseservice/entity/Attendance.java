@@ -1,8 +1,8 @@
 package com.shadcn.courseservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.shadcn.courseservice.enums.AttendanceStatus;
 
 import lombok.*;

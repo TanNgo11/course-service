@@ -22,8 +22,6 @@ public interface TeacherReferenceRepository
 
     List<TeacherReference> findAllByCourses(List<Course> courses);
 
-    @Query("SELECT DISTINCT t FROM TeacherReference t " +
-            "JOIN t.courses c " +
-            "WHERE c.id IN :courseIds")
+    @Query("SELECT DISTINCT t FROM TeacherReference t " + "JOIN t.courses c " + "WHERE c.id IN :courseIds")
     List<TeacherReference> findAllByCourseIds(@Param("courseIds") List<Long> courseIds);
 }

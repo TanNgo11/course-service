@@ -1,5 +1,16 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.shadcn.courseservice.dto.response.timeslot.TimeslotResponse;
 import com.shadcn.courseservice.entity.Room;
 import com.shadcn.courseservice.entity.TeacherReference;
@@ -11,21 +22,11 @@ import com.shadcn.courseservice.repository.SemesterRepository;
 import com.shadcn.courseservice.repository.TeacherReferenceRepository;
 import com.shadcn.courseservice.repository.TimeSlotRepository;
 import com.shadcn.courseservice.service.ITimeSlotService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.util.Times;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -93,11 +94,8 @@ public class TimeSlotService implements ITimeSlotService {
     @Override
     @Transactional
     public void initializeTimeSlotsForAllRoomsBySemesterId(LocalDate startDate, LocalDate endDate) {
-        List<TimeSlot> timeSlots = timeSlotRepository.findAllByDateBetween(
-                startDate, endDate);
-        Set<Long> timeSlotIds = timeSlots.stream()
-                .map(TimeSlot::getId)
-                .collect(Collectors.toSet());
+        List<TimeSlot> timeSlots = timeSlotRepository.findAllByDateBetween(startDate, endDate);
+        Set<Long> timeSlotIds = timeSlots.stream().map(TimeSlot::getId).collect(Collectors.toSet());
         if (timeSlots.isEmpty()) {
             return;
         }
@@ -116,8 +114,8 @@ public class TimeSlotService implements ITimeSlotService {
 
         LocalDate startDate = semester.getStartDate();
         LocalDate endDate = semester.getEndDate();
-        List<TimeslotResponse> timeSlots = timeSlotRepository
-                .findAllByTeacherIdAndDateBetween(teacherId, startDate, endDate);
+        List<TimeslotResponse> timeSlots =
+                timeSlotRepository.findAllByTeacherIdAndDateBetween(teacherId, startDate, endDate);
 
         return timeSlots;
     }
@@ -126,11 +124,8 @@ public class TimeSlotService implements ITimeSlotService {
     @Transactional
     public void initializeTimeSlotsForAllTeachersBySemesterId(LocalDate startDate, LocalDate endDate) {
         List<TeacherReference> teachers = teacherReferenceRepository.findAll();
-        List<TimeSlot> timeSlots = timeSlotRepository.findAllByDateBetween(
-                startDate, endDate);
-        Set<Long> timeSlotIds = timeSlots.stream()
-                .map(TimeSlot::getId)
-                .collect(Collectors.toSet());
+        List<TimeSlot> timeSlots = timeSlotRepository.findAllByDateBetween(startDate, endDate);
+        Set<Long> timeSlotIds = timeSlots.stream().map(TimeSlot::getId).collect(Collectors.toSet());
         if (timeSlots.isEmpty()) {
             return;
         }

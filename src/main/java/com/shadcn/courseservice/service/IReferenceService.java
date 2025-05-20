@@ -17,6 +17,6 @@ public interface IReferenceService {
 
     void updateTeacherReference(UpdateTeacherReferenceRequest updateTeacherReferenceRequest);
 
-    PageResponse<UserProfileResponse> getAvailableTeachersInCoursesBySemesterId( Long semesterId, int current, int pageSize);
-    
+    PageResponse<UserProfileResponse> getAvailableTeachersInCoursesBySemesterId(
+            Long semesterId, int current, int pageSize);
 }
