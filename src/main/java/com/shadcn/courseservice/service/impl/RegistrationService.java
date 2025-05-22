@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.shadcn.courseservice.enums.TeacherRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -161,7 +162,14 @@ public class RegistrationService implements IRegistrationService {
     public void registerTeacherRoleToCourse(RegistrationTeacherRoleRequest request) {
         TeacherReference teacherReference = teacherReferenceRepository
                 .findByTeacherId(request.getTeacherId())
-                .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_FOUND));
+                .orElseGet(() -> {
+                    TeacherReference newTeacherReference = TeacherReference.builder()
+                            .teacherId(request.getTeacherId())
+                            .courses(new ArrayList<>(courseRepository.findById(request.getCourseId()).stream().toList()))
+                            .teacherCourseRoles(new HashSet<>())
+                            .build();
+                    return teacherReferenceRepository.save(newTeacherReference);
+                });
 
         Set<TeacherCourseRole> teacherCourseRoles = teacherReference.getTeacherCourseRoles();
 
