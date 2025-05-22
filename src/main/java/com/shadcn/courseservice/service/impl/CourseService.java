@@ -112,6 +112,8 @@ public class CourseService implements ICourseService {
         courseRepository.save(course);
     }
 
+
+
     @Override
     @Transactional
     public void removeTeacherFromCourse(String departmentId, String courseId, List<String> teacherIds) {
