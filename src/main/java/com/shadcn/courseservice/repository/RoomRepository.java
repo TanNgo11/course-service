@@ -22,4 +22,7 @@ public interface RoomRepository extends JpaRepository<Room, Long>, QuerydslPredi
     Room getRoomById(Long roomId);
 
     List<Room> findAllByStatus(RoomStatus status);
+
+
+    List<Room> findAllByCapacityGreaterThanEqual(int maxStudents);
 }

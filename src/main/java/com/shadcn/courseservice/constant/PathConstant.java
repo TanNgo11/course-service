@@ -24,6 +24,8 @@ public class PathConstant {
 
     public static final String TIME_SLOTS = "/time-slots";
 
+    public static final String TIME_TABLES = "/timetables";
+
     public static final String API_V1_ACADEMIC_YEARS = API_V1 + ACADEMIC_YEARS;
 
     public static final String API_V1_DEPARTMENTS = API_V1 + DEPARTMENTS;
@@ -44,6 +46,8 @@ public class PathConstant {
     public static final String API_V1_ATTENDANCES = API_V1 + ATTENDANCES;
 
     public static final String API_V1_TIME_SLOTS = API_V1 + TIME_SLOTS;
+    
+    public static final String API_V1_TIME_TABLES = API_V1 + TIME_TABLES;
 
     public static final String[] PUBLIC_ENDPOINTS = {"/swagger-ui/**", "/v3/api-docs/**"};
 }
