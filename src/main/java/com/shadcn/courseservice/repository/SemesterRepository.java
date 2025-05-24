@@ -11,6 +11,8 @@ import com.shadcn.courseservice.entity.Semester;
 
 import feign.Param;
 
+import java.time.LocalDate;
+
 public interface SemesterRepository extends JpaRepository<Semester, Long>, QuerydslPredicateExecutor<Semester> {
     @Query(
             "SELECT CASE WHEN COUNT(c) > 0 THEN TRUE ELSE FALSE END FROM Semester s JOIN s.courses c WHERE s.id = :semesterId AND c.id = :courseId")
@@ -22,4 +24,7 @@ public interface SemesterRepository extends JpaRepository<Semester, Long>, Query
     Semester findBySemesterActive(@Param("semesterActive") boolean semesterActive);
 
     Page<Semester> findAllByAcademicYear(AcademicYear academicYear, Pageable pageable);
+
+    @Query("SELECT s FROM Semester s WHERE :inputDate BETWEEN s.startDate AND s.endDate")
+    Semester findByDateWithinRange(@Param("inputDate") LocalDate inputDate);
 }

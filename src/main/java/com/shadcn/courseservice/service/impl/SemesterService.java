@@ -156,6 +156,15 @@ public class SemesterService implements ISemesterService {
     }
 
     @Override
+    public SemesterResponse getCurrentOpenSemesterByDate() {
+        LocalDate date = LocalDate.now();
+        Semester semester = semesterRepository
+                .findByDateWithinRange(date);
+        
+        return semesterMapper.toSemesterResponse(semester);
+    }
+
+    @Override
     public void deleteCoursesByIds(CourseIdsRequest request) {
         List<Long> courseIds = request.getCourseIds();
         List<Course> coursesToDelete = courseRepository.findAllById(courseIds);
