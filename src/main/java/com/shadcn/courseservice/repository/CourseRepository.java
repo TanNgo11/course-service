@@ -30,6 +30,8 @@ public interface CourseRepository
     //            @Param("departmentId") Long departmentId, @Param("semesterId") Long semesterId, Pageable pageable);
 
     Page<Course> findBySemesterId(long semesterId, Pageable pageable);
+    
+    List<Course> findBySemesterId(Long semesterId);
 
     void removeCourseById(Long id);
 
