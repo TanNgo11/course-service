@@ -78,8 +78,8 @@ public class Course extends BaseEntity {
 
     int numsOfTimetable;
 
-    Integer theorySessionsPerWeek; 
-    
+    Integer theorySessionsPerWeek;
+
     Integer practiceSessionsPerWeek;
 
     CourseStatus processStatus;

@@ -1,13 +1,14 @@
 package com.shadcn.courseservice.dto.response.timetable;
 
-import com.shadcn.courseservice.dto.response.classSession.ClassSessionResponse;
-import com.shadcn.courseservice.dto.response.course.CourseResponse;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Set;
+
+import com.shadcn.courseservice.dto.response.classSession.ClassSessionResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor

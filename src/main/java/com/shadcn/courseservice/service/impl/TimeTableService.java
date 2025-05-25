@@ -1,5 +1,14 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.shadcn.courseservice.dto.response.timetable.TimetableResponse;
 import com.shadcn.courseservice.entity.*;
 import com.shadcn.courseservice.enums.RoomType;
@@ -9,18 +18,11 @@ import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.TimetableMapper;
 import com.shadcn.courseservice.repository.*;
 import com.shadcn.courseservice.service.ITimeTableService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,14 +41,13 @@ public class TimeTableService implements ITimeTableService {
     @Override
     @Transactional
     public void generateTimetablesForSemester(Long semesterId) {
-        var semester = semesterRepository.findById(semesterId)
+        var semester = semesterRepository
+                .findById(semesterId)
                 .orElseThrow(() -> new RuntimeException("Semester not found: " + semesterId));
         List<Course> courses = courseRepository.findBySemesterId(semesterId);
 
-        List<TimeSlot> semesterTimeSlots = timeSlotRepository.findAllByDateBetween(
-                semester.getStartDate(),
-                semester.getEndDate()
-        );
+        List<TimeSlot> semesterTimeSlots =
+                timeSlotRepository.findAllByDateBetween(semester.getStartDate(), semester.getEndDate());
 
         for (Course course : courses) {
             generateTimetableForCourse(course, semesterTimeSlots);
@@ -68,8 +69,7 @@ public class TimeTableService implements ITimeTableService {
             throw new RuntimeException("Course " + course.getId() + " has more than 2 assigned teachers");
         }
 
-        List<Room> availableRooms = roomRepository.findAllByCapacityGreaterThanEqual(course.getMaxStudents())
-                .stream()
+        List<Room> availableRooms = roomRepository.findAllByCapacityGreaterThanEqual(course.getMaxStudents()).stream()
                 .filter(room -> !room.getAvailableTimeSlots().isEmpty())
                 .collect(Collectors.toList());
 
@@ -82,10 +82,8 @@ public class TimeTableService implements ITimeTableService {
         }
     }
 
-    private void createSingleTimetable(Course course,
-                                       List<TimeSlot> semesterTimeSlots,
-                                       List<TeacherReference> teachers,
-                                       List<Room> rooms) {
+    private void createSingleTimetable(
+            Course course, List<TimeSlot> semesterTimeSlots, List<TeacherReference> teachers, List<Room> rooms) {
         Timetable timetable = Timetable.builder()
                 .course(course)
                 .daysOfWeek(new HashSet<>())
@@ -148,8 +146,8 @@ public class TimeTableService implements ITimeTableService {
             List<TimeSlot> teacherAvailableSlots = semesterTimeSlots.stream()
                     .filter(slot -> finalPracticeTeacher.getAvailableTimeSlots().contains(slot.getId()))
                     .collect(Collectors.toList());
-            selectedPracticeSlots = selectTimeSlots(
-                    teacherAvailableSlots, practiceSessionsPerWeek, totalWeeks, rooms, 4, RoomType.LAB);
+            selectedPracticeSlots =
+                    selectTimeSlots(teacherAvailableSlots, practiceSessionsPerWeek, totalWeeks, rooms, 4, RoomType.LAB);
             // Loại bỏ các khe đã dùng cho LAB
             semesterTimeSlots.removeAll(selectedPracticeSlots);
         }
@@ -171,7 +169,8 @@ public class TimeTableService implements ITimeTableService {
 
         // Tạo class sessions
         for (TimeSlot slot : selectedSlots) {
-            int durationHours = (slot.getEndTime().toSecondOfDay() - slot.getStartTime().toSecondOfDay()) / 3600;
+            int durationHours =
+                    (slot.getEndTime().toSecondOfDay() - slot.getStartTime().toSecondOfDay()) / 3600;
             RoomType requiredRoomType = durationHours >= 4 ? RoomType.LAB : RoomType.LECTURE;
             TeacherReference assignedTeacher = durationHours >= 4 ? practiceTeacher : theoryTeacher;
 
@@ -225,11 +224,11 @@ public class TimeTableService implements ITimeTableService {
         Semester semester = semesterRepository
                 .findById(semesterId)
                 .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
-        
+
         TeacherReference teacherReference = teacherReferenceRepository
                 .findByTeacherId(teacherId)
                 .orElseThrow(() -> new AppException(ErrorCode.TEACHER_NOT_FOUND));
-        
+
         List<Course> courses = courseRepository.findByTeacherReferencesAndSemester(teacherReference, semester);
         List<Timetable> timetables = new ArrayList<>();
         for (Course course : courses) {
@@ -239,15 +238,20 @@ public class TimeTableService implements ITimeTableService {
         return timetableMapper.toTimetableResponseList(timetables);
     }
 
-    private List<TimeSlot> selectTimeSlots(List<TimeSlot> availableSlots,
-                                           int sessionsPerWeek,
-                                           int weeks,
-                                           List<Room> rooms,
-                                           int sessionHours,
-                                           RoomType requiredRoomType) {
+    private List<TimeSlot> selectTimeSlots(
+            List<TimeSlot> availableSlots,
+            int sessionsPerWeek,
+            int weeks,
+            List<Room> rooms,
+            int sessionHours,
+            RoomType requiredRoomType) {
         List<TimeSlot> selectedSlots = new ArrayList<>();
-        log.info("Selecting slots for {}: sessionsPerWeek={}, weeks={}, sessionHours={}",
-                requiredRoomType, sessionsPerWeek, weeks, sessionHours);
+        log.info(
+                "Selecting slots for {}: sessionsPerWeek={}, weeks={}, sessionHours={}",
+                requiredRoomType,
+                sessionsPerWeek,
+                weeks,
+                sessionHours);
 
         availableSlots.sort(Comparator.comparing(TimeSlot::getDate).thenComparing(TimeSlot::getStartTime));
         if (availableSlots.isEmpty()) {
@@ -266,16 +270,21 @@ public class TimeTableService implements ITimeTableService {
                 List<TimeSlot> weekSlots = availableSlots.stream()
                         .filter(slot -> isSameWeek(slot.getDate(), finalCurrentDate))
                         .filter(slot -> {
-                            int durationHours = (slot.getEndTime().toSecondOfDay() - slot.getStartTime().toSecondOfDay()) / 3600;
+                            int durationHours = (slot.getEndTime().toSecondOfDay()
+                                            - slot.getStartTime().toSecondOfDay())
+                                    / 3600;
                             return durationHours == 2;
                         })
                         .sorted(Comparator.comparing(TimeSlot::getDate).thenComparing(TimeSlot::getStartTime))
                         .collect(Collectors.toList());
                 log.info("Week starting {}: found {} slots", finalCurrentDate, weekSlots.size());
-                log.info("Available slots: {}", weekSlots.stream()
-                        .map(slot -> String.format("ID=%d, Date=%s, Time=%s-%s",
-                                slot.getId(), slot.getDate(), slot.getStartTime(), slot.getEndTime()))
-                        .collect(Collectors.toList()));
+                log.info(
+                        "Available slots: {}",
+                        weekSlots.stream()
+                                .map(slot -> String.format(
+                                        "ID=%d, Date=%s, Time=%s-%s",
+                                        slot.getId(), slot.getDate(), slot.getStartTime(), slot.getEndTime()))
+                                .collect(Collectors.toList()));
 
                 int sessionsThisWeek = 0;
                 for (int i = 0; i < weekSlots.size() - 1 && sessionsThisWeek < sessionsPerWeek; i++) {
@@ -283,14 +292,16 @@ public class TimeTableService implements ITimeTableService {
                     TimeSlot slot2 = weekSlots.get(i + 1);
 
                     // Nới lỏng điều kiện: chấp nhận gap ≤ 5 phút
-                    long timeGapSeconds = slot2.getStartTime().toSecondOfDay() - slot1.getEndTime().toSecondOfDay();
-                    if (slot1.getDate().equals(slot2.getDate()) &&
-                            slot1.getDayOfWeek().equals(slot2.getDayOfWeek()) &&
-                            timeGapSeconds >= 0 && timeGapSeconds <= 300) { // Gap ≤ 5 phút
+                    long timeGapSeconds = slot2.getStartTime().toSecondOfDay()
+                            - slot1.getEndTime().toSecondOfDay();
+                    if (slot1.getDate().equals(slot2.getDate())
+                            && slot1.getDayOfWeek().equals(slot2.getDayOfWeek())
+                            && timeGapSeconds >= 0
+                            && timeGapSeconds <= 300) { // Gap ≤ 5 phút
                         Optional<Room> availableRoom = rooms.stream()
-                                .filter(room -> room.getAvailableTimeSlots().contains(slot1.getId()) &&
-                                        room.getAvailableTimeSlots().contains(slot2.getId()) &&
-                                        room.getRoomType() == requiredRoomType)
+                                .filter(room -> room.getAvailableTimeSlots().contains(slot1.getId())
+                                        && room.getAvailableTimeSlots().contains(slot2.getId())
+                                        && room.getRoomType() == requiredRoomType)
                                 .findFirst();
                         if (availableRoom.isPresent()) {
                             selectedSlots.add(slot1);
@@ -298,15 +309,25 @@ public class TimeTableService implements ITimeTableService {
                             sessionsAdded++;
                             sessionsThisWeek++;
                             i++; // Bỏ qua slot2
-                            log.info("Added LAB session: slots {} and {} (gap: {} seconds, room: {})",
-                                    slot1.getId(), slot2.getId(), timeGapSeconds, availableRoom.get().getId());
+                            log.info(
+                                    "Added LAB session: slots {} and {} (gap: {} seconds, room: {})",
+                                    slot1.getId(),
+                                    slot2.getId(),
+                                    timeGapSeconds,
+                                    availableRoom.get().getId());
                         } else {
                             log.warn("No LAB room available for slot pair {} and {}", slot1.getId(), slot2.getId());
                         }
                     } else {
-                        log.warn("Slots {} ({}-{}) and {} ({}-{}) are not consecutive or have gap {} seconds",
-                                slot1.getId(), slot1.getStartTime(), slot1.getEndTime(),
-                                slot2.getId(), slot2.getStartTime(), slot2.getEndTime(), timeGapSeconds);
+                        log.warn(
+                                "Slots {} ({}-{}) and {} ({}-{}) are not consecutive or have gap {} seconds",
+                                slot1.getId(),
+                                slot1.getStartTime(),
+                                slot1.getEndTime(),
+                                slot2.getId(),
+                                slot2.getStartTime(),
+                                slot2.getEndTime(),
+                                timeGapSeconds);
                     }
                 }
                 currentDate = currentDate.plusDays(7);
@@ -320,7 +341,9 @@ public class TimeTableService implements ITimeTableService {
                 List<TimeSlot> weekSlots = availableSlots.stream()
                         .filter(slot -> isSameWeek(slot.getDate(), finalCurrentDate))
                         .filter(slot -> {
-                            int durationHours = (slot.getEndTime().toSecondOfDay() - slot.getStartTime().toSecondOfDay()) / 3600;
+                            int durationHours = (slot.getEndTime().toSecondOfDay()
+                                            - slot.getStartTime().toSecondOfDay())
+                                    / 3600;
                             return durationHours == sessionHours;
                         })
                         .sorted(Comparator.comparing(TimeSlot::getStartTime))
@@ -332,11 +355,15 @@ public class TimeTableService implements ITimeTableService {
                     if (sessionsThisWeek >= sessionsPerWeek) break;
 
                     Optional<Room> availableRoom = rooms.stream()
-                            .filter(room -> room.getAvailableTimeSlots().contains(slot.getId()) &&
-                                    room.getRoomType() == requiredRoomType)
+                            .filter(room -> room.getAvailableTimeSlots().contains(slot.getId())
+                                    && room.getRoomType() == requiredRoomType)
                             .findFirst();
-                    log.info("Checking slot {} ({}-{}): roomAvailable={}",
-                            slot.getId(), slot.getStartTime(), slot.getEndTime(), availableRoom.isPresent());
+                    log.info(
+                            "Checking slot {} ({}-{}): roomAvailable={}",
+                            slot.getId(),
+                            slot.getStartTime(),
+                            slot.getEndTime(),
+                            availableRoom.isPresent());
 
                     if (availableRoom.isPresent()) {
                         selectedSlots.add(slot);
@@ -353,8 +380,11 @@ public class TimeTableService implements ITimeTableService {
         int requiredSlots = sessionsPerWeek * weeks * (sessionHours == 4 ? 2 : 1);
         log.info("Selected {} slots for {} (required: {})", selectedSlots.size(), requiredRoomType, requiredSlots);
         if (selectedSlots.size() < requiredSlots) {
-            log.error("Not enough slots selected for {}: got {}, needed {}",
-                    requiredRoomType, selectedSlots.size(), requiredSlots);
+            log.error(
+                    "Not enough slots selected for {}: got {}, needed {}",
+                    requiredRoomType,
+                    selectedSlots.size(),
+                    requiredSlots);
             throw new RuntimeException("Not enough available slots for " + requiredRoomType + " sessions");
         }
 
@@ -363,7 +393,7 @@ public class TimeTableService implements ITimeTableService {
 
     private boolean isSameWeek(LocalDate date1, LocalDate date2) {
         WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY, 1);
-        return date1.get(weekFields.weekOfWeekBasedYear()) == date2.get(weekFields.weekOfWeekBasedYear()) &&
-                date1.getYear() == date2.getYear();
+        return date1.get(weekFields.weekOfWeekBasedYear()) == date2.get(weekFields.weekOfWeekBasedYear())
+                && date1.getYear() == date2.getYear();
     }
 }

@@ -112,8 +112,6 @@ public class CourseService implements ICourseService {
         courseRepository.save(course);
     }
 
-
-
     @Override
     @Transactional
     public void removeTeacherFromCourse(String departmentId, String courseId, List<String> teacherIds) {
@@ -221,6 +219,7 @@ public class CourseService implements ICourseService {
         List<Course> courses = courseRepository.findByTeacherReferencesAndSemester(teacherReference, semester);
         return courseMapper.toCourseResponseList(courses);
     }
+
 
     @Override
     public PageResponse<UserProfileResponse> getAllStudentsInCourseByIds(String courseId, int current, int pageSize) {

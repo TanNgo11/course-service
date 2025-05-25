@@ -99,7 +99,7 @@ public class SemesterController {
     }
 
     @GetMapping("/current-open-semester")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public ApiResponse<SemesterResponse> getCurrentOpenSemester() {
         return ApiResponse.success(semesterService.getCurrentOpenSemester());
     }

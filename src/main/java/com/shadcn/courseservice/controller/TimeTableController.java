@@ -1,17 +1,20 @@
 package com.shadcn.courseservice.controller;
 
-import com.shadcn.courseservice.dto.response.ApiResponse;
-import com.shadcn.courseservice.dto.response.timetable.TimetableResponse;
-import com.shadcn.courseservice.service.ITimeTableService;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import static com.shadcn.courseservice.constant.PathConstant.API_V1_TIME_TABLES;
 
 import java.util.List;
 
-import static com.shadcn.courseservice.constant.PathConstant.API_V1_TIME_TABLES;
+import org.springframework.context.annotation.Role;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import com.shadcn.courseservice.dto.response.ApiResponse;
+import com.shadcn.courseservice.dto.response.timetable.TimetableResponse;
+import com.shadcn.courseservice.service.ITimeTableService;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,9 +36,9 @@ public class TimeTableController {
     }
 
     @GetMapping("/teachers/{teacherId}/semesters/{semesterId}")
-    public ApiResponse<List<TimetableResponse>> getTimetableByTeacherId(@PathVariable Long teacherId, @PathVariable Long semesterId) {
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    public ApiResponse<List<TimetableResponse>> getTimetableByTeacherId(
+            @PathVariable Long teacherId, @PathVariable Long semesterId) {
         return ApiResponse.success(timeTableService.getTimetableByTeacherId(teacherId, semesterId));
     }
-    
-
 }
