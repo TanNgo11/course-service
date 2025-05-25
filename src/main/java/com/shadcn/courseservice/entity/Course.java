@@ -42,6 +42,7 @@ public class Course extends BaseEntity {
     //    List<Department> departments;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
     List<Lesson> lessons;
 
     @ManyToOne
@@ -66,6 +67,7 @@ public class Course extends BaseEntity {
     List<Registration> registrations;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     List<Timetable> timetables;
 
     LocalDate startDate;
