@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AttendanceResponse {
     Long studentId;
+    Long studentReferenceId;
     String studentName;
     String classSessionId;
     String status;

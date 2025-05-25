@@ -1,9 +1,14 @@
 package com.shadcn.courseservice.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.shadcn.courseservice.dto.response.student.StudentProfileResponse;
+import com.shadcn.courseservice.dto.response.user.UserProfileResponse;
+import com.shadcn.courseservice.entity.Course;
+import com.shadcn.courseservice.repository.CourseRepository;
+import com.shadcn.courseservice.repository.httpClient.IdentityClient;
+import com.shadcn.courseservice.repository.httpClient.ProfileClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +47,9 @@ public class AttendanceService implements IAttendanceService {
     StudentReferenceRepository studentReferenceRepository;
     AttendanceMapper attendanceMapper;
     ClassSessionMapper classSessionMapper;
+    ProfileClient profileClient;
+    private final CourseRepository courseRepository;
+    private final IdentityClient identityClient;
 
     @Override
     @Transactional
@@ -154,10 +162,93 @@ public class AttendanceService implements IAttendanceService {
                 .toList();
     }
 
+//    @Override
+//    public List<ClassSessionResponse> getClassSessionsByCourseId(Long courseId) {
+//        // Get course and students
+//        Course course = courseRepository.findById(courseId)
+//                .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+//        List<StudentReference> students = course.getStudentReferences();
+//        List<Long> studentIds = students.stream()
+//                .map(StudentReference::getStudentId)
+//                .toList();
+//
+//        List<UserProfileResponse> studentProfileResponses = identityClient.getUserProfileResponses(studentIds).getResult();
+//
+//        // Map studentId → profile
+//        Map<String, UserProfileResponse> profileMap = studentProfileResponses.stream()
+//                .collect(Collectors.toMap(UserProfileResponse::getId, p -> p));
+//
+//        // Get sessions
+//        List<ClassSession> sessions = customClassSessionRepository.findByCourseId(courseId);
+//
+//        // Map to response
+//        List<ClassSessionResponse> classSessionResponses = new ArrayList<>();
+//        for (ClassSession session : sessions) {
+//            ClassSessionResponse response = classSessionMapper.toClassSessionResponse(session);
+//
+//            if (response.getAttendances().size() != students.size()) {
+//                List<Attendance> newAttendances = createAttendances(students, session);
+//                List<AttendanceResponse> mapped = newAttendances.stream()
+//                        .map(attendanceMapper::toAttendanceResponse)
+//                        .toList();
+//
+//                for (AttendanceResponse attendanceResponse : mapped) {
+//                    UserProfileResponse studentProfile = profileMap.get(String.valueOf(attendanceResponse.getStudentId()));
+//
+//                    log.info("STUDENT PROFILE IN COURSE: {}", studentProfile.toString());
+//
+//                    attendanceResponse.setStudentName(
+//                            studentProfile.getFirstName() + " " + studentProfile.getLastName()
+//                    );
+//                }
+//                response.setAttendances(mapped);
+//            }
+//            classSessionResponses.add(response);
+//        }
+//        return classSessionResponses;
+//    }
+
     @Override
     public List<ClassSessionResponse> getClassSessionsByCourseId(Long courseId) {
-        return customClassSessionRepository.findByCourseId(courseId).stream()
-                .map(classSessionMapper::toClassSessionResponse)
+        // Get course and students
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+        List<StudentReference> students = course.getStudentReferences();
+
+        // Get sessions
+        List<ClassSession> sessions = customClassSessionRepository.findByCourseId(courseId);
+
+        // Map to response
+        List<ClassSessionResponse> responses = new ArrayList<>();
+        for (ClassSession session : sessions) {
+            ClassSessionResponse response = classSessionMapper.toClassSessionResponse(session);
+
+            // Auto-create missing attendances
+            if (response.getAttendances().size() != students.size()) {
+                List<Attendance> newAttendances = createAttendances(students, session);
+                List<AttendanceResponse> mapped = newAttendances.stream()
+                        .map(attendanceMapper::toAttendanceResponse)
+                        .toList();
+
+                response.setAttendances(mapped);
+            }
+
+            responses.add(response);
+        }
+
+        return responses;
+    }
+
+    private List<Attendance> createAttendances(List<StudentReference> students, ClassSession classSession) {
+        List<Attendance> attendances = students.stream()
+                .map(student -> Attendance.builder()
+                        .student(student)
+                        .status(null)
+                        .notes("Default note")
+                        .classSession(classSession)
+                        .build())
                 .toList();
+
+        return attendanceRepository.saveAll(attendances);
     }
 }
