@@ -28,6 +28,8 @@ public interface ISemesterService {
 
     SemesterResponse getCurrentOpenSemester();
 
+    SemesterResponse getCurrentOpenSemesterByDate();
+
     void deleteCoursesByIds(CourseIdsRequest request);
 
     Semester createSemester(SemesterCreationRequest request);

@@ -9,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 import java.util.List;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_TIME_TABLES;
@@ -33,9 +35,23 @@ public class TimeTableController {
     }
 
     @GetMapping("/teachers/{teacherId}/semesters/{semesterId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public ApiResponse<List<TimetableResponse>> getTimetableByTeacherId(@PathVariable Long teacherId, @PathVariable Long semesterId) {
         return ApiResponse.success(timeTableService.getTimetableByTeacherId(teacherId, semesterId));
     }
     
+    @GetMapping("/students/{studentId}/semesters/{semesterId}")
+    @PreAuthorize("hasRole('STUDENT') or hasRole('ADMIN')")
+    public ApiResponse<List<TimetableResponse>> getTimetableByStudentIdAndSemesterId(@PathVariable Long studentId, @PathVariable Long semesterId) {
+        return ApiResponse.success(timeTableService.getTimetableByStudentIdAndSemesterId(studentId, semesterId));
+    }
+
+    @GetMapping("/students/{studentId}")
+    @PreAuthorize("hasRole('STUDENT') or hasRole('ADMIN')")
+    public ApiResponse<List<TimetableResponse>> getTimetableByStudentIdAndDate(@PathVariable Long studentId, @RequestParam LocalDate date) {
+        return ApiResponse.success(timeTableService.getTimetableByStudentIdAndDate(studentId, date));
+    }
+    
+
 
 }

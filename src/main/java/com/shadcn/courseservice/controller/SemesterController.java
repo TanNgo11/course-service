@@ -104,6 +104,12 @@ public class SemesterController {
         return ApiResponse.success(semesterService.getCurrentOpenSemester());
     }
 
+    @GetMapping("/current-open-semester-by-date")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    public ApiResponse<SemesterResponse> getCurrentOpenSemesterByDate() {
+        return ApiResponse.success(semesterService.getCurrentOpenSemesterByDate());
+    }
+
     @DeleteMapping("/delete-opened-courses/")
     @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<Void> deleteCoursesByIds(@RequestBody CourseIdsRequest request) {

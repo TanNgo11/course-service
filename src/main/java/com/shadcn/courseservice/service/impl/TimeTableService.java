@@ -35,6 +35,8 @@ public class TimeTableService implements ITimeTableService {
     ClassSessionRepository classSessionRepository;
     TeacherReferenceRepository teacherReferenceRepository;
     TimetableMapper timetableMapper;
+    StudentReferenceRepository studentReferenceRepository;
+
 
     @Override
     @Transactional
@@ -217,6 +219,48 @@ public class TimeTableService implements ITimeTableService {
         }
 
         log.info("Found {} timetables for course ID: {}", timetables.size(), courseId);
+        return timetableMapper.toTimetableResponseList(timetables);
+    }
+
+    @Override
+    public List<TimetableResponse> getTimetableByStudentIdAndDate(Long studentId, LocalDate date) {
+        Semester semester = semesterRepository
+                .findByDateWithinRange(date);
+
+        StudentReference studentReference = studentReferenceRepository
+                .findByStudentId(studentId)
+                .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
+
+        List<Course> courses = courseRepository.findByStudentReferencesAndSemester(studentReference, semester);
+        List<Timetable> timetables = new ArrayList<>();
+
+        for (Course course : courses) {
+            List<Timetable> courseTimetables = timetableRepository.findByCourseId(course.getId());
+            timetables.addAll(courseTimetables);
+        }
+
+        return timetableMapper.toTimetableResponseList(timetables);
+
+    }
+
+    @Override
+    public List<TimetableResponse> getTimetableByStudentIdAndSemesterId(Long studentId, Long semesterId) {
+        Semester semester = semesterRepository
+                .findById(semesterId)
+                .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
+
+        StudentReference studentReference = studentReferenceRepository
+                .findByStudentId(studentId)
+                .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
+
+        List<Course> courses = courseRepository.findByStudentReferencesAndSemester(studentReference, semester);
+        List<Timetable> timetables = new ArrayList<>();
+
+        for (Course course : courses) {
+            List<Timetable> courseTimetables = timetableRepository.findByCourseId(course.getId());
+            timetables.addAll(courseTimetables);
+        }
+
         return timetableMapper.toTimetableResponseList(timetables);
     }
 

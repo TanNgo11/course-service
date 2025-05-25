@@ -1,5 +1,6 @@
 package com.shadcn.courseservice.service.impl;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shadcn.courseservice.dto.request.registration.RegistrationTeacherRoleRequest;
-import com.shadcn.courseservice.dto.response.*;
+import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.dto.response.registration.RegistrationResponse;
 import com.shadcn.courseservice.dto.response.student.StudentProfileResponse;
@@ -31,11 +32,21 @@ import com.shadcn.courseservice.repository.httpClient.ProfileClient;
 import com.shadcn.courseservice.service.IProfileService;
 import com.shadcn.courseservice.service.IRegistrationService;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +66,8 @@ public class RegistrationService implements IRegistrationService {
     ProfileClient profileClient;
     AcademicYearRepository academicYearRepository;
     TeacherCourseRoleRepository teacherCourseRoleRepository;
+    TimeTableRepository timeTableRepository;
+    BaseCourseRepository baseCourseRepository;
 
     @Override
     @Transactional
@@ -88,6 +101,8 @@ public class RegistrationService implements IRegistrationService {
         if (currentSemester.getStartDate().isAfter(now)
                 || currentSemester.getEndDate().isBefore(now)) {
             throw new AppException(ErrorCode.INVALID_REGISTRATION_DATE);
+
+
         }
 
         for (Long courseId : courseIds) {
@@ -97,6 +112,13 @@ public class RegistrationService implements IRegistrationService {
 
             Course currentCourse =
                     courseRepository.findById(courseId).orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+
+            boolean isConflict = isConflictWithExistingRegistration(studentReference, courseId, currentSemester);
+            if (isConflict) {
+                throw new RuntimeException("Conflict with existing registration for student with course" + currentCourse.getBaseCourse().getName());
+            }
+            currentCourse.getStudentReferences().add(studentReference);
+            studentReference.getCourses().add(currentCourse);
 
             Registration registration = Registration.builder()
                     .studentReference(studentReference)
@@ -108,6 +130,8 @@ public class RegistrationService implements IRegistrationService {
                     .build();
 
             registrationRepository.save(registration);
+            courseRepository.save(currentCourse);
+            studentReferenceRepository.save(studentReference);
         }
     }
 
@@ -229,13 +253,32 @@ public class RegistrationService implements IRegistrationService {
     }
 
     @Override
+    @Transactional
     public void unregisterStudentsFromCourseForStudent(long studentId, List<String> courseCodes, long semesterId) {
+        StudentReference studentReference = studentReferenceRepository
+                .findByStudentId(studentId)
+                .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
+        Semester currentSemester = semesterRepository
+                .findById(semesterId)
+                .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
         for (String code : courseCodes) {
+           BaseCourse baseCourse = baseCourseRepository.findByCode(code);
+            if (baseCourse == null) {
+                throw new AppException(ErrorCode.COURSE_NOT_FOUND);
+            }
+            Course course = courseRepository.findByBaseCourseAndSemester(baseCourse, currentSemester);
+
+            studentReference.getCourses().remove(course);
+            course.getStudentReferences().remove(studentReference);
+            
             Registration registration = registrationRepository.findByRegistrationByStudentIdAndCourseCodeAndSemesterId(
                     studentId, code, semesterId);
             if (registration == null) {
                 throw new AppException(ErrorCode.REGISTRATION_NOT_FOUND);
             }
+            
+            studentReferenceRepository.save(studentReference);
+            courseRepository.save(course);
             registrationRepository.delete(registration);
         }
     }
@@ -365,5 +408,36 @@ public class RegistrationService implements IRegistrationService {
                 departmentId, semesterId, studentId, pageable);
 
         return ConverToPaginationResponse.toPageResponse(courses, courseMapper::toCourseResponse, current);
+    }
+
+
+    private boolean isConflictWithExistingRegistration(
+            StudentReference student, Long courseId, Semester semester) {
+
+        List<Timetable> currentTimetable = timeTableRepository.findByCourseId(courseId);
+        List<Course> existingCourses = courseRepository.findByStudentReferencesAndSemester(student, semester);
+        List<Timetable> existingTimetable = new ArrayList<>();
+        for (Course existingCourse : existingCourses) {
+            List<Timetable> timetables = timeTableRepository.findByCourseId(existingCourse.getId());
+            existingTimetable.addAll(timetables);
+        }
+
+        for (Timetable current : currentTimetable) {
+            for (Timetable existing : existingTimetable) {
+                List<ClassSession> currentSessions = current.getClassSessions();
+                List<ClassSession> existingSessions = existing.getClassSessions();
+                for (ClassSession currentSession : currentSessions) {
+                    for (ClassSession existingSession : existingSessions) {
+                        if (currentSession.getTimeSlot().getStartTime().equals(existingSession.getTimeSlot().getStartTime())
+                                && currentSession.getTimeSlot().getEndTime()
+                                .equals(existingSession.getTimeSlot().getEndTime())
+                        ) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

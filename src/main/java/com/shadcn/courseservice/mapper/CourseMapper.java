@@ -14,7 +14,7 @@ import com.shadcn.courseservice.dto.response.teacher.TeacherInformationDTO;
 import com.shadcn.courseservice.entity.BaseCourse;
 import com.shadcn.courseservice.entity.Course;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",  uses = {TeacherMapper.class})
 public interface CourseMapper {
     // Course toCourse(CourseRequest request);
     @Mappings({
