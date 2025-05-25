@@ -58,7 +58,7 @@ public class AttendanceService implements IAttendanceService {
 
         // Get student
         StudentReference student = studentReferenceRepository
-                .findById(request.getStudentId())
+                .findByStudentId(request.getStudentId())
                 .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
 
         // Check if student is enrolled in the course
