@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+
 import java.util.List;
 
 import static com.shadcn.courseservice.constant.PathConstant.API_V1_TIME_TABLES;
@@ -51,5 +52,6 @@ public class TimeTableController {
         return ApiResponse.success(timeTableService.getTimetableByStudentIdAndDate(studentId, date));
     }
     
+
 
 }

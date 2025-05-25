@@ -37,6 +37,7 @@ public class TimeTableService implements ITimeTableService {
     TimetableMapper timetableMapper;
     StudentReferenceRepository studentReferenceRepository;
 
+
     @Override
     @Transactional
     public void generateTimetablesForSemester(Long semesterId) {
