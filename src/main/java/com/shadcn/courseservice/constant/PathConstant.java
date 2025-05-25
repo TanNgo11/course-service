@@ -46,7 +46,7 @@ public class PathConstant {
     public static final String API_V1_ATTENDANCES = API_V1 + ATTENDANCES;
 
     public static final String API_V1_TIME_SLOTS = API_V1 + TIME_SLOTS;
-    
+
     public static final String API_V1_TIME_TABLES = API_V1 + TIME_TABLES;
 
     public static final String[] PUBLIC_ENDPOINTS = {"/swagger-ui/**", "/v3/api-docs/**"};

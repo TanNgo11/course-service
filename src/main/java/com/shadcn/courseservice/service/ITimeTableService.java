@@ -1,8 +1,8 @@
 package com.shadcn.courseservice.service;
 
-import com.shadcn.courseservice.dto.response.timetable.TimetableResponse;
-
 import java.util.List;
+
+import com.shadcn.courseservice.dto.response.timetable.TimetableResponse;
 
 public interface ITimeTableService {
     void generateTimetablesForSemester(Long semesterId);

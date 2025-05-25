@@ -1,5 +1,17 @@
 package com.shadcn.courseservice.service.impl;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.shadcn.courseservice.dto.response.timeslot.TimeslotResponse;
 import com.shadcn.courseservice.entity.Room;
 import com.shadcn.courseservice.entity.TeacherReference;
@@ -11,21 +23,11 @@ import com.shadcn.courseservice.repository.SemesterRepository;
 import com.shadcn.courseservice.repository.TeacherReferenceRepository;
 import com.shadcn.courseservice.repository.TimeSlotRepository;
 import com.shadcn.courseservice.service.ITimeSlotService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -83,10 +85,10 @@ public class TimeSlotService implements ITimeSlotService {
                     semesterId,
                     startDate,
                     endDate);
-//            return;
+            //            return;
         }
 
-//        this.initializeTimeSlots(startDate, endDate);
+        //        this.initializeTimeSlots(startDate, endDate);
         this.initializeTimeSlotsForAllTeachersBySemesterId(startDate, endDate);
         this.initializeTimeSlotsForAllRoomsBySemesterId(startDate, endDate);
     }
@@ -107,8 +109,10 @@ public class TimeSlotService implements ITimeSlotService {
         log.info("Found {} available rooms", rooms.size());
 
         log.info("Deleting existing records in room_available_slots for date range {} to {}", startDate, endDate);
-        jdbcTemplate.update("DELETE FROM room_available_slots WHERE time_slot_id IN (SELECT id FROM time_slot WHERE date BETWEEN ? AND ?)",
-                startDate, endDate);
+        jdbcTemplate.update(
+                "DELETE FROM room_available_slots WHERE time_slot_id IN (SELECT id FROM time_slot WHERE date BETWEEN ? AND ?)",
+                startDate,
+                endDate);
 
         String sql = "INSERT IGNORE INTO room_available_slots (room_id, time_slot_id) VALUES (?, ?)";
         int batchSize = 500; // Giảm batchSize để tránh vượt giới hạn MySQL
@@ -118,7 +122,7 @@ public class TimeSlotService implements ITimeSlotService {
         for (Room room : rooms) {
             log.info("Processing room {} with {} time slots", room.getId(), timeSlotIds.size());
             for (Long timeSlotId : timeSlotIds) {
-                batchArgs.add(new Object[]{room.getId(), timeSlotId});
+                batchArgs.add(new Object[] {room.getId(), timeSlotId});
                 if (batchArgs.size() >= batchSize) {
                     int[] results = jdbcTemplate.batchUpdate(sql, batchArgs);
                     totalRecords += results.length;
@@ -165,8 +169,10 @@ public class TimeSlotService implements ITimeSlotService {
         log.info("Found {} teachers", teachers.size());
 
         log.info("Deleting existing records in teacher_available_slots for date range {} to {}", startDate, endDate);
-        jdbcTemplate.update("DELETE FROM teacher_available_slots WHERE time_slot_id IN (SELECT id FROM time_slot WHERE date BETWEEN ? AND ?)",
-                startDate, endDate);
+        jdbcTemplate.update(
+                "DELETE FROM teacher_available_slots WHERE time_slot_id IN (SELECT id FROM time_slot WHERE date BETWEEN ? AND ?)",
+                startDate,
+                endDate);
 
         String sql = "INSERT IGNORE INTO teacher_available_slots (teacher_reference_id, time_slot_id) VALUES (?, ?)";
         int batchSize = 500; // Giảm batchSize để tránh vượt giới hạn MySQL
@@ -176,7 +182,7 @@ public class TimeSlotService implements ITimeSlotService {
         for (TeacherReference teacher : teachers) {
             log.info("Processing teacher {} with {} time slots", teacher.getTeacherId(), timeSlotIds.size());
             for (Long timeSlotId : timeSlotIds) {
-                batchArgs.add(new Object[]{teacher.getId(), timeSlotId});
+                batchArgs.add(new Object[] {teacher.getId(), timeSlotId});
                 if (batchArgs.size() >= batchSize) {
                     int[] results = jdbcTemplate.batchUpdate(sql, batchArgs);
                     totalRecords += results.length;

@@ -55,6 +55,4 @@ public interface ICourseService {
     PageResponse<CourseResponse> findAllCoursesBySemesterId(Long semesterId, int current, int pageSize);
 
     void updateCourseConstraint(Long id, UpdateConstraintCourseRequest request);
-
-
 }
