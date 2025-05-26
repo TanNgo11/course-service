@@ -1,13 +1,17 @@
 package com.shadcn.courseservice.service.impl;
 
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.dto.response.timetable.TimetableResponse;
 import com.shadcn.courseservice.entity.*;
+import com.shadcn.courseservice.enums.CourseStatus;
 import com.shadcn.courseservice.enums.RoomType;
 import com.shadcn.courseservice.enums.TeacherRole;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
 import com.shadcn.courseservice.mapper.TimetableMapper;
 import com.shadcn.courseservice.repository.*;
+import com.shadcn.courseservice.service.ICourseService;
+import com.shadcn.courseservice.service.ITimeSlotService;
 import com.shadcn.courseservice.service.ITimeTableService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +40,8 @@ public class TimeTableService implements ITimeTableService {
     TeacherReferenceRepository teacherReferenceRepository;
     TimetableMapper timetableMapper;
     StudentReferenceRepository studentReferenceRepository;
+    ICourseService courseService;
+    ITimeSlotService timeSlotService;
 
 
     @Override
@@ -50,7 +56,15 @@ public class TimeTableService implements ITimeTableService {
                 semester.getEndDate()
         );
 
+        timeSlotService.initializeTimeSlotsForSemester(semesterId);
         for (Course course : courses) {
+            if (course.getProcessStatus() != CourseStatus.READY_TO_START) {
+                throw new AppException(ErrorCode.COURSE_NOT_READY);
+            }
+        }
+        for (Course course : courses) {
+            if(!course.getTimetables().isEmpty())
+                continue; 
             generateTimetableForCourse(course, semesterTimeSlots);
         }
     }
@@ -255,13 +269,23 @@ public class TimeTableService implements ITimeTableService {
 
         List<Course> courses = courseRepository.findByStudentReferencesAndSemester(studentReference, semester);
         List<Timetable> timetables = new ArrayList<>();
+        List<CourseResponse> courseResponses = new ArrayList<>();
 
         for (Course course : courses) {
+            CourseResponse courseResponse = courseService.getCourseById(String.valueOf(course.getId()));
             List<Timetable> courseTimetables = timetableRepository.findByCourseId(course.getId());
             timetables.addAll(courseTimetables);
+            courseResponses.add(courseResponse);
         }
+        List<TimetableResponse> timetableResponses = timetableMapper.toTimetableResponseList(timetables);
+        timetableResponses.forEach(timetableResponse -> {
+            timetableResponse.setCourse(courseResponses.stream()
+                    .filter(cr -> cr.getId().equals(timetableResponse.getCourse().getId()))
+                    .findFirst()
+                    .orElse(null));
+        });
 
-        return timetableMapper.toTimetableResponseList(timetables);
+        return timetableResponses;
     }
 
     @Override

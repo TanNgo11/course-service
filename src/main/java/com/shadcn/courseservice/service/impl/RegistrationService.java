@@ -1,19 +1,6 @@
 package com.shadcn.courseservice.service.impl;
 
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.shadcn.courseservice.enums.TeacherRole;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.shadcn.courseservice.dto.request.registration.RegistrationTeacherRoleRequest;
 import com.shadcn.courseservice.dto.response.PageResponse;
 import com.shadcn.courseservice.dto.response.course.CourseResponse;
@@ -21,6 +8,7 @@ import com.shadcn.courseservice.dto.response.registration.RegistrationResponse;
 import com.shadcn.courseservice.dto.response.student.StudentProfileResponse;
 import com.shadcn.courseservice.dto.response.user.UserResponse;
 import com.shadcn.courseservice.entity.*;
+import com.shadcn.courseservice.enums.CourseStatus;
 import com.shadcn.courseservice.enums.RegistrationStatus;
 import com.shadcn.courseservice.exception.AppException;
 import com.shadcn.courseservice.exception.ErrorCode;
@@ -215,8 +203,17 @@ public class RegistrationService implements IRegistrationService {
         if (teacherCourseRole.getRoles().contains(request.getTeacherRole())) {
             throw new AppException(ErrorCode.TEACHER_ROLE_ALREADY_EXISTS);
         }
-
+        
+        Course course = courseRepository
+                .findById(request.getCourseId())
+                .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+        
+        course.setProcessStatus(CourseStatus.READY_TO_START);
+        
         teacherCourseRole.getRoles().add(request.getTeacherRole());
+        teacherReference.getCourses().add(course);
+        course.getTeacherReferences().add(teacherReference);
+        courseRepository.save(course);
         teacherReferenceRepository.save(teacherReference);
     }
 
