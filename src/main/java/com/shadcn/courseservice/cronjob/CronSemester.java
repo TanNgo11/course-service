@@ -22,19 +22,19 @@ import lombok.extern.slf4j.Slf4j;
 public class CronSemester {
     SemesterRepository semesterRepository;
 
-    @Bean
-    @Scheduled(cron = "0 0 0 * * *")
-    public void updateSemesterStatus() {
-        log.info("Update semester status");
-
-        List<Semester> semesters = semesterRepository.findAll();
-        LocalDate now = LocalDate.now();
-        for (Semester semester : semesters) {
-            semester.setSemesterActive(now.isAfter(semester.getStartDate()) && now.isBefore(semester.getEndDate()));
-        }
-
-        semesterRepository.saveAll(semesters);
-    }
+//    @Bean
+//    @Scheduled(cron = "0 0 0 * * *")
+//    public void updateSemesterStatus() {
+//        log.info("Update semester status");
+//
+//        List<Semester> semesters = semesterRepository.findAll();
+//        LocalDate now = LocalDate.now();
+//        for (Semester semester : semesters) {
+//            semester.setSemesterActive(now.isAfter(semester.getStartDate()) && now.isBefore(semester.getEndDate()));
+//        }
+//
+//        semesterRepository.saveAll(semesters);
+//    }
 
     @Bean
     @Scheduled(cron = "0 0 0 * * 1")

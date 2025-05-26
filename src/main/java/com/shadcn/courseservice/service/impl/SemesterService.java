@@ -1,14 +1,5 @@
 package com.shadcn.courseservice.service.impl;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
 import com.shadcn.courseservice.cronjob.CronSemester;
 import com.shadcn.courseservice.dto.request.course.CourseIdsRequest;
 import com.shadcn.courseservice.dto.request.semester.SemesterCreationRequest;
@@ -25,11 +16,17 @@ import com.shadcn.courseservice.mapper.SemesterMapper;
 import com.shadcn.courseservice.repository.*;
 import com.shadcn.courseservice.service.*;
 import com.shadcn.courseservice.util.ConverToPaginationResponse;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +56,7 @@ public class SemesterService implements ISemesterService {
 
         Pageable pageable = PageRequest.of(current - 1, pageSize);
         Page<Semester> semesters = semesterRepository.findAllByAcademicYear(academicYear, pageable);
-        cronSemester.updateSemesterStatus();
+//        cronSemester.updateSemesterStatus();
         return ConverToPaginationResponse.toPageResponse(semesters, semesterMapper::toSemesterResponse, current);
     }
 
@@ -84,6 +81,7 @@ public class SemesterService implements ISemesterService {
                     .startDate(semester.getStartDate())
                     .endDate(semester.getEndDate())
                     .remain(20)
+                    .numsOfTimetable(1)
                     .build();
 
             courseRepository.save(course);
@@ -129,8 +127,9 @@ public class SemesterService implements ISemesterService {
         semesterRepository.save(semester);
     }
 
+
+    //    @Scheduled(cron = "0 0 0 * * *") // Run at midnight every day to close registration if the due date is passed
     @Override
-    @Scheduled(cron = "0 0 0 * * *") // Run at midnight every day to close registration if the due date is passed
     public void closeRegistrationForSemester(long semesterId) {
         Semester semester;
         semester = semesterRepository

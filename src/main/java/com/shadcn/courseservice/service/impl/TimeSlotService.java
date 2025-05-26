@@ -83,10 +83,10 @@ public class TimeSlotService implements ITimeSlotService {
                     semesterId,
                     startDate,
                     endDate);
-//            return;
+            return;
         }
 
-//        this.initializeTimeSlots(startDate, endDate);
+        this.initializeTimeSlots(startDate, endDate);
         this.initializeTimeSlotsForAllTeachersBySemesterId(startDate, endDate);
         this.initializeTimeSlotsForAllRoomsBySemesterId(startDate, endDate);
     }
