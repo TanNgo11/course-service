@@ -77,12 +77,17 @@ public class AttendanceService implements IAttendanceService {
         // Check if attendance already exists
         Optional<Attendance> existingAttendance =
                 attendanceRepository.findByClassSessionAndStudent(classSession, student);
+
         if (existingAttendance.isPresent()) {
             log.info(
-                    "Attendance already exists for student {} in class session {}",
+                    "Attendance already exists for student {} in class session {}. Updating status to PRESENT.",
                     student.getId(),
                     classSession.getId());
-            return existingAttendance.get();
+
+            Attendance attendance = existingAttendance.get();
+            attendance.setStatus(AttendanceStatus.PRESENT);
+            attendance.setNotes(request.getNotes()); // Optional: update notes if needed
+            return attendanceRepository.save(attendance);
         }
 
         // Create new attendance record (default status is PRESENT)
