@@ -2,6 +2,8 @@ package com.shadcn.courseservice.dto.response.registration;
 
 import java.time.LocalDate;
 
+import com.shadcn.courseservice.dto.response.course.BaseCourseResponse;
+import com.shadcn.courseservice.dto.response.course.CourseResponse;
 import com.shadcn.courseservice.entity.BaseCourse;
 import com.shadcn.courseservice.entity.Course;
 import com.shadcn.courseservice.enums.RegistrationStatus;
@@ -26,6 +28,6 @@ public class RegistrationResponse {
     LocalDate registrationDate;
     LocalDate cancellationDeadline;
     String thumbnail;
-    Course courseDetails;
-    BaseCourse baseCourseDetails;
+    CourseResponse courseDetails;
+    BaseCourseResponse baseCourseDetails;
 }
