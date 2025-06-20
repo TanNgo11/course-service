@@ -77,16 +77,16 @@ public class TimeSlotService implements ITimeSlotService {
         LocalDate endDate = semester.getEndDate();
 
         boolean anyTimeSlotExists = timeSlotRepository.existsByDateBetween(startDate, endDate);
-        if (anyTimeSlotExists) {
-            log.info(
-                    "Time slots already exist for semester {} between {} and {}. Skipping initialization.",
-                    semesterId,
-                    startDate,
-                    endDate);
-            return;
-        }
+//        if (anyTimeSlotExists) {
+//            log.info(
+//                    "Time slots already exist for semester {} between {} and {}. Skipping initialization.",
+//                    semesterId,
+//                    startDate,
+//                    endDate);
+//            return;
+//        }
 
-        this.initializeTimeSlots(startDate, endDate);
+//        this.initializeTimeSlots(startDate, endDate);
         this.initializeTimeSlotsForAllTeachersBySemesterId(startDate, endDate);
         this.initializeTimeSlotsForAllRoomsBySemesterId(startDate, endDate);
     }

@@ -119,10 +119,10 @@ public class AttendanceService implements IAttendanceService {
                     .orElseThrow(() -> new AppException(ErrorCode.STUDENT_NOT_FOUND));
 
             // Check if student is enrolled in the course
-            if (!classSession.getTimetable().getStudents().contains(student)) {
-                log.warn("Student {} is not enrolled in the course", student.getId());
-                continue;
-            }
+//            if (!classSession.getTimetable().getStudents().contains(student)) {
+//                log.warn("Student {} is not enrolled in the course", student.getId());
+//                continue;
+//            }
             // Check if attendance already exists for student
             Optional<Attendance> existingAttendance =
                     attendanceRepository.findByClassSessionAndStudent(classSession, student);

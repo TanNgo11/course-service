@@ -86,12 +86,12 @@ public class RegistrationService implements IRegistrationService {
                 });
 
         LocalDate now = LocalDate.now();
-        if (currentSemester.getStartDate().isAfter(now)
-                || currentSemester.getEndDate().isBefore(now)) {
-            throw new AppException(ErrorCode.INVALID_REGISTRATION_DATE);
-
-
-        }
+//        if (currentSemester.getStartDate().isAfter(now)
+//                || currentSemester.getEndDate().isBefore(now)) {
+//            throw new AppException(ErrorCode.INVALID_REGISTRATION_DATE);
+//
+//
+//        }
 
         for (Long courseId : courseIds) {
             if (registrationRepository.existsByStudentIdAndCourseIdAndSemesterId(studentId, courseId, semesterId)) {
@@ -228,11 +228,11 @@ public class RegistrationService implements IRegistrationService {
                 .findById(semesterId)
                 .orElseThrow(() -> new AppException(ErrorCode.SEMESTER_NOT_FOUND));
 
-        LocalDate now = LocalDate.now();
-        if (currentSemester.getStartDate().isAfter(now)
-                || currentSemester.getEndDate().isBefore(now)) {
-            throw new AppException(ErrorCode.INVALID_REGISTRATION_DATE);
-        }
+//        LocalDate now = LocalDate.now();
+//        if (currentSemester.getStartDate().isAfter(now)
+//                || currentSemester.getEndDate().isBefore(now)) {
+//            throw new AppException(ErrorCode.INVALID_REGISTRATION_DATE);
+//        }
 
         for (Long courseId : courseIds) {
             Course course =
